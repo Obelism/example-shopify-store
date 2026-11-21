@@ -1,3 +1,4 @@
+import { ContentBridge } from "@obelism/content-react";
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Newsreader } from "next/font/google";
 
@@ -54,6 +55,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           Skip to content
         </a>
         <SiteSchema />
+        <ContentBridge />
 
         <CartProviderWrapper cartData={cartData}>
           <Nav />

@@ -1,0 +1,12 @@
+{
+	"_uid": "example1",
+	"_type": "_improve",
+	"kind": "test",
+	"slug": "example-test",
+	"fallback": "control",
+	"mode": "instant",
+	"variants": {
+		"control": [],
+		"variation": []
+	}
+}

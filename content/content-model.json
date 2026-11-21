@@ -1,0 +1,203 @@
+{
+  "$schema": "https://content.obelism.studio/schema/content-model.v1.json",
+  "version": 1,
+  "contentTypes": [
+    {
+      "apiId": "page",
+      "name": "Page",
+      "kind": "page",
+      "description": "A page of the site at its own path: the home page (path home) beside the work grid, or a page like About or Printing.",
+      "aboveTheFold": 2,
+      "fields": [
+        { "apiId": "title", "name": "Title", "type": "text", "required": true },
+        {
+          "apiId": "description",
+          "name": "Description",
+          "type": "textarea",
+          "description": "For search engines and link previews.",
+          "maxLength": 300
+        },
+        {
+          "apiId": "body",
+          "name": "Body",
+          "type": "blocks",
+          "allowedBlocks": ["intro", "text", "image", "quote", "featuredSeries", "featuredPrint"]
+        }
+      ]
+    },
+    {
+      "apiId": "seriesPage",
+      "name": "Series page",
+      "kind": "page",
+      "description": "The story of one series, shown on its collection page above the prints.",
+      "aboveTheFold": 1,
+      "fields": [
+        {
+          "apiId": "collection",
+          "name": "Series",
+          "type": "shopify",
+          "resource": "collection",
+          "unique": true,
+          "required": true
+        },
+        {
+          "apiId": "body",
+          "name": "Story",
+          "type": "blocks",
+          "allowedBlocks": ["text", "image", "quote", "featuredPrint"]
+        }
+      ]
+    },
+    {
+      "apiId": "printPage",
+      "name": "Print page",
+      "kind": "page",
+      "description": "The story behind one print, shown on its product page below the buy options.",
+      "aboveTheFold": 0,
+      "fields": [
+        {
+          "apiId": "product",
+          "name": "Print",
+          "type": "shopify",
+          "resource": "product",
+          "unique": true,
+          "required": true
+        },
+        {
+          "apiId": "body",
+          "name": "Story",
+          "type": "blocks",
+          "allowedBlocks": ["text", "image", "quote"]
+        }
+      ]
+    },
+    {
+      "apiId": "intro",
+      "name": "Intro",
+      "kind": "block",
+      "description": "A short welcome with a heading, a paragraph or two and links, set beside the work grid on the home page.",
+      "fields": [
+        {
+          "apiId": "heading",
+          "name": "Heading",
+          "type": "text",
+          "required": true,
+          "maxLength": 80
+        },
+        { "apiId": "text", "name": "Text", "type": "richtext" },
+        {
+          "apiId": "links",
+          "name": "Links",
+          "type": "blocks",
+          "allowedBlocks": ["linkItem"],
+          "max": 4
+        }
+      ]
+    },
+    {
+      "apiId": "linkItem",
+      "name": "Link",
+      "kind": "block",
+      "description": "A text link to a page, a series or a print.",
+      "fields": [
+        { "apiId": "label", "name": "Label", "type": "text", "required": true, "maxLength": 40 },
+        {
+          "apiId": "link",
+          "name": "Link",
+          "type": "link",
+          "contentTypes": ["page"],
+          "products": true,
+          "collections": true
+        }
+      ]
+    },
+    {
+      "apiId": "text",
+      "name": "Text",
+      "kind": "block",
+      "description": "A section of running text with an optional heading.",
+      "fields": [
+        { "apiId": "heading", "name": "Heading", "type": "text", "maxLength": 120 },
+        { "apiId": "text", "name": "Text", "type": "richtext", "required": true }
+      ]
+    },
+    {
+      "apiId": "image",
+      "name": "Image",
+      "kind": "block",
+      "description": "One photograph from Media with an optional caption, at full, wide or narrow width.",
+      "fields": [
+        {
+          "apiId": "image",
+          "name": "Image",
+          "type": "asset",
+          "required": true,
+          "mimeTypes": ["image/*"]
+        },
+        { "apiId": "caption", "name": "Caption", "type": "text", "maxLength": 200 },
+        {
+          "apiId": "width",
+          "name": "Width",
+          "type": "select",
+          "options": [
+            { "value": "full", "label": "Full" },
+            { "value": "wide", "label": "Wide" },
+            { "value": "narrow", "label": "Narrow" }
+          ],
+          "defaultValue": "wide"
+        }
+      ]
+    },
+    {
+      "apiId": "quote",
+      "name": "Quote",
+      "kind": "block",
+      "description": "A pull quote, from the photographer or about the work, with who said it.",
+      "fields": [
+        {
+          "apiId": "quote",
+          "name": "Quote",
+          "type": "textarea",
+          "required": true,
+          "maxLength": 400
+        },
+        { "apiId": "attribution", "name": "Attribution", "type": "text", "maxLength": 120 }
+      ]
+    },
+    {
+      "apiId": "featuredSeries",
+      "name": "Featured series",
+      "kind": "block",
+      "description": "A row of series cards, linking to each series' collection page.",
+      "fields": [
+        { "apiId": "heading", "name": "Heading", "type": "text", "maxLength": 120 },
+        {
+          "apiId": "collections",
+          "name": "Series",
+          "type": "shopify",
+          "resource": "collection",
+          "multiple": true,
+          "min": 1,
+          "max": 6,
+          "required": true
+        }
+      ]
+    },
+    {
+      "apiId": "featuredPrint",
+      "name": "Featured print",
+      "kind": "block",
+      "description": "One print from the shop, large, with a few lines about it and a link to buy it.",
+      "fields": [
+        {
+          "apiId": "product",
+          "name": "Print",
+          "type": "shopify",
+          "resource": "product",
+          "required": true
+        },
+        { "apiId": "text", "name": "Text", "type": "textarea", "maxLength": 400 }
+      ]
+    }
+  ]
+}

@@ -4,6 +4,20 @@ import { withShopConfig } from "./lib/config/server";
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
+  async headers() {
+    return [
+      {
+        // Obelism Content's canvas shows the site in a frame.
+        headers: [
+          {
+            key: "Content-Security-Policy",
+            value: "frame-ancestors 'self' https://content.obelism.studio",
+          },
+        ],
+        source: "/:path*",
+      },
+    ];
+  },
   images: {
     deviceSizes: [1320, 1920],
     imageSizes: [],

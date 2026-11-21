@@ -6,7 +6,9 @@
     "build/**",
     ".agents/**",
     ".claude/**",
-    "app/.well-known/**"
+    "app/.well-known/**",
+    "content/content-types.ts",
+    "content/examples/**"
   ],
   "semi": true,
   "singleQuote": false,

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 import { ProductViewedTracker } from "@/components/analytics/trackers";
+import { PrintStory } from "@/components/cms/cms-stories";
 import {
   ProductDetailSection,
   ProductDetailSkeleton,
@@ -156,6 +157,10 @@ async function ProductPageContent({
         product={product}
         selectedOptionsPromise={selectedOptionsPromise}
         variantPromise={variantPromise}
+      />
+      <PrintStory
+        product={{ handle: product.handle, id: product.id }}
+        searchParams={searchParams}
       />
       {shopConfig.pdp.relatedProducts.isEnabled ? (
         <RelatedProductsSection handle={handle} limit={4} />
