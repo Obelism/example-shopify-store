@@ -1,36 +1,32 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Photo Studio example store
 
-## Getting Started
+An example print shop for a fictional photographer, built to show how Obelism works on a real storefront:
 
-First, run the development server:
+- **Shopify** sells the prints: catalog, cart and checkout through the Hydrogen SDK, on the [Vercel Shop](https://github.com/vercel/shop) template (release in `.vercel-shop/template.json`), without its Eve shopping agent.
+- **Obelism Content** holds the pages, series and copy, editable on the site in the canvas.
+- **Obelism Numbers** counts visitors, clicks and shop events.
+- **Obelism Improve** runs the A/B tests and feature flags.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
+## Getting started
+
+Requires pnpm 12 and Node.js 26.
+
+```
+pnpm install
+cp .env.example .env.local
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Fill in `.env.local` with the store's Storefront API credentials (Shopify admin → Settings → Apps and sales channels → Headless). See [Storefront API permissions](https://vercel.shop/docs/reference/storefront-api-permissions) for the scopes it needs.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Checks
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+pnpm lint
+pnpm typecheck
+pnpm build
+```
 
-## Learn More
+## License
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT, from the Vercel Shop template.

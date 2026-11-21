@@ -1,0 +1,37 @@
+{
+  "$schema": "https://turborepo.dev/schema.json",
+  "globalDependencies": [".env*"],
+  "globalEnv": [
+    "CUSTOMER_ACCOUNT_SESSION_SECRET",
+    "DEBUG_SHOPIFY",
+    "NEXT_PUBLIC_SHOPIFY_SHOP_ID",
+    "NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN",
+    "NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN",
+    "NEXT_PUBLIC_SHOPIFY_STOREFRONT_ID",
+    "REVALIDATE_SECRET",
+    "SHOPIFY_API_VERSION",
+    "SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_ID",
+    "SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_SECRET",
+    "SHOPIFY_WEBHOOK_SECRET",
+    "V0_CALLBACK_URL",
+    "VERCEL_PROJECT_PRODUCTION_URL"
+  ],
+  "tasks": {
+    "build": {
+      "outputs": [".next/**", "!.next/cache/**"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "format": {
+      "cache": false
+    },
+    "lint": {},
+    "start": {
+      "cache": false,
+      "persistent": true
+    },
+    "typecheck": {}
+  }
+}

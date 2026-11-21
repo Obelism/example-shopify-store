@@ -1,69 +1,55 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import type { Metadata } from "next";
 
-export default function Home() {
+import { ProductsGrid } from "@/components/product/products-grid";
+import { Container } from "@/components/ui/container";
+import { Page } from "@/components/ui/page";
+import { Sections } from "@/components/ui/sections";
+import { shopConfig } from "@/lib/config";
+import { buildAlternates, buildOpenGraph } from "@/lib/seo";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const title = "Home";
+  const description = "Explore featured products, curated collections, and seasonal campaigns.";
+  return {
+    title: `${title} | ${shopConfig.site.name}`,
+    description,
+    alternates: buildAlternates({ pathname: "/" }),
+    openGraph: buildOpenGraph({
+      title,
+      description,
+      url: "/",
+      type: "website",
+    }),
+  };
+}
+
+export default function HomePage() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>
-            To get started, edit the{" "}
-            <code className={styles.code}>page.tsx</code> file.
-          </h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <Page className="pt-0">
+      <Sections>
+        <section className="grid grid-cols-1">
+          <div className="col-start-1 row-start-1 hidden md:block md:aspect-4/1" />
+          <div className="relative col-start-1 row-start-1 flex items-center justify-center px-5 py-10 lg:px-10">
+            <div className="flex flex-col items-center text-center gap-2.5">
+              <h1 className="text-3xl md:text-5xl max-w-3xl text-foreground">
+                A Storefront Built on Vercel Shop
+              </h1>
+              <p className="text-sm md:text-base max-w-xl text-foreground">
+                Agent-ready commerce, powered by Shopify, Next, and Eve.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <Container>
+          <ProductsGrid
+            title="Products"
+            eagerCount={4}
+            limit={8}
+            collectionUrl="/collections/all"
+          />
+        </Container>
+      </Sections>
+    </Page>
   );
 }
