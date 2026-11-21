@@ -5,6 +5,7 @@ import { LoaderCircleIcon } from "lucide-react";
 import { type ReactNode, useEffect, useEffectEvent, useRef, useState } from "react";
 
 import { ProductCard } from "@/components/product-card/product-card";
+import { Masonry, MasonryItem } from "@/components/ui/masonry";
 import { getBrowseSearch } from "@/lib/collections";
 import { loadMoreBrowseProductsAction } from "@/lib/collections/action";
 import type { BrowseSource } from "@/lib/collections/types";
@@ -77,17 +78,14 @@ export function InfiniteProductGrid({
       className="transition-opacity duration-200 data-[pending=true]:pointer-events-none data-[pending=true]:opacity-50"
       data-pending={isPending}
     >
-      <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+      <Masonry>
         {children}
         {additionalProducts.map((product) => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            outOfStockText="Out of Stock"
-            quickShopText="Choose"
-          />
+          <MasonryItem key={product.id}>
+            <ProductCard product={product} outOfStockText="Out of Stock" />
+          </MasonryItem>
         ))}
-      </div>
+      </Masonry>
 
       {pageInfo.hasNextPage && (
         <div ref={sentinelRef} className="flex justify-center py-10">

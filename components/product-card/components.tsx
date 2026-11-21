@@ -11,7 +11,7 @@ function ProductCard({ className, children, ...props }: ComponentProps<"article"
   return (
     <article
       data-slot="product-card"
-      className={cn("relative flex flex-col h-full overflow-hidden", className)}
+      className={cn("group/card relative flex flex-col h-full overflow-hidden", className)}
       {...props}
     >
       {children}
@@ -57,14 +57,15 @@ function ProductCardImage({
   return (
     <div
       data-slot="product-card-image"
-      className={cn("relative aspect-square overflow-hidden", className)}
+      className={cn("relative aspect-square overflow-hidden bg-muted", className)}
+      style={width && height ? { aspectRatio: `${width} / ${height}` } : undefined}
     >
       {src ? (
         <Image
           src={src}
           alt={alt}
           {...(width && height ? { height, width } : { fill: true })}
-          className="absolute inset-0 size-full object-cover"
+          className="absolute inset-0 size-full object-cover transition-opacity duration-300 group-hover/card:opacity-85"
           loading={loading}
           sizes="100vw"
         />
@@ -87,7 +88,7 @@ function ProductCardContent({ className, children, ...props }: ComponentProps<"d
   return (
     <div
       data-slot="product-card-content"
-      className={cn("flex flex-col flex-1 py-2.5", className)}
+      className={cn("flex flex-col flex-1 gap-0.5 pt-2.5", className)}
       {...props}
     >
       {children}
@@ -99,7 +100,7 @@ function ProductCardTitle({ className, children, ...props }: ComponentProps<"h3"
   return (
     <h3
       data-slot="product-card-title"
-      className={cn("text-sm font-medium text-foreground line-clamp-1", className)}
+      className={cn("font-serif text-base leading-snug text-foreground line-clamp-1", className)}
       {...props}
     >
       {children}
@@ -130,18 +131,13 @@ function ProductCardPrice({
   return (
     <div data-slot="product-card-price" className={cn(className)}>
       <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-        <span className="inline-flex items-baseline gap-x-1 text-sm text-foreground">
-          <Price amount={amount} currencyCode={currencyCode} className="text-sm text-foreground" />
-          {isRange && (
-            <>
-              <span>–</span>
-              <Price
-                amount={maxAmount}
-                currencyCode={currencyCode}
-                className="text-sm text-foreground"
-              />
-            </>
-          )}
+        <span className="inline-flex items-baseline gap-x-1 text-xs text-muted-foreground">
+          {isRange && <span>From</span>}
+          <Price
+            amount={amount}
+            currencyCode={currencyCode}
+            className="text-xs text-muted-foreground"
+          />
         </span>
         {discountPercent !== null && compareAtAmount && compareAtCurrencyCode ? (
           <>
@@ -158,14 +154,20 @@ function ProductCardPrice({
   );
 }
 
-function ProductCardSkeleton({ className }: { className?: string }) {
+function ProductCardSkeleton({
+  className,
+  imageClassName,
+}: {
+  className?: string;
+  imageClassName?: string;
+}) {
   return (
     <div
       data-slot="product-card-skeleton"
       className={cn("flex flex-col overflow-hidden", className)}
     >
-      <ImagePlaceholder className="aspect-square animate-pulse" />
-      <div className="py-2.5 h-12 box-content grid gap-2">
+      <ImagePlaceholder className={cn("aspect-square animate-pulse", imageClassName)} />
+      <div className="pt-2.5 h-11 box-content grid gap-2">
         <div className="h-4 w-full bg-accent animate-pulse" />
         <div className="h-4 w-12 bg-accent animate-pulse" />
       </div>

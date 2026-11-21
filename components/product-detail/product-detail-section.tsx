@@ -27,6 +27,7 @@ import { ProductSchema } from "@/components/product-detail/schema";
 import { BreadcrumbSchema } from "@/components/schema/breadcrumb-schema";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Link } from "@/components/ui/link";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
 import { shopConfig } from "@/lib/config";
@@ -171,13 +172,26 @@ function ProductInfoArea({
   const allInStock = product.defaultVariant?.availableForSale ?? product.availableForSale;
   const hasOptions = options.some((option) => option.values.length > 1);
   return (
-    <div className="grid gap-10 lg:sticky lg:top-20 lg:col-span-4">
+    <div className="grid gap-10 lg:sticky lg:top-26 lg:col-span-4">
       <div
         className="grid data-[uniform-price=true]:gap-10"
         data-uniform-price={product.hasUniformPricing}
       >
-        <div data-slot="product-info-header">
-          <h1 className="text-foreground text-3xl">{product.title}</h1>
+        <div data-slot="product-info-header" className="grid gap-2">
+          {product.collection ? (
+            <Link
+              href={`/collections/${product.collection.handle}`}
+              className="w-fit font-serif text-base italic text-muted-foreground hover:text-foreground"
+            >
+              {product.collection.title}
+            </Link>
+          ) : null}
+          <h1 className="font-serif text-4xl tracking-tight text-foreground">{product.title}</h1>
+          {product.vendor ? (
+            <p className="text-sm text-muted-foreground">
+              {product.vendor} · Archival pigment print, signed
+            </p>
+          ) : null}
           {product.hasUniformPricing ? (
             <ProductPrice
               amount={product.priceRange.minVariantPrice.amount}
@@ -440,11 +454,12 @@ export function ProductDetailSkeleton() {
           <div className="aspect-square w-full bg-accent" />
         </div>
       </div>
-      <div className="grid gap-10 lg:sticky lg:top-20 lg:col-span-4">
+      <div className="grid gap-10 lg:sticky lg:top-26 lg:col-span-4">
         <div className="grid gap-10">
-          <div>
-            <Skeleton className="h-9 w-3/4" />
-            <Skeleton className="h-7 w-24" />
+          <div className="grid gap-2">
+            <Skeleton className="h-6 w-32" />
+            <Skeleton className="h-10 w-3/4" />
+            <Skeleton className="h-5 w-64" />
           </div>
           <div className="grid gap-10">
             <div className="grid gap-5">

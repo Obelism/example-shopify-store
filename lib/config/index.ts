@@ -30,16 +30,16 @@ export const shopConfig = {
   },
   pdp: {
     bundles: {
-      isEnabled: true,
+      isEnabled: false,
     },
     buyWithShop: {
-      isEnabled: true,
+      isEnabled: false,
     },
     complementaryProducts: {
-      isEnabled: true,
+      isEnabled: false,
     },
     quantityPicker: {
-      isEnabled: true,
+      isEnabled: false,
     },
     relatedProducts: {
       isEnabled: true,
@@ -59,8 +59,9 @@ export const shopConfig = {
     },
   },
   site: {
-    description: "A Storefront Built on Vercel Shop. Commerce powered by Shopify and Next.js.",
-    name: "Vercel Shop",
+    description:
+      "Fine art prints by Noor Halde: mountains, forests, coasts and cities, printed on archival paper.",
+    name: "Noor Halde",
     url: defaultUrl,
   },
 } satisfies ShopConfig;

@@ -2,6 +2,7 @@ import { type ReactNode, Suspense } from "react";
 
 import { ProductCard } from "@/components/product-card/product-card";
 import { ProductsGridSkeleton } from "@/components/product/products-grid";
+import { MasonryItem } from "@/components/ui/masonry";
 import { PRODUCTS_PER_PAGE } from "@/lib/collections";
 import type { BrowseResults, BrowseState, SortValue } from "@/lib/collections/types";
 
@@ -43,12 +44,7 @@ export function Browse({ path, resultCount, results, sortExclude, state, storeKe
 }
 
 export function BrowseResultsFallback() {
-  return (
-    <ProductsGridSkeleton
-      count={PRODUCTS_PER_PAGE}
-      className="sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
-    />
-  );
+  return <ProductsGridSkeleton count={PRODUCTS_PER_PAGE} />;
 }
 
 // Renders a collection page's grid under the layout's CollectionBrowseFrame and hands its facets and data search to the layout's toolbar.
@@ -87,13 +83,13 @@ function BrowseResultsGrid({ results }: BrowseResultsGridProps) {
       source={source}
     >
       {products.map((product, index) => (
-        <ProductCard
-          key={product.id}
-          loading={index < 5 ? "eager" : "lazy"}
-          product={product}
-          outOfStockText="Out of Stock"
-          quickShopText="Choose"
-        />
+        <MasonryItem key={product.id}>
+          <ProductCard
+            loading={index < 6 ? "eager" : "lazy"}
+            product={product}
+            outOfStockText="Out of Stock"
+          />
+        </MasonryItem>
       ))}
     </InfiniteProductGrid>
   );

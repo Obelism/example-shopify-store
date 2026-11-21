@@ -90,11 +90,18 @@ export interface ProductPage {
   products: ProductCard[];
 }
 
+export interface ProductCollection {
+  handle: string;
+  title: string;
+}
+
 export interface ProductDetails extends ProductCard {
   /** Sparse variant cache around the default variant; feeds Hydrogen's product form store. */
   adjacentVariants: ProductVariant[];
   allVariantsInStock: boolean;
   category?: Category | null;
+  /** The first collection the product belongs to: the series of a print. */
+  collection: ProductCollection | null;
   compareAtPriceRange?: {
     maxVariantPrice: Money;
     minVariantPrice: Money;
