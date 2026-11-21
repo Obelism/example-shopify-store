@@ -2,14 +2,14 @@ import type { Metadata } from "next";
 
 import { ProductsGrid } from "@/components/product/products-grid";
 import { Container } from "@/components/ui/container";
+import { Link } from "@/components/ui/link";
 import { Page } from "@/components/ui/page";
-import { Sections } from "@/components/ui/sections";
 import { shopConfig } from "@/lib/config";
 import { buildAlternates, buildOpenGraph } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const title = "Home";
-  const description = "Explore featured products, curated collections, and seasonal campaigns.";
+  const title = "Work";
+  const description = shopConfig.site.description;
   return {
     title: `${title} | ${shopConfig.site.name}`,
     description,
@@ -25,31 +25,32 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default function HomePage() {
   return (
-    <Page className="pt-0">
-      <Sections>
-        <section className="grid grid-cols-1">
-          <div className="col-start-1 row-start-1 hidden md:block md:aspect-4/1" />
-          <div className="relative col-start-1 row-start-1 flex items-center justify-center px-5 py-10 lg:px-10">
-            <div className="flex flex-col items-center text-center gap-2.5">
-              <h1 className="text-3xl md:text-5xl max-w-3xl text-foreground">
-                A Storefront Built on Vercel Shop
-              </h1>
-              <p className="text-sm md:text-base max-w-xl text-foreground">
-                Commerce powered by Shopify and Next.js.
-              </p>
-            </div>
+    <Page className="pt-5 md:pt-10">
+      <Container className="grid gap-10 lg:grid-cols-[18rem_1fr] lg:gap-16">
+        <header className="grid content-start gap-5 lg:sticky lg:top-26 lg:self-start">
+          <h1 className="font-serif text-3xl leading-tight tracking-tight">Welcome.</h1>
+          <div className="grid gap-4 text-sm leading-6 text-muted-foreground">
+            <p>
+              I&rsquo;m Noor Halde, a photographer drawn to the quiet hours: summits before sunrise,
+              forests in fog, cities after dark.
+            </p>
+            <p>
+              Every photograph here is available as an archival pigment print, in three sizes, on
+              matte or baryta paper, framed or unframed. Each one is printed to order and signed on
+              the back.
+            </p>
           </div>
-        </section>
-
-        <Container>
-          <ProductsGrid
-            title="Products"
-            eagerCount={4}
-            limit={8}
-            collectionUrl="/collections/all"
-          />
-        </Container>
-      </Sections>
+          <nav aria-label="Browse" className="flex gap-5 text-sm">
+            <Link className="underline-offset-4 hover:underline" href="/collections">
+              The series
+            </Link>
+            <Link className="underline-offset-4 hover:underline" href="/works">
+              Index of works
+            </Link>
+          </nav>
+        </header>
+        <ProductsGrid eagerCount={6} limit={100} />
+      </Container>
     </Page>
   );
 }

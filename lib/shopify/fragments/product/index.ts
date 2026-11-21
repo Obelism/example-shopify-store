@@ -15,6 +15,12 @@ export const PRODUCT_FRAGMENT = gql(
     description
     descriptionHtml
     vendor
+    collections(first: 1) {
+      nodes {
+        handle
+        title
+      }
+    }
     updatedAt
     availableForSale
     isGiftCard

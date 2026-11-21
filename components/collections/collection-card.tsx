@@ -16,19 +16,22 @@ export function CollectionCard({
   collection,
   viewCollectionLabel,
 }: CollectionCardProps) {
-  const { handle, thumbnail, title } = collection;
+  const { description, handle, thumbnail, title } = collection;
 
   return (
     <Link
       aria-label={`${viewCollectionLabel}: ${title}`}
-      className={cn("flex flex-col h-full overflow-hidden", className)}
+      className={cn("group/card flex flex-col h-full overflow-hidden", className)}
       href={`/collections/${handle}`}
     >
-      <div data-slot="collection-card-image" className="relative aspect-square overflow-hidden">
+      <div
+        data-slot="collection-card-image"
+        className="relative aspect-4/3 overflow-hidden bg-muted"
+      >
         {thumbnail ? (
           <Image
             alt={thumbnail.altText || title}
-            className="object-cover"
+            className="object-cover transition-opacity duration-300 group-hover/card:opacity-85"
             fill
             sizes="100vw"
             src={thumbnail.url}
@@ -37,12 +40,17 @@ export function CollectionCard({
           <ImagePlaceholder className="size-full" />
         )}
       </div>
-      <h2
-        data-slot="collection-card-title"
-        className="py-2.5 text-sm font-medium text-foreground line-clamp-1"
-      >
-        {title}
-      </h2>
+      <div className="grid gap-1 pt-3">
+        <h2
+          data-slot="collection-card-title"
+          className="font-serif text-2xl italic text-foreground"
+        >
+          {title}
+        </h2>
+        {description && (
+          <p className="text-sm leading-6 text-muted-foreground line-clamp-2">{description}</p>
+        )}
+      </div>
     </Link>
   );
 }

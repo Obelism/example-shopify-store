@@ -10,10 +10,7 @@ interface PriceProps extends ComponentProps<"span"> {
 
 export function Price({ amount, currencyCode, className, ...props }: PriceProps) {
   return (
-    <span
-      className={cn("font-mono text-xl text-foreground tabular-nums tracking-tight", className)}
-      {...props}
-    >
+    <span className={cn("text-xl text-foreground tabular-nums", className)} {...props}>
       {formatPrice({ amount, currencyCode })}
     </span>
   );

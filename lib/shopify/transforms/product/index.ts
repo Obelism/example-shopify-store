@@ -248,6 +248,7 @@ export function transformShopifyProductDetails(product: ShopifyProduct): Product
       description: product.seo.description || product.description,
     },
     category: transformCategory(product.category),
+    collection: product.collections.nodes[0] ?? null,
     updatedAt: product.updatedAt,
     priceRange: product.priceRange,
     compareAtPriceRange: product.compareAtPriceRange,

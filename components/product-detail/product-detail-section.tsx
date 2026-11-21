@@ -27,6 +27,7 @@ import { ProductSchema } from "@/components/product-detail/schema";
 import { BreadcrumbSchema } from "@/components/schema/breadcrumb-schema";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Link } from "@/components/ui/link";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
 import { shopConfig } from "@/lib/config";
@@ -73,6 +74,14 @@ export function ProductDetailSection({
       <BreadcrumbSchema
         items={[
           { name: shopConfig.site.name, path: "/" },
+          ...(product.collection
+            ? [
+                {
+                  name: product.collection.title,
+                  path: `/collections/${product.collection.handle}`,
+                },
+              ]
+            : []),
           { name: product.title, path: `/products/${product.handle}` },
         ]}
       />
@@ -171,13 +180,26 @@ function ProductInfoArea({
   const allInStock = product.defaultVariant?.availableForSale ?? product.availableForSale;
   const hasOptions = options.some((option) => option.values.length > 1);
   return (
-    <div className="grid gap-10 lg:sticky lg:top-20 lg:col-span-4">
+    <div className="grid gap-10 lg:sticky lg:top-26 lg:col-span-4">
       <div
         className="grid data-[uniform-price=true]:gap-10"
         data-uniform-price={product.hasUniformPricing}
       >
-        <div data-slot="product-info-header">
-          <h1 className="text-foreground text-3xl">{product.title}</h1>
+        <div data-slot="product-info-header" className="grid gap-2">
+          {product.collection ? (
+            <Link
+              href={`/collections/${product.collection.handle}`}
+              className="w-fit font-serif text-base italic text-muted-foreground hover:text-foreground"
+            >
+              {product.collection.title}
+            </Link>
+          ) : null}
+          <h1 className="font-serif text-4xl tracking-tight text-foreground">{product.title}</h1>
+          {product.vendor ? (
+            <p className="text-sm text-muted-foreground">
+              {product.vendor} · Archival pigment print, signed
+            </p>
+          ) : null}
           {product.hasUniformPricing ? (
             <ProductPrice
               amount={product.priceRange.minVariantPrice.amount}
@@ -429,21 +451,21 @@ export function ProductDetailSkeleton() {
     <div aria-busy="true" className="grid gap-10 lg:grid-cols-10 lg:items-start lg:gap-5">
       <div className="lg:col-span-6">
         {/* Media blocks stay static; a pulsing skeleton in the LCP slot flashes harder than an empty image canvas. */}
+        {/* Prints have one landscape image; most are 3:2. */}
         <div className="grid gap-5 lg:hidden">
-          <div className="-mx-5 aspect-square w-[calc(100%+2.5rem)] bg-accent" />
+          <div className="-mx-5 aspect-3/2 w-[calc(100%+2.5rem)] bg-accent" />
           <div aria-hidden="true" className="h-1.5" />
         </div>
-        <div className="hidden grid-cols-2 gap-2.5 lg:grid">
-          <div className="aspect-square w-full bg-accent" />
-          <div className="aspect-square w-full bg-accent" />
-          <div className="aspect-square w-full bg-accent" />
-          <div className="aspect-square w-full bg-accent" />
+        <div className="hidden lg:block">
+          <div className="aspect-3/2 w-full bg-accent" />
         </div>
       </div>
-      <div className="grid gap-10 lg:sticky lg:top-20 lg:col-span-4">
+      <div className="grid gap-10 lg:sticky lg:top-26 lg:col-span-4">
         <div className="grid gap-10">
-          <div>
-            <Skeleton className="h-9 w-3/4" />
+          <div className="grid gap-2">
+            <Skeleton className="h-6 w-32" />
+            <Skeleton className="h-10 w-3/4" />
+            <Skeleton className="h-5 w-64" />
             <Skeleton className="h-7 w-24" />
           </div>
           <div className="grid gap-10">

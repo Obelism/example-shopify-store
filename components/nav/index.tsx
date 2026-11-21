@@ -14,7 +14,9 @@ import { SearchModal } from "./search-modal";
 
 export function Nav() {
   const items: MenuItem[] = [
-    { id: "default-nav-shop", items: [], title: "Shop", url: "/collections/all" },
+    { id: "nav-work", items: [], title: "Work", url: "/" },
+    { id: "nav-series", items: [], title: "Series", url: "/collections" },
+    { id: "nav-index", items: [], title: "Index", url: "/works" },
   ];
   return (
     <nav
@@ -24,8 +26,10 @@ export function Nav() {
       <Container className="flex h-16 items-center gap-2.5 md:gap-5">
         <MobileMenu items={items} />
 
-        <Link className="flex items-center shrink-0" href="/">
-          <span className="text-xl leading-4">{shopConfig.site.name}</span>
+        <Link className="flex items-center shrink-0 md:mr-5" href="/">
+          <span className="font-serif text-xl leading-4 tracking-tight">
+            {shopConfig.site.name}
+          </span>
         </Link>
 
         <QuickLinks items={items} />

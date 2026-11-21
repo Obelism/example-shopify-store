@@ -51,8 +51,9 @@ ${[
 
 ## Browse
 
-- [All products](${url}/collections/all): The full product catalog.
-${collectionLinks.length > 0 ? `\n## Collections\n\n${collectionLinks.join("\n")}\n` : ""}
+- [Work](${url}/): Every print, as a grid.
+- [Index of works](${url}/works): Every print, listed series by series.
+${collectionLinks.length > 0 ? `\n## Series\n\n${collectionLinks.join("\n")}\n` : ""}
 ## Discovery
 
 - [Sitemap](${url}/sitemap.xml): Complete index of product and collection URLs.

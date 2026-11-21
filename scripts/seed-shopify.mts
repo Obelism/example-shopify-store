@@ -216,9 +216,10 @@ async function publish(id: string) {
 }
 
 const collections = new Map<string, string>();
-for (const series of catalog.series.filter((series) =>
-  prints.some((print) => print.series === series.handle),
-)) {
+const seriesInRun = catalog.series.filter(({ handle }) =>
+  prints.some((print) => print.series === handle),
+);
+for (const series of seriesInRun) {
   const id = await upsertCollection(series);
   await publish(id);
   collections.set(series.handle, id);

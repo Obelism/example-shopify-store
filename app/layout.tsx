@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Newsreader } from "next/font/google";
 
 import "./globals.css";
 import { Suspense } from "react";
@@ -17,12 +17,18 @@ import { shopConfig } from "@/lib/config";
 export const ensureStatic = "prefetch";
 
 export const viewport: Viewport = {
-  themeColor: "#ffffff",
+  themeColor: "#f7f5f0",
 };
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+});
+
+const newsreader = Newsreader({
+  style: ["normal", "italic"],
+  subsets: ["latin"],
+  variable: "--font-newsreader",
 });
 
 const geistMono = Geist_Mono({
@@ -39,7 +45,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <CartStandardActionsScript />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} flex min-h-dvh flex-col font-sans antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${newsreader.variable} flex min-h-dvh flex-col font-sans antialiased`}
       >
         <a
           href="#main-content"
@@ -67,7 +73,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
 
 export const generateMetadata = async (): Promise<Metadata> => {
   return {
-    description: `Shop premium products, curated collections, and latest offers from ${shopConfig.site.name}.`,
+    description: shopConfig.site.description,
     generator: shopConfig.site.name,
     metadataBase: new URL(shopConfig.site.url),
     openGraph: {

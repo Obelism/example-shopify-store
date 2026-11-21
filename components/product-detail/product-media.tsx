@@ -16,6 +16,13 @@ type MediaItem =
   | { type: "placeholder" }
   | { type: "video"; video: Video };
 
+// A lone image shows uncropped; galleries keep square tiles so mixed aspect ratios line up.
+function loneImageAspect(mediaItems: MediaItem[], hasColorSlot: boolean) {
+  const [item] = mediaItems;
+  if (hasColorSlot || mediaItems.length !== 1 || item?.type !== "image") return undefined;
+  return { aspectRatio: `${item.image.width} / ${item.image.height}` };
+}
+
 function mediaKey(item: MediaItem) {
   if (item.type === "image") return item.image.url;
   if (item.type === "video") return item.video.url;
@@ -166,6 +173,7 @@ function Carousel({
             <div
               key={mediaKey(item)}
               className="relative shrink-0 w-full snap-start snap-always overflow-hidden aspect-square"
+              style={loneImageAspect(mediaItems, hasColorSlot)}
             >
               {item.type === "video" ? (
                 <MediaVideo item={item} priority={priority} />
@@ -205,14 +213,16 @@ function GridItem({
   title,
   idx,
   priority,
+  style,
 }: {
   item: MediaItem;
   title: string;
   idx: number;
   priority: boolean;
+  style?: { aspectRatio: string };
 }) {
   return (
-    <div className="relative w-full overflow-hidden aspect-square">
+    <div className="relative w-full overflow-hidden aspect-square" style={style}>
       {item.type === "video" ? (
         <MediaVideo item={item} priority={priority} />
       ) : item.type === "placeholder" ? (
@@ -248,8 +258,9 @@ function Grid({
     if (tile > 0 && item.type === "image") preloadDesktopGridImage(item.image);
   }
 
+  const loneAspect = loneImageAspect(mediaItems, hasColorSlot);
   const grid = (
-    <div className="grid grid-cols-2 gap-2.5">
+    <div className={cn("grid gap-2.5", loneAspect ? "grid-cols-1" : "grid-cols-2")}>
       {children}
       {mediaItems.map((item, idx) => (
         <GridItem
@@ -258,6 +269,7 @@ function Grid({
           title={title}
           idx={idx}
           priority={!hasColorSlot && idx === 0}
+          style={loneAspect}
         />
       ))}
     </div>

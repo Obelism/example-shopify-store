@@ -8,8 +8,8 @@ import { getCollectionsListing } from "@/lib/collections/server";
 import { buildAlternates, buildOpenGraph } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const title = "Collections";
-  const description = "Browse products by collection.";
+  const title = "Series";
+  const description = "Six bodies of work, each available as archival prints.";
   return {
     title,
     description,
@@ -33,15 +33,15 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function CollectionsPage() {
   const collections = await getCollectionsListing({});
-  const viewCollectionLabel = "View this collection";
+  const viewCollectionLabel = "View this series";
   return (
-    <Page className="pt-2.5 md:pt-10">
+    <Page className="pt-5 md:pt-10">
       <Container>
-        <Sections className="gap-5">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl">Collections</h1>
+        <Sections className="gap-10">
+          <h1 className="font-serif text-4xl tracking-tight md:text-5xl">Series</h1>
 
           {collections.length > 0 ? (
-            <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4">
+            <div className="grid gap-x-8 gap-y-12 md:grid-cols-2">
               {collections.map((collection) => (
                 <CollectionCard
                   key={collection.handle}
@@ -51,7 +51,7 @@ export default async function CollectionsPage() {
               ))}
             </div>
           ) : (
-            <p className="text-muted-foreground">No collections found.</p>
+            <p className="text-muted-foreground">No series yet.</p>
           )}
         </Sections>
       </Container>

@@ -3,9 +3,6 @@ import { type ReactNode, Suspense } from "react";
 import { CollectionViewedTracker } from "@/components/analytics/trackers";
 import { BrowseResultsFallback } from "@/components/collections/browse";
 import { CollectionBrowseFrame } from "@/components/collections/collection-browse-provider";
-import { CollectionFiltersSkeleton } from "@/components/collections/filters";
-import { PublishedCollectionFilters } from "@/components/collections/filters-client";
-import { BrowseFallback, BrowseToolbar } from "@/components/collections/toolbar";
 import { BreadcrumbSchema } from "@/components/schema/breadcrumb-schema";
 import { CollectionSchema } from "@/components/schema/collection-schema";
 import { Container } from "@/components/ui/container";
@@ -13,36 +10,26 @@ import { Link } from "@/components/ui/link";
 import { Page } from "@/components/ui/page";
 import { Sections } from "@/components/ui/sections";
 import { Skeleton } from "@/components/ui/skeleton";
-import type { Collection, SortValue } from "@/lib/collections/types";
+import type { Collection } from "@/lib/collections/types";
 
 interface CollectionLayoutProps {
   children: ReactNode;
   collection: Collection;
   handle: string;
-  sortExclude?: SortValue[];
 }
 
-// The static and refine routes share this layout, so the header, toolbar, and filter sheet stay mounted when a filter switches between them.
-export function CollectionLayout({
-  children,
-  collection,
-  handle,
-  sortExclude,
-}: CollectionLayoutProps) {
+// The static and refine routes share this layout, so the header stays mounted when a filtered URL switches between them.
+export function CollectionLayout({ children, collection, handle }: CollectionLayoutProps) {
   return (
     <>
       {collection.id ? (
         <CollectionViewedTracker collection={{ handle: collection.handle, id: collection.id }} />
       ) : null}
-      <Page className="pt-2.5 md:pt-10">
+      <Page className="pt-5 md:pt-10">
         <Container>
-          <Sections className="gap-5">
+          <Sections className="gap-10">
             <CollectionHeader collection={collection} handle={handle} homeLabel="Home" />
             <CollectionBrowseFrame handle={handle} path={`/collections/${handle}`}>
-              <BrowseToolbar
-                filters={<PublishedCollectionFilters fallback={<CollectionFiltersSkeleton />} />}
-                sortExclude={sortExclude}
-              />
               {children}
             </CollectionBrowseFrame>
           </Sections>
@@ -77,14 +64,15 @@ async function SearchParamsRead({ searchParams }: { searchParams: Promise<unknow
 
 export function CollectionDetailSkeleton() {
   return (
-    <Page aria-busy="true" className="pt-2.5 md:pt-10">
+    <Page aria-busy="true" className="pt-5 md:pt-10">
       <Container>
-        <Sections className="gap-5">
-          <div className="grid gap-2.5">
-            <Skeleton className="h-9 w-64 sm:h-10 md:h-12 md:w-80" />
+        <Sections className="gap-10">
+          <div className="grid max-w-2xl gap-3">
+            <Skeleton className="h-4 w-16" />
+            <Skeleton className="h-10 w-64 md:h-12 md:w-80" />
             <Skeleton className="h-4 w-full max-w-xl" />
           </div>
-          <BrowseFallback />
+          <BrowseResultsFallback />
         </Sections>
       </Container>
     </Page>
@@ -111,11 +99,12 @@ function CollectionHeader({
     <>
       <BreadcrumbSchema items={breadcrumbItems} />
       <CollectionSchema collection={{ handle, title, description, updatedAt }} />
-      <div>
-        <h1 className="text-3xl sm:text-4xl md:text-5xl">
+      <div className="grid max-w-2xl gap-3">
+        <p className="text-xs uppercase tracking-widest text-muted-foreground">Series</p>
+        <h1 className="font-serif text-4xl tracking-tight md:text-5xl">
           <Link href={`/collections/${handle}`}>{title}</Link>
         </h1>
-        {description && <p className="mt-1 leading-6 text-muted-foreground">{description}</p>}
+        {description && <p className="leading-7 text-muted-foreground">{description}</p>}
       </div>
     </>
   );
