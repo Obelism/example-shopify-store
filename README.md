@@ -23,18 +23,20 @@ Fill in `.env.local` with the store's Storefront API credentials (Shopify admin 
 1. Seed the collections and products. Re-running updates them by handle.
 
    ```
-   node --env-file=.env.local scripts/seed-shopify.mts [--only <handle>]
+   node --env-file=.env.local scripts/seed-shopify.mts [--only <handle>] [--dry]
    ```
+
+   `--dry` lists the handles and source files without calling Shopify.
 
    Needs `SHOPIFY_ADMIN_CLIENT_ID`, `SHOPIFY_ADMIN_CLIENT_SECRET` and `SHOPIFY_HEADLESS_PUBLICATION` (see `.env.example`).
 
-2. Prepare the photos: resized to fit Shopify's 25 MP limit, metadata stripped (only the colour profile stays), and named `<product-handle>__<image>.jpg`. Requires ImageMagick.
+2. Prepare the photos: resized to fit Shopify's 25 MP limit, metadata stripped (only the colour profile stays), and named `<product-handle>__<image>.jpg`. Requires ImageMagick 7 (`magick`). It also writes `manifest.json` with each file's title and alt text.
 
    ```
    node scripts/prepare-photos.mts --in <originals> --out <dir> [--only <handle>]
    ```
 
-3. Upload them to the space's Media library. Two rules there do the rest:
+3. Upload them to the space's Media library, with the title and alt text from `manifest.json`. Two rules there do the rest:
    - Upload rule: file name pattern `*__*` → folder `Prints`, tag `print`.
    - Product rule: file name pattern `{handle}__*`, with **Send to Shopify** on. Each file goes onto the product its name starts with, with its alt text.
 

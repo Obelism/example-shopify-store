@@ -1,6 +1,6 @@
 import { execFileSync } from "node:child_process";
-import { mkdirSync } from "node:fs";
-import { extname, join, resolve } from "node:path";
+import { mkdirSync, writeFileSync } from "node:fs";
+import { basename, extname, join, resolve } from "node:path";
 import { parseArgs } from "node:util";
 
 import { printHandle, selectPrints, slugify } from "./catalog/index.mts";
@@ -23,6 +23,7 @@ const MAX_PIXELS = 24_000_000;
 const outDir = resolve(args.out);
 mkdirSync(outDir, { recursive: true });
 
+const manifest: { alt: string; file: string; title: string }[] = [];
 for (const print of selectPrints(args.only)) {
   const image = slugify(print.source.slice(0, -extname(print.source).length));
   const target = join(outDir, `${printHandle(print)}__${image}.jpg`);
@@ -34,9 +35,13 @@ for (const print of selectPrints(args.only)) {
     `${MAX_PIXELS}@>`,
     "+profile",
     "!icc,*",
+    "+set",
+    "comment",
     "-quality",
     "92",
     target,
   ]);
+  manifest.push({ alt: print.alt, file: basename(target), title: print.title });
   console.log(target);
 }
+writeFileSync(join(outDir, "manifest.json"), `${JSON.stringify(manifest, null, 2)}\n`);

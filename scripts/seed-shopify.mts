@@ -8,8 +8,15 @@ const { values: args } = parseArgs({
   options: { dry: { type: "boolean" }, only: { multiple: true, type: "string" } },
 });
 
+const prints = selectPrints(args.only);
+if (args.dry) {
+  for (const print of prints) console.log(`${printHandle(print)}\t${print.source}`);
+  process.exit(0);
+}
+
 const domain = requireEnv("NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN");
 const publicationName = requireEnv("SHOPIFY_HEADLESS_PUBLICATION");
+
 function requireEnv(name: string) {
   const value = process.env[name];
   if (!value) throw new Error(`Set ${name} in .env.local. See .env.example.`);
@@ -30,7 +37,7 @@ async function getAccessToken() {
   return access_token;
 }
 
-const token = args.dry ? "" : await getAccessToken();
+const token = await getAccessToken();
 
 async function admin<T>(query: string, variables: Record<string, unknown> = {}): Promise<T> {
   const response = await fetch(`https://${domain}/admin/api/${API_VERSION}/graphql.json`, {
@@ -45,10 +52,15 @@ async function admin<T>(query: string, variables: Record<string, unknown> = {}):
   return body.data;
 }
 
-function assertNoUserErrors(
-  operation: string,
-  userErrors: { field?: string[]; message: string }[],
-) {
+interface UserErrors {
+  userErrors: { field?: string[]; message: string }[];
+}
+
+function escapeHtml(value: string) {
+  return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+function assertNoUserErrors(operation: string, { userErrors }: UserErrors) {
   if (userErrors.length) throw new Error(`${operation}: ${JSON.stringify(userErrors)}`);
 }
 
@@ -127,7 +139,7 @@ const PUBLISH_MUTATION = `#graphql
 
 async function upsertCollection(series: Series) {
   const fields = {
-    descriptionHtml: `<p>${series.description}</p>`,
+    descriptionHtml: `<p>${escapeHtml(series.description)}</p>`,
     handle: series.handle,
     title: series.title,
   };
@@ -137,15 +149,15 @@ async function upsertCollection(series: Series) {
   );
   if (collectionByIdentifier) {
     const { collectionUpdate } = await admin<{
-      collectionUpdate: { userErrors: { message: string }[] };
+      collectionUpdate: UserErrors;
     }>(COLLECTION_UPDATE_MUTATION, { collection: { ...fields, id: collectionByIdentifier.id } });
-    assertNoUserErrors(`collectionUpdate ${series.handle}`, collectionUpdate.userErrors);
+    assertNoUserErrors(`collectionUpdate ${series.handle}`, collectionUpdate);
     return collectionByIdentifier.id;
   }
   const { collectionCreate } = await admin<{
-    collectionCreate: { collection: { id: string } | null; userErrors: { message: string }[] };
+    collectionCreate: { collection: { id: string } | null } & UserErrors;
   }>(COLLECTION_CREATE_MUTATION, { collection: fields });
-  assertNoUserErrors(`collectionCreate ${series.handle}`, collectionCreate.userErrors);
+  assertNoUserErrors(`collectionCreate ${series.handle}`, collectionCreate);
   return collectionCreate.collection!.id;
 }
 
@@ -153,7 +165,7 @@ function productInput(print: Print, series: Series, collectionId: string) {
   const { frame, paper, size } = catalog.variants;
   return {
     collections: [collectionId],
-    descriptionHtml: `<p>${print.title}, from the series ${series.title} by ${catalog.photographer}. ${series.description}</p><p>Archival pigment print, signed on the back.</p>`,
+    descriptionHtml: `<p>${escapeHtml(`${print.title}, from the series ${series.title} by ${catalog.photographer}. ${series.description}`)}</p><p>Archival pigment print, signed on the back.</p>`,
     handle: printHandle(print),
     productOptions: [
       { name: "Size", values: size.map(({ name }) => ({ name })) },
@@ -164,29 +176,26 @@ function productInput(print: Print, series: Series, collectionId: string) {
     status: "ACTIVE",
     tags: [series.handle],
     title: print.title,
-    variants: size.flatMap((s) =>
-      paper.flatMap((p) =>
-        frame.map((f) => ({
+    variants: size.flatMap((sizeOption) =>
+      paper.flatMap((paperOption) =>
+        frame.map((frameOption) => ({
           inventoryItem: { tracked: false },
           inventoryPolicy: "CONTINUE",
           optionValues: [
-            { name: s.name, optionName: "Size" },
-            { name: p.name, optionName: "Paper" },
-            { name: f.name, optionName: "Frame" },
+            { name: sizeOption.name, optionName: "Size" },
+            { name: paperOption.name, optionName: "Paper" },
+            { name: frameOption.name, optionName: "Frame" },
           ],
-          price: (s.price + p.surcharge[s.key] + f.surcharge[s.key]).toFixed(2),
+          price: (
+            sizeOption.price +
+            paperOption.surcharge[sizeOption.key] +
+            frameOption.surcharge[sizeOption.key]
+          ).toFixed(2),
         })),
       ),
     ),
     vendor: catalog.photographer,
   };
-}
-
-const prints = selectPrints(args.only);
-
-if (args.dry) {
-  for (const print of prints) console.log(`${printHandle(print)}\t${print.source}`);
-  process.exit(0);
 }
 
 const { publications } = await admin<{ publications: { nodes: { id: string; name: string }[] } }>(
@@ -201,13 +210,15 @@ if (!publication) {
 
 async function publish(id: string) {
   const { publishablePublish } = await admin<{
-    publishablePublish: { userErrors: { message: string }[] };
+    publishablePublish: UserErrors;
   }>(PUBLISH_MUTATION, { id, input: [{ publicationId: publication!.id }] });
-  assertNoUserErrors(`publishablePublish ${id}`, publishablePublish.userErrors);
+  assertNoUserErrors(`publishablePublish ${id}`, publishablePublish);
 }
 
 const collections = new Map<string, string>();
-for (const series of catalog.series.filter((s) => prints.some((p) => p.series === s.handle))) {
+for (const series of catalog.series.filter((series) =>
+  prints.some((print) => print.series === series.handle),
+)) {
   const id = await upsertCollection(series);
   await publish(id);
   collections.set(series.handle, id);
@@ -219,12 +230,12 @@ for (const print of prints) {
   if (!series) throw new Error(`Unknown series ${print.series} for ${print.title}`);
   const handle = printHandle(print);
   const { productSet } = await admin<{
-    productSet: { product: { id: string } | null; userErrors: { message: string }[] };
+    productSet: { product: { id: string } | null } & UserErrors;
   }>(PRODUCT_SET_MUTATION, {
     identifier: { handle },
     input: productInput(print, series, collections.get(series.handle)!),
   });
-  assertNoUserErrors(`productSet ${handle}`, productSet.userErrors);
+  assertNoUserErrors(`productSet ${handle}`, productSet);
   await publish(productSet.product!.id);
   console.log(`product ${handle}`);
 }
