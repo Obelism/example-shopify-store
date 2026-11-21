@@ -9,21 +9,28 @@ import { getObelismConfig } from "@/lib/obelism";
 const BOT = /bot|crawl|spider|slurp|facebookexternalhit|preview/i;
 const CONFIG_TTL_MS = 30_000;
 
-let configCache: { config: ImproveConfiguration; fetchedAt: number } | null = null;
+let configCache: { config: ImproveConfiguration | null; fetchedAt: number } | null = null;
+let inFlight: Promise<ImproveConfiguration | null> | null = null;
 
+// One fetch at a time, and a failure is remembered as long as a success, so an Improve outage can't hold up every page request.
 async function loadConfig(): Promise<ImproveConfiguration | null> {
   if (configCache && Date.now() - configCache.fetchedAt < CONFIG_TTL_MS) return configCache.config;
-  const config = getObelismConfig();
-  if (!config) return null;
-  const improve = new ImproveServerSDK({
-    ...config,
-    configRetries: 0,
-    fetchTimeout: 1500,
-    token: process.env.OBELISM_API_TOKEN ?? "",
+  inFlight ??= (async () => {
+    const config = getObelismConfig();
+    if (!config) return null;
+    const improve = new ImproveServerSDK({
+      ...config,
+      configRetries: 0,
+      fetchTimeout: 1500,
+      token: process.env.OBELISM_API_TOKEN ?? "",
+    });
+    const datafile = (await improve.fetchConfig().catch(() => undefined)) ?? null;
+    configCache = { config: datafile ?? configCache?.config ?? null, fetchedAt: Date.now() };
+    return configCache.config;
+  })().finally(() => {
+    inFlight = null;
   });
-  const datafile = await improve.fetchConfig().catch(() => undefined);
-  if (datafile) configCache = { config: datafile, fetchedAt: Date.now() };
-  return datafile ?? configCache?.config ?? null;
+  return inFlight;
 }
 
 function isPageRequest(request: NextRequest) {
@@ -59,8 +66,15 @@ export function verifyImproveWebhook(headers: Headers, body: string, secret: str
   const timestamp = headers.get("webhook-timestamp");
   const signatures = headers.get("webhook-signature");
   if (!id || !timestamp || !signatures) return false;
-  if (Math.abs(Date.now() / 1000 - Number(timestamp)) > WEBHOOK_TOLERANCE_SECONDS) return false;
+  const sentAt = Number(timestamp);
+  if (
+    !Number.isFinite(sentAt) ||
+    Math.abs(Date.now() / 1000 - sentAt) > WEBHOOK_TOLERANCE_SECONDS
+  ) {
+    return false;
+  }
   const key = Buffer.from(secret.replace(/^whsec_/, ""), "base64");
+  if (key.length === 0) return false;
   const expected = crypto.createHmac("sha256", key).update(`${id}.${timestamp}.${body}`).digest();
   return signatures.split(" ").some((entry) => {
     const [version, signature] = entry.split(",");

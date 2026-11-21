@@ -65,7 +65,7 @@ With the `NEXT_PUBLIC_OBELISM_*` values set, `proxy.ts` assigns each visitor's v
 - In code: the `print-page-details` test on the print page and the `shipping-banner` flag above the nav (`ImproveVariants`).
 - From Content: editors add an A/B test or flag block to a page; the `home-intro` test on the home page is one.
 - Goals are the Numbers events: `print-page-details` starts at `view_item` (`product_page`) and converts at `add_to_cart` (`product_form`).
-- Add a webhook in Improve pointing at `/api/webhooks/improve` with `IMPROVE_WEBHOOK_SECRET`, so starting or stopping a test refreshes the site within seconds instead of minutes.
+- Add a webhook in Improve pointing at `/api/webhooks/improve` with `IMPROVE_WEBHOOK_SECRET`: a change refreshes the pages' test setup at once instead of within minutes (it revalidates the root layout, so every page). The proxy keeps assigning from the datafile it fetched up to 30 seconds earlier.
 
 ## Checks
 

@@ -10,7 +10,6 @@ import { CartProviderWrapper } from "@/components/cart/context";
 import { CartStandardActionsScript } from "@/components/cart/standard-actions";
 import { CmsBridge } from "@/components/cms/cms-bridge";
 import { Footer } from "@/components/footer";
-import { ImproveSync } from "@/components/improve/improve-client";
 import { ImproveHead } from "@/components/improve/improve-head";
 import { ImproveVariants } from "@/components/improve/improve-variants";
 import { Nav } from "@/components/nav";
@@ -62,20 +61,20 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <SiteSchema />
         <CmsBridge />
 
+        <ImproveVariants
+          fallback="off"
+          kind="flag"
+          slug="shipping-banner"
+          variants={{
+            off: null,
+            on: (
+              <p className="bg-foreground px-5 py-2 text-center text-xs text-background">
+                Free shipping on every framed print this month.
+              </p>
+            ),
+          }}
+        />
         <CartProviderWrapper cartData={cartData}>
-          <ImproveVariants
-            fallback="off"
-            kind="flag"
-            slug="shipping-banner"
-            variants={{
-              off: null,
-              on: (
-                <p className="bg-foreground px-5 py-2 text-center text-xs text-background">
-                  Free shipping on every framed print this month.
-                </p>
-              ),
-            }}
-          />
           <Nav />
           <main id="main-content" className="flex flex-1 flex-col min-w-0">
             {children}
@@ -84,9 +83,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <CartUI />
           <Suspense>
             <AnalyticsComponents />
-          </Suspense>
-          <Suspense>
-            <ImproveSync />
           </Suspense>
         </CartProviderWrapper>
       </body>

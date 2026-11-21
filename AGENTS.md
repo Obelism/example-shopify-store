@@ -36,7 +36,7 @@ Every feature belongs to exactly one owner. If a change cannot name its owner, o
 
 **Obelism Improve owns A/B tests and feature flags.**
 
-- Lives in: `lib/improve/**`, `components/improve/**`, the `seedImproveCookies` call in `proxy.ts`, `app/api/webhooks/improve`, and the improve-block branch of `components/cms/cms-body-client.tsx`.
+- Lives in: `lib/improve/**`, `components/improve/**`, `app/api/webhooks/improve`, and its call sites: `seedImproveCookies` in `proxy.ts`, `ImproveHead` and the `shipping-banner` flag in `app/layout.tsx`, the `print-page-details` test in `components/product-detail/product-detail-section.tsx`, and the improve-block branch of `components/cms/cms-body-client.tsx` (with `everyBlock` in `lib/cms/index.ts`).
 - Pages are prerendered and carry every option of every placement. `proxy.ts` decides the visitor's variants on page requests with `seedTestCookies` and sets them as cookies; `ImproveHead` (root layout) marks `<html>` with each running test's option from its cookie before the body paints, and its CSS shows that option, or the placement's fallback when the test isn't running or the cookie names an unknown option. Never pick a variant during render.
 - Put a test or flag in code with `ImproveVariants` (`fallback`, `kind`, `slug`, a node per option slug); it records the exposure after paint. Editors put them in Content with the built-in improve block: `instant` blocks render every variant, `after-load` blocks (below the page type's `aboveTheFold`) swap in after mount.
 - Goals are Numbers events by name and scope (see Numbers above). The datafile behind `ImproveHead` is cached (`getImproveConfig`, tag `improve`) and refreshed by the Improve webhook.

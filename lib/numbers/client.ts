@@ -1,7 +1,12 @@
 "use client";
 
-import { createNumbers, type NumbersClient, type TrackOptions } from "@obelism/numbers-sdk";
-import { useEffect, useState } from "react";
+import {
+  createNumbers,
+  type NumbersClient,
+  type TrackOptions,
+  VISITOR_COOKIE,
+} from "@obelism/numbers-sdk";
+import { useSyncExternalStore } from "react";
 
 import { getObelismConfig } from "@/lib/obelism";
 import { isEditingContent } from "@/lib/obelism/client";
@@ -20,8 +25,18 @@ export function trackEvent(event: string, scope: string, options?: TrackOptions)
   void getNumbers()?.track(event, scope, options);
 }
 
+const subscribeNoop = () => () => {};
+
+function readVisitorCookie() {
+  const prefix = `${VISITOR_COOKIE}=`;
+  return (
+    document.cookie
+      .split("; ")
+      .find((cookie) => cookie.startsWith(prefix))
+      ?.slice(prefix.length) ?? null
+  );
+}
+
 export function useVisitorId(): string | null {
-  const [visitorId, setVisitorId] = useState<string | null>(null);
-  useEffect(() => setVisitorId(getNumbers()?.visitor()?.id ?? null), []);
-  return visitorId;
+  return useSyncExternalStore(subscribeNoop, readVisitorCookie, () => null);
 }

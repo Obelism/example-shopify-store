@@ -11,5 +11,6 @@ export async function getImproveConfig(): Promise<ImproveConfiguration | null> {
   const config = getObelismConfig();
   if (!config) return null;
   const improve = new ImproveServerSDK({ ...config, token: process.env.OBELISM_API_TOKEN ?? "" });
-  return (await improve.fetchConfig()) ?? null;
+  // An unreachable Improve shows every placement's default rather than failing the root layout.
+  return (await improve.fetchConfig().catch(() => undefined)) ?? null;
 }

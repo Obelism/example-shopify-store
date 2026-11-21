@@ -12,7 +12,7 @@ interface ImproveVariantsProps {
 // Every option is in the page; the head's CSS shows the visitor's, or the fallback when the test isn't running.
 export function ImproveVariants({ fallback, kind, slug, variants }: ImproveVariantsProps) {
   return (
-    <>
+    <div data-ob-group={slug}>
       {Object.entries(variants).map(([option, children]) => (
         <div
           key={option}
@@ -24,6 +24,6 @@ export function ImproveVariants({ fallback, kind, slug, variants }: ImproveVaria
         </div>
       ))}
       <ImproveExposure kind={kind} slug={slug} />
-    </>
+    </div>
   );
 }
