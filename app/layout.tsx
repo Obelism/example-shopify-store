@@ -1,4 +1,3 @@
-import { ContentBridge } from "@obelism/content-react";
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Newsreader } from "next/font/google";
 
@@ -9,6 +8,7 @@ import { AnalyticsComponents } from "@/components/analytics";
 import { CartUI } from "@/components/cart/cart-ui";
 import { CartProviderWrapper } from "@/components/cart/context";
 import { CartStandardActionsScript } from "@/components/cart/standard-actions";
+import { CmsBridge } from "@/components/cms/cms-bridge";
 import { Footer } from "@/components/footer";
 import { Nav } from "@/components/nav";
 import { SiteSchema } from "@/components/schema/site-schema";
@@ -55,7 +55,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           Skip to content
         </a>
         <SiteSchema />
-        <ContentBridge />
+        <CmsBridge />
 
         <CartProviderWrapper cartData={cartData}>
           <Nav />

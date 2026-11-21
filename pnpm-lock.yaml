@@ -170,10 +170,10 @@ importers:
         specifier: 1.9.0
         version: 1.9.0(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       '@obelism/content':
-        specifier: ^0.31.0
+        specifier: 0.31.0
         version: 0.31.0
       '@obelism/content-react':
-        specifier: ^0.4.11
+        specifier: 0.4.11
         version: 0.4.11(react@19.3.1)
       '@shopify/hydrogen':
         specifier: 2026.10.2

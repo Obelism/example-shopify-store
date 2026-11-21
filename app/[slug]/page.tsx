@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 import { CmsBody } from "@/components/cms/cms-body";
@@ -6,6 +7,7 @@ import { CmsEntry } from "@/components/cms/cms-entry";
 import { Container } from "@/components/ui/container";
 import { Page } from "@/components/ui/page";
 import { Skeleton } from "@/components/ui/skeleton";
+import { HOME_PATH } from "@/lib/cms";
 import { getCmsPage, getCmsPagePaths, pageQuery } from "@/lib/cms/server";
 import { buildAlternates, buildOpenGraph } from "@/lib/seo";
 import { PLACEHOLDER_HANDLE } from "@/lib/static-params";
@@ -44,17 +46,16 @@ export default function ContentPage({ params, searchParams }: PageProps<"/[slug]
 
 async function ContentPageContent({ params, searchParams }: PageProps<"/[slug]">) {
   const { slug } = await params;
+  if (slug === HOME_PATH) notFound();
   const published = slug === PLACEHOLDER_HANDLE ? null : await getCmsPage(slug);
   return (
     <CmsEntry published={published} query={pageQuery(slug)} required searchParams={searchParams}>
-      {(entry) =>
-        entry ? (
-          <article className="grid gap-10">
-            <h1 className="font-serif text-4xl tracking-tight md:text-5xl">{entry.fields.title}</h1>
-            <CmsBody entry={entry} />
-          </article>
-        ) : null
-      }
+      {(entry) => (
+        <article className="grid gap-10">
+          <h1 className="font-serif text-4xl tracking-tight md:text-5xl">{entry.fields.title}</h1>
+          <CmsBody entry={entry} />
+        </article>
+      )}
     </CmsEntry>
   );
 }

@@ -6,10 +6,9 @@ import { cookies, draftMode } from "next/headers";
 import type { Page, PrintPage, SeriesPage } from "@/content/content-types";
 
 import { HOME_PATH } from "./index";
+import type { CmsQuery } from "./types";
 
 type SearchParams = Record<string, string | string[] | undefined>;
-
-export type CmsQuery<TEntry> = (client: ContentClient) => Promise<TEntry | null>;
 
 const space = process.env.CONTENT_SPACE_ID;
 const environment = process.env.CONTENT_ENVIRONMENT;
@@ -17,6 +16,7 @@ const environment = process.env.CONTENT_ENVIRONMENT;
 const delivery = new ContentClient({
   environment,
   space,
+  // Required at dev, build and start by lib/config/server.ts; `next typegen` loads this without it.
   token: process.env.CONTENT_DELIVERY_TOKEN ?? "",
 });
 
@@ -46,7 +46,7 @@ export const printPageQuery =
 export async function getCmsPage(path: string): Promise<Page | null> {
   "use cache: remote";
   cacheLife("max");
-  cacheTag("cms", `cms-path-${path}`);
+  cacheTag("cms");
   return pageQuery(path)(delivery);
 }
 
@@ -74,10 +74,19 @@ export async function getCmsPagePaths(): Promise<string[]> {
 
 // Drafts come only with the editor's own token: the canvas's `cms_token`, or the site-editing cookie in draft mode. `cms_preview` alone proves nothing.
 async function getDraftClient(searchParams: SearchParams): Promise<ContentClient | null> {
-  let token = readPreviewParams(searchParams)?.token ?? null;
+  // Without a space and environment the API would accept a token from any space.
+  if (!space || !environment) return null;
+  const preview = readPreviewParams(searchParams);
+  let token = preview?.token ?? null;
   if (!token && (await draftMode()).isEnabled) token = readSiteToken(await cookies()) ?? null;
   if (!token) return null;
-  return new ContentClient({ environment, init: { cache: "no-store" }, space, token });
+  return new ContentClient({
+    environment,
+    init: { cache: "no-store" },
+    release: preview?.release ?? undefined,
+    space,
+    token,
+  });
 }
 
 export async function readDraft<TEntry>(
@@ -90,7 +99,7 @@ export async function readDraft<TEntry>(
     return { entry: await query(client) };
   } catch (error) {
     if (error instanceof ContentApiError && error.status === 401) {
-      console.warn("Content refused the draft token:", error.body);
+      console.warn("Content refused the draft token: 401");
       return null;
     }
     throw error;

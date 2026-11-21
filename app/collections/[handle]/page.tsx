@@ -38,13 +38,14 @@ async function DefaultCollectionResults({
   searchParams,
 }: PageProps<"/collections/[handle]">) {
   const { handle } = await params;
+  const results = getCollectionResults({ handle });
   const collection = await getCollection({ handle });
   return (
     <div className="grid gap-12">
       {collection?.id ? (
         <SeriesStory collection={{ handle, id: collection.id }} searchParams={searchParams} />
       ) : null}
-      <CollectionResults results={getCollectionResults({ handle })} />
+      <CollectionResults results={results} />
       <SearchParamsProbe searchParams={searchParams} />
     </div>
   );

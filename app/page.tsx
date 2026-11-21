@@ -34,7 +34,7 @@ export default async function HomePage({ searchParams }: PageProps<"/">) {
       <Container className="grid gap-10 lg:grid-cols-[18rem_1fr] lg:gap-16">
         <header className="lg:sticky lg:top-26 lg:self-start">
           <CmsEntry published={published} query={pageQuery(HOME_PATH)} searchParams={searchParams}>
-            {(entry) => (entry ? <CmsBody entry={entry} /> : null)}
+            {(entry) => <CmsBody entry={entry} introHeading="h1" />}
           </CmsEntry>
         </header>
         <ProductsGrid eagerCount={6} limit={100} />

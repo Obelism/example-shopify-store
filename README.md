@@ -46,7 +46,7 @@ Fill in `.env.local` with the store's Storefront API credentials (Shopify admin 
 
 Pages (home, About, Printing), the story of each series and of some prints come from Obelism Content (`CONTENT_*` in `.env.example`).
 
-- The content model is `content/content-model.json`, kept in step with `pnpm exec content model plan|apply` and reviewed in pull requests. `pnpm exec content types --file content/content-model.json` regenerates `content/content-types.ts`.
+- The content model is `content/content-model.json`, kept in step with `pnpm exec content model plan|apply` and reviewed in pull requests. `pnpm exec content types --file content/content-model.json` regenerates `content/content-types.ts`. The `Content model` workflow plans changes on pull requests and applies them to the develop environment on merge, with a develop management token in the `CONTENT_TOKEN_DEVELOP` repository secret; production gets the model by promotion in Content.
 - Set the environment's preview URL to the site (`http://localhost:3000` locally) to edit pages in Content's canvas, or sign in on the site at `/cms/login` to edit with the prompt bar.
 - Add a webhook in Content pointing at `/api/webhooks/content` with `CONTENT_WEBHOOK_SECRET` so publishing refreshes the site.
 

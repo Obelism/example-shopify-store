@@ -17,43 +17,52 @@ import type {
   Text,
 } from "@/content/content-types";
 import { HOME_PATH, resolveBlocks } from "@/lib/cms";
+import type { CmsBodyBlock, CmsBodyEntry } from "@/lib/cms/types";
 import type { CollectionWithThumbnail } from "@/lib/collections/types";
 import type { ProductCard } from "@/lib/product/types";
-
-import type { CmsBodyEntry } from "./cms-body";
-
-export type CmsBodyBlock = FeaturedPrint | FeaturedSeries | ImageBlock | Intro | Quote | Text;
 
 interface CmsBodyClientProps {
   className?: string;
   collections: CollectionWithThumbnail[];
   entry: CmsBodyEntry;
+  introHeading: "h1" | "h2";
   products: ProductCard[];
 }
 
-export function CmsBodyClient({ className, collections, entry, products }: CmsBodyClientProps) {
+export function CmsBodyClient({
+  className,
+  collections,
+  entry,
+  introHeading,
+  products,
+}: CmsBodyClientProps) {
   const live = useLiveEntry(entry);
   return (
     <div {...editable(live)} className={cn("grid gap-12", className)}>
       {resolveBlocks(live.fields.body).map((block) => (
-        <CmsBlock key={block._uid} block={block} collections={collections} products={products} />
+        <CmsBlock
+          key={block._uid}
+          block={block}
+          collections={collections}
+          introHeading={introHeading}
+          products={products}
+        />
       ))}
     </div>
   );
 }
 
-function CmsBlock({
-  block,
-  collections,
-  products,
-}: {
+interface CmsBlockProps {
   block: CmsBodyBlock;
   collections: CollectionWithThumbnail[];
+  introHeading: "h1" | "h2";
   products: ProductCard[];
-}) {
+}
+
+function CmsBlock({ block, collections, introHeading, products }: CmsBlockProps) {
   switch (block._type) {
     case "intro":
-      return <IntroBlock block={block} />;
+      return <IntroBlock block={block} heading={introHeading} />;
     case "text":
       return <TextBlock block={block} />;
     case "image":
@@ -69,12 +78,19 @@ function CmsBlock({
   }
 }
 
+// Content stores what editors type, so only site paths, anchors and web, mail or phone links render.
+const SAFE_HREF = /^(\/(?!\/)|#|https?:|mailto:|tel:)/i;
+
+function safeHref(value: string | null | undefined) {
+  return value && SAFE_HREF.test(value) ? value : null;
+}
+
 function href(link: Parameters<typeof linkHref>[0]) {
-  return linkHref(link, { url: (path) => (path === HOME_PATH ? "/" : `/${path}`) });
+  return safeHref(linkHref(link, { url: (path) => (path === HOME_PATH ? "/" : `/${path}`) }));
 }
 
 function LinkMark({ children, mark }: RichTextMarkProps) {
-  const target = typeof mark.attrs?.href === "string" ? mark.attrs.href : null;
+  const target = safeHref(typeof mark.attrs?.href === "string" ? mark.attrs.href : null);
   if (!target) return <>{children}</>;
   return (
     <Link href={target} className="underline underline-offset-4 hover:text-foreground">
@@ -85,7 +101,11 @@ function LinkMark({ children, mark }: RichTextMarkProps) {
 
 const RICH_TEXT_MARKS = { link: LinkMark };
 
-function Prose({ document }: { document: Text["text"] }) {
+interface ProseProps {
+  document: Text["text"];
+}
+
+function Prose({ document }: ProseProps) {
   return (
     <div className="grid gap-4 text-sm leading-6 text-muted-foreground md:text-base md:leading-7 [&_strong]:font-medium [&_strong]:text-foreground">
       <RichText document={document} marks={RICH_TEXT_MARKS} />
@@ -93,11 +113,18 @@ function Prose({ document }: { document: Text["text"] }) {
   );
 }
 
-function IntroBlock({ block }: { block: Intro }) {
+interface IntroBlockProps {
+  block: Intro;
+  heading: "h1" | "h2";
+}
+
+function IntroBlock({ block, heading: Heading }: IntroBlockProps) {
   return (
     <section {...editable(block)} className="grid content-start gap-5">
       {block.heading ? (
-        <h1 className="font-serif text-3xl leading-tight tracking-tight">{block.heading}</h1>
+        <Heading className="font-serif text-3xl leading-tight tracking-tight">
+          {block.heading}
+        </Heading>
       ) : null}
       <div className="text-sm leading-6 [&_p]:text-muted-foreground">
         <Prose document={block.text} />
@@ -126,7 +153,11 @@ function IntroBlock({ block }: { block: Intro }) {
   );
 }
 
-function TextBlock({ block }: { block: Text }) {
+interface TextBlockProps {
+  block: Text;
+}
+
+function TextBlock({ block }: TextBlockProps) {
   return (
     <section {...editable(block)} className="grid max-w-2xl gap-4">
       {block.heading ? (
@@ -143,10 +174,14 @@ const contentImageLoader: ImageLoader = ({ quality, src, width }) =>
 
 const IMAGE_WIDTHS = { full: "w-full", narrow: "max-w-xl", wide: "max-w-4xl" } as const;
 
-function ImageBlockView({ block }: { block: ImageBlock }) {
+interface ImageBlockViewProps {
+  block: ImageBlock;
+}
+
+function ImageBlockView({ block }: ImageBlockViewProps) {
   const { image } = block;
   if (!image?.width || !image.height) return null;
-  const alt = typeof image.alt === "string" ? image.alt : "";
+  const alt = typeof image.alt === "string" ? image.alt : (Object.values(image.alt ?? {})[0] ?? "");
   return (
     <figure
       {...editable(block)}
@@ -168,7 +203,11 @@ function ImageBlockView({ block }: { block: ImageBlock }) {
   );
 }
 
-function QuoteBlock({ block }: { block: Quote }) {
+interface QuoteBlockProps {
+  block: Quote;
+}
+
+function QuoteBlock({ block }: QuoteBlockProps) {
   return (
     <figure {...editable(block)} className="grid max-w-2xl gap-3 border-l pl-6">
       <blockquote className="font-serif text-2xl leading-snug italic tracking-tight">
@@ -181,15 +220,14 @@ function QuoteBlock({ block }: { block: Quote }) {
   );
 }
 
-function FeaturedSeriesBlock({
-  block,
-  collections,
-}: {
+interface FeaturedSeriesBlockProps {
   block: FeaturedSeries;
   collections: CollectionWithThumbnail[];
-}) {
+}
+
+function FeaturedSeriesBlock({ block, collections }: FeaturedSeriesBlockProps) {
   const picked = (block.collections ?? []).flatMap(
-    (item) => collections.find(({ handle }) => handle === item.handle) ?? [],
+    (item) => collections.find(({ id }) => id === item.id) ?? [],
   );
   if (picked.length === 0) return null;
   return (
@@ -210,13 +248,12 @@ function FeaturedSeriesBlock({
   );
 }
 
-function FeaturedPrintBlock({
-  block,
-  products,
-}: {
+interface FeaturedPrintBlockProps {
   block: FeaturedPrint;
   products: ProductCard[];
-}) {
+}
+
+function FeaturedPrintBlock({ block, products }: FeaturedPrintBlockProps) {
   const product = products.find(({ id }) => id === block.product?.id);
   if (!product) return null;
   const image = product.featuredImage;

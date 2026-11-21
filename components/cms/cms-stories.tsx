@@ -22,7 +22,7 @@ export async function SeriesStory({ collection, searchParams }: SeriesStoryProps
         query={seriesPageQuery(collection.id)}
         searchParams={searchParams}
       >
-        {(entry) => (entry ? <CmsBody entry={entry} /> : null)}
+        {(entry) => <CmsBody entry={entry} />}
       </CmsEntry>
     </div>
   );
@@ -42,7 +42,7 @@ export async function PrintStory({ product, searchParams }: PrintStoryProps) {
         query={printPageQuery(product.id)}
         searchParams={searchParams}
       >
-        {(entry) => (entry ? <CmsBody entry={entry} /> : null)}
+        {(entry) => <CmsBody entry={entry} />}
       </CmsEntry>
     </div>
   );
