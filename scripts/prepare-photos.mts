@@ -18,23 +18,25 @@ if (!args.in || !args.out) {
   );
 }
 
+const MAX_PIXELS = 24_000_000;
+
 const outDir = resolve(args.out);
 mkdirSync(outDir, { recursive: true });
 
 for (const print of selectPrints(args.only)) {
   const image = slugify(print.source.slice(0, -extname(print.source).length));
   const target = join(outDir, `${printHandle(print)}__${image}.jpg`);
-  // Rewrites only the metadata, so the image data stays as shot; GPS and camera details go, the colour profile and orientation stay.
-  execFileSync("exiftool", [
-    "-q",
-    "-all=",
-    "-tagsFromFile",
-    "@",
-    "-ICC_Profile",
-    "-Orientation",
-    "-o",
-    target,
+  // Shopify refuses images over 25 MP; ICC is the only profile kept, so GPS and camera details go.
+  execFileSync("magick", [
     join(resolve(args.in), print.source),
+    "-auto-orient",
+    "-resize",
+    `${MAX_PIXELS}@>`,
+    "+profile",
+    "!icc,*",
+    "-quality",
+    "92",
+    target,
   ]);
   console.log(target);
 }
