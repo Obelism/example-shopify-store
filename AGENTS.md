@@ -18,6 +18,14 @@ Every feature belongs to exactly one owner. If a change cannot name its owner, o
 - Lives in: `app/`, `components/`, `lib/<domain>/{index,server,client,action}.ts`, `lib/config/`, `next.config.ts`, `proxy.ts`; the answer-engine surface in `lib/markdown/**`, `lib/seo/**`, `app/md/**`, `app/llms.txt/`, `app/sitemap*`, `app/robots.ts`, `components/schema/`.
 - Must not: mutate the cart through Server Actions, refresh tokens in Server Components, invalidate public caches for cart changes.
 
+**Obelism Content owns editorial content**: pages, series and print stories, editable in Content's canvas and on the site.
+
+- Lives in: `content/` (the model file, generated `content-types.ts`, delivery examples), `lib/cms/**`, `components/cms/**`, `app/[slug]`, `app/cms/[...path]` (site editing), `app/api/webhooks/content`.
+- The model is `content/content-model.json`: change it there, run `pnpm exec content model plan` then `apply` (needs `CONTENT_MANAGEMENT_TOKEN`), and regenerate types with `pnpm exec content types --file content/content-model.json`. Don't edit `content-types.ts` by hand. CI plans on pull requests and applies to develop on merge (`.github/workflows/content-model.yml`).
+- Published content is read through the cached `get*` functions in `lib/cms/server.ts` and rendered in the static shell; `CmsEntry` swaps in a draft only for a request carrying an editor's token (the canvas's `cms_token`, or the site-editing cookie in draft mode). Never read drafts because `cms_preview` is set, and never cache them.
+- Blocks render client-side in `components/cms/cms-body-client.tsx` with `useLiveEntry` and `editable(block)`; Shopify data for featured blocks is resolved on the server in `components/cms/cms-body.tsx`.
+- Content assets load from Content's image API through the `next/image` loader, not Next's optimizer.
+
 ## Describe the product, not the change
 
 - Code, comments, docs, skills, commits, and pull requests describe current behavior, not the work that produced it.

@@ -16,6 +16,7 @@ import {
   getHydrogenCustomerSession,
 } from "@/lib/auth/request";
 import { cartHandlers, createCustomerCartHandlers } from "@/lib/cart/request";
+import { isDraftRequest } from "@/lib/cms/request";
 import { getRefinedCollectionPath, isRefinedCollectionPath } from "@/lib/collections";
 import { shopConfig } from "@/lib/config";
 import { getMarkdownRewritePath } from "@/lib/markdown/representation";
@@ -66,6 +67,11 @@ export async function proxy(request: NextRequest): Promise<Response> {
         request: { headers: forwardCustomerRefreshAttempt(request.nextUrl, headers) },
       });
   requestContext.applyResponseHeaders(response.headers);
+  // Drafts arrive on the public URL, so keep them out of shared caches and search engines.
+  if (isDraftRequest(request)) {
+    response.headers.set("Cache-Control", "private, no-store");
+    response.headers.set("X-Robots-Tag", "noindex");
+  }
   return response;
 }
 

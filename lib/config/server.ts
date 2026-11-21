@@ -18,15 +18,18 @@ function assertRequiredEnv(phase: string) {
   // Next typegen uses the production-build phase but does not need Shopify credentials.
   if (process.argv.includes("typegen")) return;
 
-  const missingShopify = [
+  const missingRequired = [
+    "CONTENT_DELIVERY_TOKEN",
+    "CONTENT_ENVIRONMENT",
+    "CONTENT_SPACE_ID",
     "NEXT_PUBLIC_SHOPIFY_SHOP_ID",
     "NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN",
     "NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN",
   ].filter((key) => !process.env[key]);
 
-  if (missingShopify.length > 0) {
+  if (missingRequired.length > 0) {
     throw new Error(
-      `Missing required Shopify environment variables: ${missingShopify.join(", ")}. See .env.example.`,
+      `Missing required environment variables: ${missingRequired.join(", ")}. See .env.example.`,
     );
   }
 

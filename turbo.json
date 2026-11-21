@@ -2,6 +2,11 @@
   "$schema": "https://turborepo.dev/schema.json",
   "globalDependencies": [".env*"],
   "globalEnv": [
+    "CONTENT_DELIVERY_TOKEN",
+    "CONTENT_ENVIRONMENT",
+    "CONTENT_MANAGEMENT_TOKEN",
+    "CONTENT_SPACE_ID",
+    "CONTENT_WEBHOOK_SECRET",
     "CUSTOMER_ACCOUNT_SESSION_SECRET",
     "DEBUG_SHOPIFY",
     "NEXT_PUBLIC_SHOPIFY_SHOP_ID",

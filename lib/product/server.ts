@@ -7,6 +7,7 @@ import { getNumericShopifyId } from "@/lib/shopify/id/server";
 import {
   fetchProduct,
   fetchProductRecommendations,
+  fetchProductsByIds,
   fetchSearchIndexProducts,
 } from "@/lib/shopify/operations/products/server";
 import type { SearchIndexProductsParams } from "@/lib/shopify/operations/products/types";
@@ -57,6 +58,16 @@ export async function getProductRecommendations(params: {
   cacheTag("products", `recommendations-${params.handle}`);
 
   const products = await fetchProductRecommendations(params);
+  tagProducts(products);
+  return products;
+}
+
+export async function getProductsByIds(ids: string[]): Promise<ProductCard[]> {
+  "use cache: remote";
+  cacheLife("max");
+  cacheTag("products");
+
+  const products = await fetchProductsByIds({ ids });
   tagProducts(products);
   return products;
 }

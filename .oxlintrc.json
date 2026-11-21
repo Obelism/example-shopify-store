@@ -11,11 +11,18 @@
     ".agents/**",
     ".claude/**",
     "app/.well-known/**",
-    "components/ai-elements/**"
+    "components/ai-elements/**",
+    "content/content-types.ts",
+    "content/examples/**"
   ],
   "plugins": ["typescript", "react", "nextjs"],
   "rules": {
-    "no-underscore-dangle": ["warn", { "allow": ["__typename"] }],
+    "no-underscore-dangle": [
+      "warn",
+      {
+        "allow": ["__typename", "_type", "_uid"]
+      }
+    ],
     "no-unused-vars": "off",
     "react/no-danger": "error",
     "react/react-in-jsx-scope": "off"

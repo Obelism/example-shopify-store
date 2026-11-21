@@ -169,6 +169,12 @@ importers:
       '@base-ui/react':
         specifier: 1.9.0
         version: 1.9.0(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
+      '@obelism/content':
+        specifier: 0.31.0
+        version: 0.31.0
+      '@obelism/content-react':
+        specifier: 0.4.11
+        version: 0.4.11(react@19.3.1)
       '@shopify/hydrogen':
         specifier: 2026.10.2
         version: 2026.10.2(graphql@17.0.2)(react@19.3.1)(typescript@7.0.2)
@@ -585,6 +591,21 @@ packages:
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [win32]
+
+  '@obelism/content-react@0.4.11':
+    resolution: {integrity: sha512-1WexFVMbe8TwFdp6lx3VJ+MCkHzqa4dgnqIu/dQFiJKOiyGgUlkPGLD4ciZjeMSPWy1vp69YngUUneeEbDyyrg==}
+    peerDependencies:
+      react: '>=18.0.0'
+
+  '@obelism/content@0.31.0':
+    resolution: {integrity: sha512-QJvdisJ7LNbjTAV/jz1aZce2gI0c9n9Z/vbE0nTo+/1/c7oFhdj4/1ADAvVeDZrU/UeMdPc/96m1KM1sT4D3Vw==}
+    engines: {node: '>=20'}
+    hasBin: true
+    peerDependencies:
+      '@vercel/oidc': ^4.0.0
+    peerDependenciesMeta:
+      '@vercel/oidc':
+        optional: true
 
   '@oxfmt/binding-android-arm-eabi@0.78.0':
     resolution: {integrity: sha512-1x9NPGQG5WMOOT8spRP4hPbeqwB/P9ayxFo4EUDSle6mLmtYRqE6suXgHr93/S2nnszy77LlIa8klkKdWtHbMw==}
@@ -1905,6 +1926,15 @@ snapshots:
 
   '@next/swc-win32-x64-msvc@16.4.6':
     optional: true
+
+  '@obelism/content-react@0.4.11(react@19.3.1)':
+    dependencies:
+      '@obelism/content': 0.31.0
+      react: 19.3.1
+    transitivePeerDependencies:
+      - '@vercel/oidc'
+
+  '@obelism/content@0.31.0': {}
 
   '@oxfmt/binding-android-arm-eabi@0.78.0':
     optional: true

@@ -1,15 +1,19 @@
 import type { Metadata } from "next";
 
+import { CmsBody } from "@/components/cms/cms-body";
+import { CmsEntry } from "@/components/cms/cms-entry";
 import { ProductsGrid } from "@/components/product/products-grid";
 import { Container } from "@/components/ui/container";
-import { Link } from "@/components/ui/link";
 import { Page } from "@/components/ui/page";
+import { HOME_PATH } from "@/lib/cms";
+import { getCmsPage, pageQuery } from "@/lib/cms/server";
 import { shopConfig } from "@/lib/config";
 import { buildAlternates, buildOpenGraph } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const title = "Work";
-  const description = shopConfig.site.description;
+  const page = await getCmsPage(HOME_PATH);
+  const title = page?.fields.title ?? "Work";
+  const description = page?.fields.description ?? shopConfig.site.description;
   return {
     title: `${title} | ${shopConfig.site.name}`,
     description,
@@ -23,31 +27,15 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function HomePage() {
+export default async function HomePage({ searchParams }: PageProps<"/">) {
+  const published = await getCmsPage(HOME_PATH);
   return (
     <Page className="pt-5 md:pt-10">
       <Container className="grid gap-10 lg:grid-cols-[18rem_1fr] lg:gap-16">
-        <header className="grid content-start gap-5 lg:sticky lg:top-26 lg:self-start">
-          <h1 className="font-serif text-3xl leading-tight tracking-tight">Welcome.</h1>
-          <div className="grid gap-4 text-sm leading-6 text-muted-foreground">
-            <p>
-              I&rsquo;m Noor Halde, a photographer drawn to the quiet hours: summits before sunrise,
-              forests in fog, cities after dark.
-            </p>
-            <p>
-              Every photograph here is available as an archival pigment print, in three sizes, on
-              matte or baryta paper, framed or unframed. Each one is printed to order and signed on
-              the back.
-            </p>
-          </div>
-          <nav aria-label="Browse" className="flex gap-5 text-sm">
-            <Link className="underline-offset-4 hover:underline" href="/collections">
-              The series
-            </Link>
-            <Link className="underline-offset-4 hover:underline" href="/works">
-              Index of works
-            </Link>
-          </nav>
+        <header className="lg:sticky lg:top-26 lg:self-start">
+          <CmsEntry published={published} query={pageQuery(HOME_PATH)} searchParams={searchParams}>
+            {(entry) => <CmsBody entry={entry} introHeading="h1" />}
+          </CmsEntry>
         </header>
         <ProductsGrid eagerCount={6} limit={100} />
       </Container>
