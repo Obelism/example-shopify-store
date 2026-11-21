@@ -7,6 +7,7 @@ export interface Series {
 }
 
 export interface Print {
+  alt: string;
   series: string;
   source: string;
   title: string;

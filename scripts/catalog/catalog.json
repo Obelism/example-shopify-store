@@ -33,106 +33,554 @@
     }
   ],
   "prints": [
-    { "series": "above-the-line", "source": "_DSC0048.jpeg", "title": "Cable Car, Early Summer" },
-    { "series": "above-the-line", "source": "_DSC0079.jpeg", "title": "Hay Huts" },
-    { "series": "above-the-line", "source": "_DSC0260.jpeg", "title": "Hut Window" },
-    { "series": "above-the-line", "source": "_DSC0315.jpeg", "title": "Ridge Before Dawn" },
-    { "series": "above-the-line", "source": "_DSC0317.jpeg", "title": "Waiting for the Sun" },
-    { "series": "above-the-line", "source": "_DSC0328.jpeg", "title": "Lone Watcher" },
-    { "series": "above-the-line", "source": "_DSC0344.jpeg", "title": "First Light, Vertical" },
-    { "series": "above-the-line", "source": "_DSC0347.jpeg", "title": "First Light" },
-    { "series": "above-the-line", "source": "_DSC0352.jpeg", "title": "Layers" },
-    { "series": "above-the-line", "source": "_DSC0372.jpeg", "title": "Alpenglow" },
     {
+      "alt": "A cable car gondola crossing a bright summer sky above green alpine meadows and trees.",
+      "series": "above-the-line",
+      "source": "_DSC0048.jpeg",
+      "title": "Cable Car, Early Summer"
+    },
+    {
+      "alt": "Small wooden hay huts scattered across a green alpine meadow below a dark spruce forest.",
+      "series": "above-the-line",
+      "source": "_DSC0079.jpeg",
+      "title": "Hay Huts"
+    },
+    {
+      "alt": "A distant mountain range framed by the dark wooden window of a mountain hut.",
+      "series": "above-the-line",
+      "source": "_DSC0260.jpeg",
+      "title": "Hut Window"
+    },
+    {
+      "alt": "The dark silhouette of a rocky ridge against a pale, clear sky before dawn.",
+      "series": "above-the-line",
+      "source": "_DSC0315.jpeg",
+      "title": "Ridge Before Dawn"
+    },
+    {
+      "alt": "Silhouetted hikers waiting on a mountain ridge as an orange glow rises over distant ranges.",
+      "series": "above-the-line",
+      "source": "_DSC0317.jpeg",
+      "title": "Waiting for the Sun"
+    },
+    {
+      "alt": "A lone figure silhouetted on a mountain top against a dusk sky fading from orange to blue.",
+      "series": "above-the-line",
+      "source": "_DSC0328.jpeg",
+      "title": "Lone Watcher"
+    },
+    {
+      "alt": "A pyramid-shaped alpine peak lit by soft dawn light under a deep blue sky, in portrait format.",
+      "series": "above-the-line",
+      "source": "_DSC0344.jpeg",
+      "title": "First Light, Vertical"
+    },
+    {
+      "alt": "A pyramid-shaped alpine peak catching the first warm light of dawn under a clear blue sky.",
+      "series": "above-the-line",
+      "source": "_DSC0347.jpeg",
+      "title": "First Light"
+    },
+    {
+      "alt": "Layer upon layer of mountain ridges fading into a hazy golden dawn.",
+      "series": "above-the-line",
+      "source": "_DSC0352.jpeg",
+      "title": "Layers"
+    },
+    {
+      "alt": "A pyramid-shaped alpine peak glowing faintly in early morning light against a blue sky.",
+      "series": "above-the-line",
+      "source": "_DSC0372.jpeg",
+      "title": "Alpenglow"
+    },
+    {
+      "alt": "A dark pyramid-shaped alpine peak silhouetted against a deep blue dawn sky.",
       "series": "above-the-line",
       "source": "mannheimer-hut-dark.jpg",
       "title": "Blue Hour Summit"
     },
-    { "series": "above-the-line", "source": "_DSC1448.jpeg", "title": "Tarn at Dusk" },
-    { "series": "above-the-line", "source": "_DSC1450.jpeg", "title": "Pink Horizon" },
-    { "series": "above-the-line", "source": "_DSC1697.jpeg", "title": "Reservoir Under Cloud" },
-    { "series": "above-the-line", "source": "_DSC2743.JPG", "title": "The Way Up" },
-    { "series": "above-the-line", "source": "_DSC2779.JPG", "title": "Scree Path" },
-    { "series": "above-the-line", "source": "_DSC2801.JPG", "title": "Needle in the Clouds" },
-    { "series": "above-the-line", "source": "IMG_1875.jpeg", "title": "Triangle Window" },
-    { "series": "quiet-japan", "source": "DSC08202.JPG", "title": "Thousand Gates" },
-    { "series": "quiet-japan", "source": "DSC08226.JPG", "title": "Rooftops and Cloud" },
-    { "series": "quiet-japan", "source": "DSC08275.JPG", "title": "Temple on the Hill" },
-    { "series": "quiet-japan", "source": "DSC08418.JPG", "title": "Golden Pavilion" },
-    { "series": "quiet-japan", "source": "DSC08421.JPG", "title": "Wires" },
-    { "series": "quiet-japan", "source": "DSC08445.JPG", "title": "Stone Garden" },
-    { "series": "quiet-japan", "source": "DSC08446.JPG", "title": "Thatch and Plaster" },
-    { "series": "quiet-japan", "source": "DSC08453.JPG", "title": "Moss Light" },
-    { "series": "quiet-japan", "source": "DSC08459.JPG", "title": "Festival Street" },
-    { "series": "quiet-japan", "source": "DSC08479.JPG", "title": "Riverside Teahouse" },
-    { "series": "quiet-japan", "source": "DSC08483.JPG", "title": "River Boat" },
-    { "series": "quiet-japan", "source": "DSC08508-pano.JPG", "title": "Gorge" },
-    { "series": "quiet-japan", "source": "DSC08524.JPG", "title": "Pagoda at Nightfall" },
-    { "series": "quiet-japan", "source": "DSC08540.JPG", "title": "Cedar Shrine" },
-    { "series": "quiet-japan", "source": "DSC08547.JPG", "title": "Shrine Steps" },
-    { "series": "quiet-japan", "source": "DSC08549.JPG", "title": "Forest Path" },
-    { "series": "quiet-japan", "source": "DSC08552.JPG", "title": "Stone Lantern" },
-    { "series": "quiet-japan", "source": "DSC08634.JPG", "title": "Garden Walk" },
-    { "series": "quiet-japan", "source": "_DSC2431.JPG", "title": "Red Pagoda" },
-    { "series": "quiet-japan", "source": "_DSC2531.JPG", "title": "Post Road" },
-    { "series": "quiet-japan", "source": "_DSC2613.JPG", "title": "Mirror in the Woods" },
-    { "series": "quiet-japan", "source": "_DSC2617.JPG", "title": "Valley Road" },
-    { "series": "quiet-japan", "source": "_DSC2624.JPG", "title": "Mountain Village" },
-    { "series": "after-dark", "source": "DSC07595.JPG", "title": "The Crossing" },
-    { "series": "after-dark", "source": "DSC07780.JPG", "title": "Bay at Dusk" },
-    { "series": "after-dark", "source": "DSC07795.JPG", "title": "Green Coupe" },
-    { "series": "after-dark", "source": "DSC07973.JPG", "title": "Under the Dome" },
-    { "series": "after-dark", "source": "DSC08048.JPG", "title": "Electric Town" },
-    { "series": "after-dark", "source": "DSC08110.JPG", "title": "Tower in the Rain" },
-    { "series": "after-dark", "source": "DSC08164.JPG", "title": "Paper Window" },
-    { "series": "after-dark", "source": "DSC08872.JPG", "title": "Garden and Towers" },
-    { "series": "after-dark", "source": "DSC08995.JPG", "title": "Side Street" },
-    { "series": "after-dark", "source": "DSC09034.JPG", "title": "Alley Lights" },
-    { "series": "after-dark", "source": "_DSC2234.JPG", "title": "Vending Machines" },
-    { "series": "after-dark", "source": "_DSC2243.JPG", "title": "Izakaya" },
-    { "series": "after-dark", "source": "_DSC2332.JPG", "title": "Shoji" },
-    { "series": "after-dark", "source": "IMG_0659.jpeg", "title": "Corner Store" },
-    { "series": "after-dark", "source": "_DSC2651.JPG", "title": "Night Signs" },
-    { "series": "after-dark", "source": "IMG_0817.jpeg", "title": "Tower Street" },
-    { "series": "after-dark", "source": "_DSC2720.JPG", "title": "Late Counter" },
-    { "series": "laurel-fog", "source": "_DSC0826.JPG", "title": "The Old Laurel" },
-    { "series": "laurel-fog", "source": "_DSC0840.JPG", "title": "Canopy" },
-    { "series": "laurel-fog", "source": "_DSC0862.JPG", "title": "Two Walkers" },
-    { "series": "laurel-fog", "source": "_DSC1035.JPG", "title": "Cloud Ridge" },
-    { "series": "laurel-fog", "source": "_DSC1138.JPG", "title": "Above the Fog" },
-    { "series": "laurel-fog", "source": "_DSC1207.JPG", "title": "Green Valley" },
-    { "series": "north", "source": "DSC07290-DSC07294-pano.jpeg", "title": "Still Lake" },
-    { "series": "north", "source": "DSC07318-DSC07320-pano.jpeg", "title": "Mountain in Mist" },
-    { "series": "north", "source": "DSC07373.JPG", "title": "Break in the Weather" },
-    { "series": "north", "source": "DSC07417.JPG", "title": "Fjord" },
-    { "series": "north", "source": "DSC09196.JPG", "title": "Snowline" },
-    { "series": "north", "source": "DSC09242.JPG", "title": "Cliff Face" },
-    { "series": "north", "source": "_DSC1785.JPG", "title": "Moor Light" },
-    { "series": "north", "source": "_DSC2040.JPG", "title": "Larches" },
-    { "series": "north", "source": "_DSC2060.JPG", "title": "Valley Glow" },
-    { "series": "north", "source": "DSC05387.jpg", "title": "Surf Caster" },
-    { "series": "north", "source": "DSC04052.jpg", "title": "Forest Road" },
-    { "series": "streets-and-facades", "source": "DSC06469.jpg", "title": "Chapel on the Rock" },
-    { "series": "streets-and-facades", "source": "DSC06691.jpg", "title": "Olive Hill" },
-    { "series": "streets-and-facades", "source": "DSC06728.jpg", "title": "Whitewashed Stairs" },
-    { "series": "streets-and-facades", "source": "DSC06754.jpg", "title": "Taverna" },
-    { "series": "streets-and-facades", "source": "L1680744.jpg", "title": "Concrete Organ" },
-    { "series": "streets-and-facades", "source": "IMG_20180702_153537.jpg", "title": "Green Dome" }
+    {
+      "alt": "A small mountain tarn below a rocky summit under a pink and blue dusk sky.",
+      "series": "above-the-line",
+      "source": "_DSC1448.jpeg",
+      "title": "Tarn at Dusk"
+    },
+    {
+      "alt": "A panorama of dark mountain ridges under soft pink and blue evening clouds.",
+      "series": "above-the-line",
+      "source": "_DSC1450.jpeg",
+      "title": "Pink Horizon"
+    },
+    {
+      "alt": "A turquoise mountain reservoir below craggy peaks half hidden in white cloud.",
+      "series": "above-the-line",
+      "source": "_DSC1697.jpeg",
+      "title": "Reservoir Under Cloud"
+    },
+    {
+      "alt": "A dirt trail winding through green alpine pasture towards a rocky limestone peak.",
+      "series": "above-the-line",
+      "source": "_DSC2743.JPG",
+      "title": "The Way Up"
+    },
+    {
+      "alt": "A rocky mountain path through larches and autumn shrubs towards a snow-capped peak.",
+      "series": "above-the-line",
+      "source": "_DSC2779.JPG",
+      "title": "Scree Path"
+    },
+    {
+      "alt": "A jagged granite needle rising above boulders and drifting white clouds.",
+      "series": "above-the-line",
+      "source": "_DSC2801.JPG",
+      "title": "Needle in the Clouds"
+    },
+    {
+      "alt": "A dark cabin interior with a triangular window looking out onto a pale blue sky.",
+      "series": "above-the-line",
+      "source": "IMG_1875.jpeg",
+      "title": "Triangle Window"
+    },
+    {
+      "alt": "A tunnel of vermilion torii gates lining stone steps through a shrine in Kyoto.",
+      "series": "quiet-japan",
+      "source": "DSC08202.JPG",
+      "title": "Thousand Gates"
+    },
+    {
+      "alt": "Traditional tiled Japanese rooftops under a wide sky of soft rippled clouds.",
+      "series": "quiet-japan",
+      "source": "DSC08226.JPG",
+      "title": "Rooftops and Cloud"
+    },
+    {
+      "alt": "A wooden temple and pagoda on a forested hillside in Kyoto under a blue sky.",
+      "series": "quiet-japan",
+      "source": "DSC08275.JPG",
+      "title": "Temple on the Hill"
+    },
+    {
+      "alt": "The Golden Pavilion reflected in its pond, framed by pine trees and a pale sky.",
+      "series": "quiet-japan",
+      "source": "DSC08418.JPG",
+      "title": "Golden Pavilion"
+    },
+    {
+      "alt": "A tangle of power lines and a utility pole above traditional rooftops against a blue sky.",
+      "series": "quiet-japan",
+      "source": "DSC08421.JPG",
+      "title": "Wires"
+    },
+    {
+      "alt": "A raked gravel zen garden with a single rock, seen between dark wooden temple pillars.",
+      "series": "quiet-japan",
+      "source": "DSC08445.JPG",
+      "title": "Stone Garden"
+    },
+    {
+      "alt": "The deep thatched roof and white plaster walls of a temple building among trees.",
+      "series": "quiet-japan",
+      "source": "DSC08446.JPG",
+      "title": "Thatch and Plaster"
+    },
+    {
+      "alt": "Sunlight falling through tall trees onto a mossy forest floor.",
+      "series": "quiet-japan",
+      "source": "DSC08453.JPG",
+      "title": "Moss Light"
+    },
+    {
+      "alt": "A narrow residential street in Kyoto strung with festival bunting and power lines.",
+      "series": "quiet-japan",
+      "source": "DSC08459.JPG",
+      "title": "Festival Street"
+    },
+    {
+      "alt": "A riverside path and small teahouse below steep green forested hills.",
+      "series": "quiet-japan",
+      "source": "DSC08479.JPG",
+      "title": "Riverside Teahouse"
+    },
+    {
+      "alt": "A traditional wooden river boat on calm green water below forested mountains.",
+      "series": "quiet-japan",
+      "source": "DSC08483.JPG",
+      "title": "River Boat"
+    },
+    {
+      "alt": "A river winding through a steep forested gorge with the sun breaking over the ridge.",
+      "series": "quiet-japan",
+      "source": "DSC08508-pano.JPG",
+      "title": "Gorge"
+    },
+    {
+      "alt": "A five-storey pagoda silhouetted against a deep blue twilight sky.",
+      "series": "quiet-japan",
+      "source": "DSC08524.JPG",
+      "title": "Pagoda at Nightfall"
+    },
+    {
+      "alt": "A small wooden shrine beside tall cedar trunks in a quiet forest.",
+      "series": "quiet-japan",
+      "source": "DSC08540.JPG",
+      "title": "Cedar Shrine"
+    },
+    {
+      "alt": "Moss-covered stone steps leading up to a small red shrine between tall cedars.",
+      "series": "quiet-japan",
+      "source": "DSC08547.JPG",
+      "title": "Shrine Steps"
+    },
+    {
+      "alt": "A gravel forest path curving between tall slender trees in soft green light.",
+      "series": "quiet-japan",
+      "source": "DSC08549.JPG",
+      "title": "Forest Path"
+    },
+    {
+      "alt": "A weathered stone lantern standing in a green forest garden.",
+      "series": "quiet-japan",
+      "source": "DSC08552.JPG",
+      "title": "Stone Lantern"
+    },
+    {
+      "alt": "A garden walkway with railings leading under lush trees towards a wooden gate.",
+      "series": "quiet-japan",
+      "source": "DSC08634.JPG",
+      "title": "Garden Walk"
+    },
+    {
+      "alt": "A red and white pagoda among pine trees and green foliage under a clear sky.",
+      "series": "quiet-japan",
+      "source": "_DSC2431.JPG",
+      "title": "Red Pagoda"
+    },
+    {
+      "alt": "A stone-paved old post road descending between trees towards village rooftops.",
+      "series": "quiet-japan",
+      "source": "_DSC2531.JPG",
+      "title": "Post Road"
+    },
+    {
+      "alt": "A round traffic mirror on a red pole with a warning sign in a dense green forest.",
+      "series": "quiet-japan",
+      "source": "_DSC2613.JPG",
+      "title": "Mirror in the Woods"
+    },
+    {
+      "alt": "A mountain road winding past village houses through a green forested valley.",
+      "series": "quiet-japan",
+      "source": "_DSC2617.JPG",
+      "title": "Valley Road"
+    },
+    {
+      "alt": "A quiet country lane leading into a mountain village surrounded by forest.",
+      "series": "quiet-japan",
+      "source": "_DSC2624.JPG",
+      "title": "Mountain Village"
+    },
+    {
+      "alt": "A traffic officer at a busy Tokyo crossing surrounded by billboards and pedestrians.",
+      "series": "after-dark",
+      "source": "DSC07595.JPG",
+      "title": "The Crossing"
+    },
+    {
+      "alt": "The Tokyo skyline silhouetted across the bay under a fading dusk sky.",
+      "series": "after-dark",
+      "source": "DSC07780.JPG",
+      "title": "Bay at Dusk"
+    },
+    {
+      "alt": "A green vintage sports coupe parked in a dark modernist garage beside an empty street.",
+      "series": "after-dark",
+      "source": "DSC07795.JPG",
+      "title": "Green Coupe"
+    },
+    {
+      "alt": "A packed baseball stadium under the vast white roof of the Tokyo Dome.",
+      "series": "after-dark",
+      "source": "DSC07973.JPG",
+      "title": "Under the Dome"
+    },
+    {
+      "alt": "A night street in Tokyo's electric town lined with glowing signs and passing traffic.",
+      "series": "after-dark",
+      "source": "DSC08048.JPG",
+      "title": "Electric Town"
+    },
+    {
+      "alt": "A curved office tower with lit windows rising into a dark, rainy night sky.",
+      "series": "after-dark",
+      "source": "DSC08110.JPG",
+      "title": "Tower in the Rain"
+    },
+    {
+      "alt": "A paper lantern hanging before a glowing shoji window in a dark tatami room.",
+      "series": "after-dark",
+      "source": "DSC08164.JPG",
+      "title": "Paper Window"
+    },
+    {
+      "alt": "A traditional garden pond and teahouse with Tokyo high-rises in the background.",
+      "series": "after-dark",
+      "source": "DSC08872.JPG",
+      "title": "Garden and Towers"
+    },
+    {
+      "alt": "A narrow Tokyo side street at night, glowing with vertical neon signs.",
+      "series": "after-dark",
+      "source": "DSC08995.JPG",
+      "title": "Side Street"
+    },
+    {
+      "alt": "A dim alley at night lit by shop signs and a single red lantern.",
+      "series": "after-dark",
+      "source": "DSC09034.JPG",
+      "title": "Alley Lights"
+    },
+    {
+      "alt": "Glowing vending machines and a parked bicycle in a dark covered walkway.",
+      "series": "after-dark",
+      "source": "_DSC2234.JPG",
+      "title": "Vending Machines"
+    },
+    {
+      "alt": "The warmly lit entrance of a small izakaya with noren curtains and paper lanterns.",
+      "series": "after-dark",
+      "source": "_DSC2243.JPG",
+      "title": "Izakaya"
+    },
+    {
+      "alt": "A softly glowing shoji window framed by complete darkness.",
+      "series": "after-dark",
+      "source": "_DSC2332.JPG",
+      "title": "Shoji"
+    },
+    {
+      "alt": "A brightly lit convenience store on a quiet street corner at blue hour.",
+      "series": "after-dark",
+      "source": "IMG_0659.jpeg",
+      "title": "Corner Store"
+    },
+    {
+      "alt": "A glowing billboard and shop front towering over a dark Tokyo street at night.",
+      "series": "after-dark",
+      "source": "_DSC2651.JPG",
+      "title": "Night Signs"
+    },
+    {
+      "alt": "A narrow street with power lines and apartment blocks, a tower fading into the haze.",
+      "series": "after-dark",
+      "source": "IMG_0817.jpeg",
+      "title": "Tower Street"
+    },
+    {
+      "alt": "A late-night food counter glowing beside a parked motorcycle on a dark street.",
+      "series": "after-dark",
+      "source": "_DSC2720.JPG",
+      "title": "Late Counter"
+    },
+    {
+      "alt": "An ancient laurel tree with twisting branches standing in thick white fog.",
+      "series": "laurel-fog",
+      "source": "_DSC0826.JPG",
+      "title": "The Old Laurel"
+    },
+    {
+      "alt": "The sprawling canopy of an old laurel tree reaching into dense fog.",
+      "series": "laurel-fog",
+      "source": "_DSC0840.JPG",
+      "title": "Canopy"
+    },
+    {
+      "alt": "Two small walkers beneath gnarled laurel trees in a misty black and white forest.",
+      "series": "laurel-fog",
+      "source": "_DSC0862.JPG",
+      "title": "Two Walkers"
+    },
+    {
+      "alt": "A dark mountain ridge emerging from swirling grey clouds.",
+      "series": "laurel-fog",
+      "source": "_DSC1035.JPG",
+      "title": "Cloud Ridge"
+    },
+    {
+      "alt": "A paved path winding over a green ridge above a sea of clouds.",
+      "series": "laurel-fog",
+      "source": "_DSC1138.JPG",
+      "title": "Above the Fog"
+    },
+    {
+      "alt": "A deep green valley glimpsed between overhanging branches and drifting mist.",
+      "series": "laurel-fog",
+      "source": "_DSC1207.JPG",
+      "title": "Green Valley"
+    },
+    {
+      "alt": "A still lake mirroring forested mountains wrapped in low grey fog.",
+      "series": "north",
+      "source": "DSC07290-DSC07294-pano.jpeg",
+      "title": "Still Lake"
+    },
+    {
+      "alt": "A dark mountainside fading into thick mist under a heavy sky.",
+      "series": "north",
+      "source": "DSC07318-DSC07320-pano.jpeg",
+      "title": "Mountain in Mist"
+    },
+    {
+      "alt": "Sunlight breaking through dark storm clouds over a wide moorland valley.",
+      "series": "north",
+      "source": "DSC07373.JPG",
+      "title": "Break in the Weather"
+    },
+    {
+      "alt": "A black and white view down a narrow fjord between steep cliffs.",
+      "series": "north",
+      "source": "DSC07417.JPG",
+      "title": "Fjord"
+    },
+    {
+      "alt": "Green slopes and snow-streaked peaks rising above a dark mountain lake.",
+      "series": "north",
+      "source": "DSC09196.JPG",
+      "title": "Snowline"
+    },
+    {
+      "alt": "A towering cliff face above a rocky shore under dramatic clouds.",
+      "series": "north",
+      "source": "DSC09242.JPG",
+      "title": "Cliff Face"
+    },
+    {
+      "alt": "A shaft of light across dark moorland hills under a heavy grey sky.",
+      "series": "north",
+      "source": "_DSC1785.JPG",
+      "title": "Moor Light"
+    },
+    {
+      "alt": "Golden autumn larches beside a trail with a lake and hills in the distance.",
+      "series": "north",
+      "source": "_DSC2040.JPG",
+      "title": "Larches"
+    },
+    {
+      "alt": "Late sun glowing through a deep valley with autumn colours and a winding path.",
+      "series": "north",
+      "source": "_DSC2060.JPG",
+      "title": "Valley Glow"
+    },
+    {
+      "alt": "A lone surf caster silhouetted on a dark beach against hazy mountains and crashing waves.",
+      "series": "north",
+      "source": "DSC05387.jpg",
+      "title": "Surf Caster"
+    },
+    {
+      "alt": "A winding road with a metal guardrail through a sunlit green forest.",
+      "series": "north",
+      "source": "DSC04052.jpg",
+      "title": "Forest Road"
+    },
+    {
+      "alt": "A small chapel perched on a rocky outcrop above pine trees against a deep blue sky.",
+      "series": "streets-and-facades",
+      "source": "DSC06469.jpg",
+      "title": "Chapel on the Rock"
+    },
+    {
+      "alt": "Olive trees on a dry hillside with an ancient hilltop citadel in the distance.",
+      "series": "streets-and-facades",
+      "source": "DSC06691.jpg",
+      "title": "Olive Hill"
+    },
+    {
+      "alt": "Whitewashed stairs and houses in a narrow Mediterranean alley shaded by trees.",
+      "series": "streets-and-facades",
+      "source": "DSC06728.jpg",
+      "title": "Whitewashed Stairs"
+    },
+    {
+      "alt": "A shaded taverna terrace with white tables and chairs under an awning.",
+      "series": "streets-and-facades",
+      "source": "DSC06754.jpg",
+      "title": "Taverna"
+    },
+    {
+      "alt": "The stepped concrete tower of a modernist church rising into a blue sky.",
+      "series": "streets-and-facades",
+      "source": "L1680744.jpg",
+      "title": "Concrete Organ"
+    },
+    {
+      "alt": "An ornate building corner topped with a green copper dome against a deep blue sky.",
+      "series": "streets-and-facades",
+      "source": "IMG_20180702_153537.jpg",
+      "title": "Green Dome"
+    }
   ],
   "variants": {
     "frame": [
-      { "name": "None", "surcharge": { "large": 0, "medium": 0, "small": 0 } },
-      { "name": "Black oak", "surcharge": { "large": 435, "medium": 220, "small": 120 } },
-      { "name": "Natural oak", "surcharge": { "large": 435, "medium": 220, "small": 120 } }
+      {
+        "name": "None",
+        "surcharge": {
+          "large": 0,
+          "medium": 0,
+          "small": 0
+        }
+      },
+      {
+        "name": "Black oak",
+        "surcharge": {
+          "large": 435,
+          "medium": 220,
+          "small": 120
+        }
+      },
+      {
+        "name": "Natural oak",
+        "surcharge": {
+          "large": 435,
+          "medium": 220,
+          "small": 120
+        }
+      }
     ],
     "paper": [
-      { "name": "Matte fine art", "surcharge": { "large": 0, "medium": 0, "small": 0 } },
-      { "name": "Baryta", "surcharge": { "large": 60, "medium": 40, "small": 20 } }
+      {
+        "name": "Matte fine art",
+        "surcharge": {
+          "large": 0,
+          "medium": 0,
+          "small": 0
+        }
+      },
+      {
+        "name": "Baryta",
+        "surcharge": {
+          "large": 60,
+          "medium": 40,
+          "small": 20
+        }
+      }
     ],
     "size": [
-      { "key": "small", "name": "Small, 40 cm", "price": 95 },
-      { "key": "medium", "name": "Medium, 60 cm", "price": 195 },
-      { "key": "large", "name": "Large, 90 cm", "price": 395 }
+      {
+        "key": "small",
+        "name": "Small, 40 cm",
+        "price": 95
+      },
+      {
+        "key": "medium",
+        "name": "Medium, 60 cm",
+        "price": 195
+      },
+      {
+        "key": "large",
+        "name": "Large, 90 cm",
+        "price": 395
+      }
     ]
   }
 }
