@@ -24,7 +24,7 @@ export function ProductCard({ loading, outOfStockText, product, quickShopText }:
   const href = buildProductUrl(product.handle, product.defaultVariantSelectedOptions ?? []);
   // The link is stretched rather than wrapping the card so Quick Shop isn't a button inside an anchor.
   return (
-    <ProductCardRoot>
+    <ProductCardRoot data-numbers-id={`product_card_${product.handle}`}>
       <ProductCardImageContainer>
         <ProductCardImage
           src={product.featuredImage?.url}

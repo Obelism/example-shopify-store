@@ -175,6 +175,9 @@ importers:
       '@obelism/content-react':
         specifier: 0.4.11
         version: 0.4.11(react@19.3.1)
+      '@obelism/numbers-sdk':
+        specifier: ^0.7.0
+        version: 0.7.0
       '@shopify/hydrogen':
         specifier: 2026.10.2
         version: 2026.10.2(graphql@17.0.2)(react@19.3.1)(typescript@7.0.2)
@@ -606,6 +609,10 @@ packages:
     peerDependenciesMeta:
       '@vercel/oidc':
         optional: true
+
+  '@obelism/numbers-sdk@0.7.0':
+    resolution: {integrity: sha512-fdd3WDfiGjL6UdTs5Wln9/cDj2CBF5IinyBai+D/pYMqNoHF6KtRUNm0tDsOSqNAUYELURpR1QWejtIi2vnhmg==}
+    engines: {node: '>=20'}
 
   '@oxfmt/binding-android-arm-eabi@0.78.0':
     resolution: {integrity: sha512-1x9NPGQG5WMOOT8spRP4hPbeqwB/P9ayxFo4EUDSle6mLmtYRqE6suXgHr93/S2nnszy77LlIa8klkKdWtHbMw==}
@@ -1935,6 +1942,8 @@ snapshots:
       - '@vercel/oidc'
 
   '@obelism/content@0.31.0': {}
+
+  '@obelism/numbers-sdk@0.7.0': {}
 
   '@oxfmt/binding-android-arm-eabi@0.78.0':
     optional: true

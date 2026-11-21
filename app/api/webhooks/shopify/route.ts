@@ -1,10 +1,69 @@
 import crypto from "node:crypto";
 
 import { revalidateTag } from "next/cache";
+import { z } from "zod";
 
+import { VISITOR_LINE_ATTRIBUTE } from "@/lib/numbers";
+import { sendServerEvent } from "@/lib/numbers/server";
 import { getNumericShopifyId } from "@/lib/shopify/id/server";
 
 const SHOPIFY_WEBHOOK_SECRET = process.env.SHOPIFY_WEBHOOK_SECRET;
+
+const paidOrderSchema = z.object({
+  client_details: z.object({ user_agent: z.string().nullish() }).nullish(),
+  currency: z.string(),
+  id: z.number(),
+  line_items: z.array(
+    z.object({
+      price: z.string(),
+      product_id: z.number().nullish(),
+      properties: z.array(z.object({ name: z.string(), value: z.unknown() })).nullish(),
+      quantity: z.number(),
+      variant_id: z.number().nullish(),
+    }),
+  ),
+  shipping_address: z.object({ country_code: z.string().nullish() }).nullish(),
+  total_price: z.string(),
+});
+
+// Numbers counts the purchase for the visitor who added the prints: their id rides along as a hidden line property.
+async function sendPurchase(body: string) {
+  let payload: unknown;
+  try {
+    payload = JSON.parse(body);
+  } catch {
+    payload = null;
+  }
+  const order = paidOrderSchema.safeParse(payload);
+  if (!order.success) {
+    console.error("[Shopify Webhook] Unexpected orders/paid payload");
+    return false;
+  }
+  const { data } = order;
+  const visitorId = data.line_items
+    .flatMap((line) => line.properties ?? [])
+    .find((property) => property.name === VISITOR_LINE_ATTRIBUTE)?.value;
+  if (typeof visitorId !== "string") return false;
+  return sendServerEvent({
+    country: data.shipping_address?.country_code ?? undefined,
+    currency: data.currency,
+    event: "purchase",
+    params: {
+      items: data.line_items.map((line) => ({
+        item_id: line.product_id,
+        item_variant_id: line.variant_id,
+        price: Number(line.price),
+        quantity: line.quantity,
+      })),
+      order_id: data.id,
+    },
+    path: "/checkout",
+    scope: "checkout",
+    userAgent: data.client_details?.user_agent ?? undefined,
+    value: Number(data.total_price),
+    visitorId,
+  });
+}
 
 function verifyWebhook(body: string, hmacHeader: string | null, secret: string): boolean {
   if (!hmacHeader) return false;
@@ -115,7 +174,10 @@ export async function POST(request: Request) {
     }
   }
 
+  const purchaseSent = topic === "orders/paid" ? await sendPurchase(body) : undefined;
+
   return Response.json({
+    purchaseSent,
     success: true,
     topic,
     tagsInvalidated,

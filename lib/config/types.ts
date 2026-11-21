@@ -18,6 +18,9 @@ export type NextConfigPlugin = (config: NextConfig) => NextConfigInput | Promise
 
 export interface ShopConfig {
   analytics: {
+    numbers: {
+      isEnabled: boolean;
+    };
     shopify: {
       consent: {
         isEnabled: boolean;

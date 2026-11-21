@@ -7,6 +7,7 @@ import { use, useEffect, useRef } from "react";
 
 import { AnalyticsEvent, getAnalytics } from "@/lib/analytics/client";
 import { useCart } from "@/lib/cart/client";
+import { trackEvent } from "@/lib/numbers/client";
 import type { ProductDetails, ProductVariant } from "@/lib/product/types";
 
 export function CartViewedTracker() {
@@ -30,6 +31,10 @@ export function CollectionViewedTracker({
   const { handle, id } = collection;
   useEffect(() => {
     getAnalytics()?.publish(AnalyticsEvent.COLLECTION_VIEWED, { collection: { handle, id } });
+    trackEvent("view_item_list", "collection_page", {
+      dedupeKey: handle,
+      params: { item_list_id: handle },
+    });
   }, [handle, id]);
   return null;
 }
@@ -69,6 +74,12 @@ export function ProductViewedTracker({
       vendor: product.vendor ?? "",
     };
     getAnalytics()?.publish(AnalyticsEvent.PRODUCT_VIEWED, { products: [payload] });
+    trackEvent("view_item", "product_page", {
+      currency: variant.price.currencyCode,
+      dedupeKey: product.id,
+      params: { item_handle: product.handle, item_id: product.id, item_name: product.title },
+      value: Number(variant.price.amount),
+    });
     trackedHandleRef.current = product.handle;
   }, [product, variant]);
   return null;

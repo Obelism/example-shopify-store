@@ -78,6 +78,11 @@ function CmsBlock({ block, collections, introHeading, products }: CmsBlockProps)
   }
 }
 
+// Numbers counts clicks per block under its uid, which is what Content's canvas reads for each block's click rate.
+function trackedBlock(block: { _uid: string }) {
+  return { ...editable(block), "data-numbers-id": block._uid };
+}
+
 // Content stores what editors type, so only site paths, anchors and web, mail or phone links render.
 const SAFE_HREF = /^(\/(?!\/)|#|https?:|mailto:|tel:)/i;
 
@@ -120,7 +125,7 @@ interface IntroBlockProps {
 
 function IntroBlock({ block, heading: Heading }: IntroBlockProps) {
   return (
-    <section {...editable(block)} className="grid content-start gap-5">
+    <section {...trackedBlock(block)} className="grid content-start gap-5">
       {block.heading ? (
         <Heading className="font-serif text-3xl leading-tight tracking-tight">
           {block.heading}
@@ -139,7 +144,7 @@ function IntroBlock({ block, heading: Heading }: IntroBlockProps) {
             return target ? (
               <Link
                 key={item._uid}
-                {...editable(item)}
+                {...trackedBlock(item)}
                 className="underline-offset-4 hover:underline"
                 href={target}
               >
@@ -159,7 +164,7 @@ interface TextBlockProps {
 
 function TextBlock({ block }: TextBlockProps) {
   return (
-    <section {...editable(block)} className="grid max-w-2xl gap-4">
+    <section {...trackedBlock(block)} className="grid max-w-2xl gap-4">
       {block.heading ? (
         <h2 className="font-serif text-2xl tracking-tight">{block.heading}</h2>
       ) : null}
@@ -184,7 +189,7 @@ function ImageBlockView({ block }: ImageBlockViewProps) {
   const alt = typeof image.alt === "string" ? image.alt : (Object.values(image.alt ?? {})[0] ?? "");
   return (
     <figure
-      {...editable(block)}
+      {...trackedBlock(block)}
       className={cn("grid w-full gap-2", IMAGE_WIDTHS[block.width ?? "wide"])}
     >
       <Image
@@ -209,7 +214,7 @@ interface QuoteBlockProps {
 
 function QuoteBlock({ block }: QuoteBlockProps) {
   return (
-    <figure {...editable(block)} className="grid max-w-2xl gap-3 border-l pl-6">
+    <figure {...trackedBlock(block)} className="grid max-w-2xl gap-3 border-l pl-6">
       <blockquote className="font-serif text-2xl leading-snug italic tracking-tight">
         {block.quote}
       </blockquote>
@@ -231,7 +236,7 @@ function FeaturedSeriesBlock({ block, collections }: FeaturedSeriesBlockProps) {
   );
   if (picked.length === 0) return null;
   return (
-    <section {...editable(block)} className="grid gap-5">
+    <section {...trackedBlock(block)} className="grid gap-5">
       {block.heading ? (
         <h2 className="font-serif text-2xl tracking-tight">{block.heading}</h2>
       ) : null}
@@ -258,7 +263,7 @@ function FeaturedPrintBlock({ block, products }: FeaturedPrintBlockProps) {
   if (!product) return null;
   const image = product.featuredImage;
   return (
-    <section {...editable(block)} className="grid items-center gap-6 md:grid-cols-2 md:gap-10">
+    <section {...trackedBlock(block)} className="grid items-center gap-6 md:grid-cols-2 md:gap-10">
       {image ? (
         <Image
           alt={image.altText || product.title}
