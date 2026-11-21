@@ -175,6 +175,9 @@ importers:
       '@obelism/content-react':
         specifier: 0.4.11
         version: 0.4.11(react@19.3.1)
+      '@obelism/improve-sdk':
+        specifier: ^3.8.1
+        version: 3.8.1(ua-parser-js@2.0.10)
       '@obelism/numbers-sdk':
         specifier: 0.7.0
         version: 0.7.0
@@ -247,6 +250,9 @@ importers:
       typescript:
         specifier: 7.0.2
         version: 7.0.2
+      ua-parser-js:
+        specifier: ^2.0.10
+        version: 2.0.10
       zod:
         specifier: 4.6.7
         version: 4.6.7
@@ -606,6 +612,15 @@ packages:
     hasBin: true
     peerDependencies:
       '@vercel/oidc': ^4.0.0
+    peerDependenciesMeta:
+      '@vercel/oidc':
+        optional: true
+
+  '@obelism/improve-sdk@3.8.1':
+    resolution: {integrity: sha512-4YFdk+UyCr+nEEmc1V28du1nP/IGPzS6i6zZPn+Cl/HM/69JSMj57asN9LDVKD63w0E9avMBAbeTNCUMkirI8Q==}
+    peerDependencies:
+      '@vercel/oidc': ^4.0.0
+      ua-parser-js: ^2.0.0
     peerDependenciesMeta:
       '@vercel/oidc':
         optional: true
@@ -1232,6 +1247,9 @@ packages:
   dayjs@1.11.23:
     resolution: {integrity: sha512-QDTCU0M0MxR3hQfnlDJfwekQiaanm1ubOD231u73WBckQ/fsamwRLiE2GBz6D3a/xF1NgfiDLJjXBa1hYOYTtQ==}
 
+  detect-europe-js@0.1.2:
+    resolution: {integrity: sha512-lgdERlL3u0aUdHocoouzT10d9I89VVhk0qNRmll7mXdGfJT1/wqZ2ZLA4oJAjeACPY5fT1wsbq2AT+GkuInsow==}
+
   detect-libc@2.1.2:
     resolution: {integrity: sha512-Btj2BOOO83o3WyH59e8MgXsxEQVcarkUOpEYrubB0urwnN10yQ364rsiByU11nZlqWYZm05i/of7io4mzihBtQ==}
     engines: {node: '>=8'}
@@ -1284,6 +1302,9 @@ packages:
   is-plain-object@5.1.0:
     resolution: {integrity: sha512-bUi/yjmtKYcRVUtWRGr0UA6xEFh2I6zWUwMrUXB3s7bmYCaZ8a+0ZsTRkrawh/mzlSD1Y0Ph8bp/U+TvBpWDNw==}
     engines: {node: '>=0.10.0'}
+
+  is-standalone-pwa@0.1.1:
+    resolution: {integrity: sha512-9Cbovsa52vNQCjdXOzeQq5CnCbAcRk05aU62K20WO372NrTv0NxibLFCK6lQ4/iZEFdEA3p3t2VNOn8AJ53F5g==}
 
   isexe@2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
@@ -1674,6 +1695,13 @@ packages:
     engines: {node: '>=16.20.0'}
     hasBin: true
 
+  ua-is-frozen@0.1.2:
+    resolution: {integrity: sha512-RwKDW2p3iyWn4UbaxpP2+VxwqXh0jpvdxsYpZ5j/MLLiQOfbsV5shpgQiw93+KMYQPcteeMQ289MaAFzs3G9pw==}
+
+  ua-parser-js@2.0.10:
+    resolution: {integrity: sha512-t+3Ktbq0Ies2vaSezfOaWiolH4OigQIO1dk+1xDpOydB1COVPocVYOrEV5rqZ0kFY9XYG1v9LutCyMgYBpABcw==}
+    hasBin: true
+
   undici-types@8.9.0:
     resolution: {integrity: sha512-KTDyRTYX8sWmKXAikPHHSyc63CRPETMctyjKFupcC6OBLXT3xsN0e9aF7m+mIXutFWpUXuedtowG7iLOzp0kQg==}
 
@@ -1942,6 +1970,11 @@ snapshots:
       - '@vercel/oidc'
 
   '@obelism/content@0.31.0': {}
+
+  '@obelism/improve-sdk@3.8.1(ua-parser-js@2.0.10)':
+    dependencies:
+      '@obelism/numbers-sdk': 0.7.0
+      ua-parser-js: 2.0.10
 
   '@obelism/numbers-sdk@0.7.0': {}
 
@@ -2282,6 +2315,8 @@ snapshots:
 
   dayjs@1.11.23: {}
 
+  detect-europe-js@0.1.2: {}
+
   detect-libc@2.1.2: {}
 
   dom-serializer@3.1.1:
@@ -2335,6 +2370,8 @@ snapshots:
       entities: 8.1.0
 
   is-plain-object@5.1.0: {}
+
+  is-standalone-pwa@0.1.1: {}
 
   isexe@2.0.0: {}
 
@@ -2613,6 +2650,14 @@ snapshots:
       '@typescript/typescript-sunos-x64': 7.0.2
       '@typescript/typescript-win32-arm64': 7.0.2
       '@typescript/typescript-win32-x64': 7.0.2
+
+  ua-is-frozen@0.1.2: {}
+
+  ua-parser-js@2.0.10:
+    dependencies:
+      detect-europe-js: 0.1.2
+      is-standalone-pwa: 0.1.1
+      ua-is-frozen: 0.1.2
 
   undici-types@8.9.0: {}
 

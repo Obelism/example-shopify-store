@@ -19,6 +19,7 @@ import { cartHandlers, createCustomerCartHandlers } from "@/lib/cart/request";
 import { isDraftRequest } from "@/lib/cms/request";
 import { getRefinedCollectionPath, isRefinedCollectionPath } from "@/lib/collections";
 import { shopConfig } from "@/lib/config";
+import { seedImproveCookies } from "@/lib/improve/request";
 import { getMarkdownRewritePath } from "@/lib/markdown/representation";
 import { predictiveSearchHandlers } from "@/lib/search/request";
 import { SHOPIFY_ROUTE_TEMPLATES } from "@/lib/shopify/routing";
@@ -67,6 +68,7 @@ export async function proxy(request: NextRequest): Promise<Response> {
         request: { headers: forwardCustomerRefreshAttempt(request.nextUrl, headers) },
       });
   requestContext.applyResponseHeaders(response.headers);
+  await seedImproveCookies(request, response);
   // Drafts arrive on the public URL, so keep them out of shared caches and search engines.
   if (isDraftRequest(request)) {
     response.headers.set("Cache-Control", "private, no-store");

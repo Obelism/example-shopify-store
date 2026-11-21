@@ -10,6 +10,9 @@ import { CartProviderWrapper } from "@/components/cart/context";
 import { CartStandardActionsScript } from "@/components/cart/standard-actions";
 import { CmsBridge } from "@/components/cms/cms-bridge";
 import { Footer } from "@/components/footer";
+import { ImproveSync } from "@/components/improve/improve-client";
+import { ImproveHead } from "@/components/improve/improve-head";
+import { ImproveVariants } from "@/components/improve/improve-variants";
 import { Nav } from "@/components/nav";
 import { SiteSchema } from "@/components/schema/site-schema";
 import { seedCartData } from "@/lib/cart/server";
@@ -41,9 +44,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   // Un-awaited: the promise streams to the client provider; never block the shell on it.
   const cartData = seedCartData();
   return (
-    <html lang={shopConfig.localization.locale}>
+    // Improve's head script marks <html> with the visitor's variants before hydration.
+    <html lang={shopConfig.localization.locale} suppressHydrationWarning>
       <head>
         <CartStandardActionsScript />
+        <ImproveHead />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${newsreader.variable} flex min-h-dvh flex-col font-sans antialiased`}
@@ -58,6 +63,19 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <CmsBridge />
 
         <CartProviderWrapper cartData={cartData}>
+          <ImproveVariants
+            fallback="off"
+            kind="flag"
+            slug="shipping-banner"
+            variants={{
+              off: null,
+              on: (
+                <p className="bg-foreground px-5 py-2 text-center text-xs text-background">
+                  Free shipping on every framed print this month.
+                </p>
+              ),
+            }}
+          />
           <Nav />
           <main id="main-content" className="flex flex-1 flex-col min-w-0">
             {children}
@@ -66,6 +84,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <CartUI />
           <Suspense>
             <AnalyticsComponents />
+          </Suspense>
+          <Suspense>
+            <ImproveSync />
           </Suspense>
         </CartProviderWrapper>
       </body>

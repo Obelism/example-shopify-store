@@ -1,6 +1,6 @@
 import { DEFAULT_ENDPOINT, detectDevice } from "@obelism/numbers-sdk";
 
-import { getNumbersConfig } from "./index";
+import { getObelismConfig } from "@/lib/obelism";
 
 interface ServerEvent {
   country?: string;
@@ -16,8 +16,8 @@ interface ServerEvent {
 
 // Server events carry the environment's API token and no Origin header; a browser could not send them.
 export async function sendServerEvent({ userAgent, visitorId, ...event }: ServerEvent) {
-  const config = getNumbersConfig();
-  const token = process.env.NUMBERS_API_TOKEN;
+  const config = getObelismConfig();
+  const token = process.env.OBELISM_API_TOKEN;
   if (!config || !token) return false;
   try {
     const response = await fetch(DEFAULT_ENDPOINT, {

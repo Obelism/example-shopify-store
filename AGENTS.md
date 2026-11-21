@@ -28,11 +28,18 @@ Every feature belongs to exactly one owner. If a change cannot name its owner, o
 
 **Obelism Numbers owns analytics**: page views, clicks and the shop's events.
 
-- Lives in: `lib/numbers/**`, `components/analytics/numbers-tracker.tsx`, and the calls in `components/analytics/trackers.tsx`, `components/product-detail/buy-buttons.tsx`, `lib/cart/client.ts` and the `orders/paid` branch of `app/api/webhooks/shopify`.
+- Lives in: `lib/numbers/**` (with the space settings it shares with Improve in `lib/obelism/**`), `components/analytics/numbers-tracker.tsx`, and the calls in `components/analytics/trackers.tsx`, `components/product-detail/buy-buttons.tsx`, `lib/cart/client.ts` and the `orders/paid` branch of `app/api/webhooks/shopify`.
 - Send events with `trackEvent` from `lib/numbers/client.ts`, using GA4 names and a stable scope (`product_page`, `product_form`, `cart`, `checkout`); put what varies, like the print, in `params`. Funnels and Improve goals match on event plus scope, so a per-item scope breaks them.
 - Tag clickable elements with a stable `data-numbers-id`; Content blocks use their `_uid`, which is what the canvas shows click rates for.
 - Nothing is sent while an editor works in Content (`cms_token` in the URL or the site-editing cookie), or when the `NEXT_PUBLIC_OBELISM_*` values are missing.
-- `purchase` comes from the server: the visitor id rides on each cart line as the hidden `_obelism_visitor_id` attribute, and the `orders/paid` webhook sends it with `NUMBERS_API_TOKEN`.
+- `purchase` comes from the server: the visitor id rides on each cart line as the hidden `_obelism_visitor_id` attribute, and the `orders/paid` webhook sends it with `OBELISM_API_TOKEN`.
+
+**Obelism Improve owns A/B tests and feature flags.**
+
+- Lives in: `lib/improve/**`, `components/improve/**`, the `seedImproveCookies` call in `proxy.ts`, `app/api/webhooks/improve`, and the improve-block branch of `components/cms/cms-body-client.tsx`.
+- Pages are prerendered and carry every option of every placement. `proxy.ts` decides the visitor's variants on page requests with `seedTestCookies` and sets them as cookies; `ImproveHead` (root layout) marks `<html>` with each running test's option from its cookie before the body paints, and its CSS shows that option, or the placement's fallback when the test isn't running or the cookie names an unknown option. Never pick a variant during render.
+- Put a test or flag in code with `ImproveVariants` (`fallback`, `kind`, `slug`, a node per option slug); it records the exposure after paint. Editors put them in Content with the built-in improve block: `instant` blocks render every variant, `after-load` blocks (below the page type's `aboveTheFold`) swap in after mount.
+- Goals are Numbers events by name and scope (see Numbers above). The datafile behind `ImproveHead` is cached (`getImproveConfig`, tag `improve`) and refreshed by the Improve webhook.
 
 ## Describe the product, not the change
 

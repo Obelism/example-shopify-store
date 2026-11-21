@@ -6,6 +6,7 @@ An example print shop for a fictional photographer, built to show how Obelism wo
 - **Obelism Media** holds the photographs and puts them on the Shopify products.
 - **Obelism Content** holds the pages and the stories behind each series and print.
 - **Obelism Numbers** counts visitors, clicks and the shop's events, through to paid orders.
+- **Obelism Improve** runs A/B tests and feature flags, in code and from Content.
 
 ## Getting started
 
@@ -55,7 +56,16 @@ Pages (home, About, Printing), the story of each series and of some prints come 
 
 Set the three `NEXT_PUBLIC_OBELISM_*` values and the browser sends page views, clicks on elements with a `data-numbers-id` (every Content block has one), `view_item_list`, `view_item`, `add_to_cart` and `begin_checkout` to Obelism Numbers. The site's origin has to be in the space's Allowed origins for the environment; develop allows localhost.
 
-`purchase` is sent by the server when Shopify reports a paid order: subscribe the store's `orders/paid` webhook to `/api/webhooks/shopify` (with `SHOPIFY_WEBHOOK_SECRET`) and set `NUMBERS_API_TOKEN`. The order carries the visitor id from the cart, so the purchase counts for the visitor who placed it.
+`purchase` is sent by the server when Shopify reports a paid order: subscribe the store's `orders/paid` webhook to `/api/webhooks/shopify` (with `SHOPIFY_WEBHOOK_SECRET`) and set `OBELISM_API_TOKEN`. The order carries the visitor id from the cart, so the purchase counts for the visitor who placed it.
+
+## Improve
+
+With the `NEXT_PUBLIC_OBELISM_*` values set, `proxy.ts` assigns each visitor's variants on page requests, and the page shows them before it paints, though every page is prerendered.
+
+- In code: the `print-page-details` test on the print page and the `shipping-banner` flag above the nav (`ImproveVariants`).
+- From Content: editors add an A/B test or flag block to a page; the `home-intro` test on the home page is one.
+- Goals are the Numbers events: `print-page-details` starts at `view_item` (`product_page`) and converts at `add_to_cart` (`product_form`).
+- Add a webhook in Improve pointing at `/api/webhooks/improve` with `IMPROVE_WEBHOOK_SECRET`, so starting or stopping a test refreshes the site within seconds instead of minutes.
 
 ## Checks
 
