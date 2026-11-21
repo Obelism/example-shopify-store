@@ -1,11 +1,13 @@
 "use client";
 
-import { imageUrl, linkHref } from "@obelism/content";
+import { type ImproveBlock, imageUrl, isImproveBlock, linkHref } from "@obelism/content";
 import { editable, RichText, type RichTextMarkProps, useLiveEntry } from "@obelism/content-react";
 import { cn } from "cn";
 import Image, { type ImageLoader } from "next/image";
+import { useEffect, useState } from "react";
 
 import { CollectionCard } from "@/components/collections/collection-card";
+import { ImproveVariants } from "@/components/improve/improve-variants";
 import { Price } from "@/components/product/price";
 import { Link } from "@/components/ui/link";
 import type {
@@ -19,6 +21,7 @@ import type {
 import { HOME_PATH, resolveBlocks } from "@/lib/cms";
 import type { CmsBodyBlock, CmsBodyEntry } from "@/lib/cms/types";
 import type { CollectionWithThumbnail } from "@/lib/collections/types";
+import { recordExposure } from "@/lib/improve/client";
 import type { ProductCard } from "@/lib/product/types";
 
 interface CmsBodyClientProps {
@@ -39,17 +42,73 @@ export function CmsBodyClient({
   const live = useLiveEntry(entry);
   return (
     <div {...editable(live)} className={cn("grid gap-12", className)}>
-      {resolveBlocks(live.fields.body).map((block) => (
-        <CmsBlock
-          key={block._uid}
-          block={block}
-          collections={collections}
-          introHeading={introHeading}
-          products={products}
-        />
-      ))}
+      {(live.fields.body ?? []).map((block) =>
+        isImproveBlock(block) ? (
+          <ImproveBlockView
+            key={block._uid}
+            block={block}
+            collections={collections}
+            introHeading={introHeading}
+            products={products}
+          />
+        ) : (
+          <CmsBlock
+            key={block._uid}
+            block={block}
+            collections={collections}
+            introHeading={introHeading}
+            products={products}
+          />
+        ),
+      )}
     </div>
   );
+}
+
+interface ImproveBlockViewProps extends Omit<CmsBlockProps, "block"> {
+  block: ImproveBlock<CmsBodyBlock>;
+}
+
+function ImproveBlockView({ block, ...props }: ImproveBlockViewProps) {
+  const variants = block.variants ?? {};
+  const fallback =
+    block.fallback && variants[block.fallback] ? block.fallback : Object.keys(variants)[0];
+  if (!fallback) return null;
+  if (block.mode === "after-load") {
+    return <AfterLoadVariants block={block} fallback={fallback} {...props} />;
+  }
+  return (
+    <ImproveVariants
+      fallback={fallback}
+      kind={block.kind}
+      slug={block.slug}
+      variants={Object.fromEntries(
+        Object.entries(variants).map(([option, blocks]) => [
+          option,
+          blocks.map((child) => <CmsBlock key={child._uid} block={child} {...props} />),
+        ]),
+      )}
+    />
+  );
+}
+
+interface AfterLoadVariantsProps extends ImproveBlockViewProps {
+  fallback: string;
+}
+
+// Below the page type's fold only the fallback is in the markup; the visitor's variant swaps in after mount, and only then counts as seen.
+function AfterLoadVariants({ block, fallback, ...props }: AfterLoadVariantsProps) {
+  const variants = block.variants ?? {};
+  const [option, setOption] = useState(fallback);
+  useEffect(() => {
+    const chosen = document.documentElement.getAttribute(`data-imp-${block.slug}`);
+    if (!chosen || !Object.hasOwn(variants, chosen)) return;
+    setOption(chosen);
+    void recordExposure(block.kind, block.slug);
+  }, [block.kind, block.slug, variants]);
+  return (variants[option] ?? []).map((child) => (
+    <CmsBlock key={child._uid} block={child} {...props} />
+  ));
 }
 
 interface CmsBlockProps {

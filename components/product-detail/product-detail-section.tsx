@@ -2,6 +2,7 @@ import { cn } from "cn";
 import { MinusIcon, PlusIcon } from "lucide-react";
 import { type ReactNode, Suspense } from "react";
 
+import { ImproveVariants } from "@/components/improve/improve-variants";
 import { BundleComponents, BundleParents } from "@/components/product-detail/bundle-components";
 import { BuyButtons, PurchaseOptions } from "@/components/product-detail/buy-buttons";
 import { BuyWithShopLogo } from "@/components/product-detail/buy-with-shop-logo";
@@ -298,6 +299,19 @@ function ProductInfoContent({
           </div>
         ) : null}
         {hasOptions ? <ProductFormOptions handle={product.handle} /> : null}
+        <ImproveVariants
+          fallback="control"
+          kind="test"
+          slug="print-page-details"
+          variants={{
+            control: null,
+            details: (
+              <p className="text-sm text-muted-foreground">
+                Printed to order · Signed on the back · Ships in 2 weeks
+              </p>
+            ),
+          }}
+        />
         {product.isGiftCard ? (
           <GiftCardPurchaseForm />
         ) : (

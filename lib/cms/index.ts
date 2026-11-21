@@ -13,6 +13,17 @@ export function resolveBlocks<TBlock extends Block>(
   );
 }
 
+/** Every block any visitor can see: each improve block's variants, not only its fallback. */
+export function everyBlock<TBlock extends Block>(
+  blocks: (TBlock | ImproveBlock<TBlock>)[] | null | undefined,
+): TBlock[] {
+  return (blocks ?? []).flatMap((block) =>
+    isImproveBlock(block)
+      ? Object.values((block as ImproveBlock<TBlock>).variants ?? {}).flat()
+      : [block as TBlock],
+  );
+}
+
 const ENVIRONMENTS = ["develop", "staging", "production"] as const;
 
 export function parseContentEnvironment(value: string | undefined): (typeof ENVIRONMENTS)[number] {

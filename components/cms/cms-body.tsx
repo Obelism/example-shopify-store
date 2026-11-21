@@ -1,4 +1,4 @@
-import { resolveBlocks } from "@/lib/cms";
+import { everyBlock } from "@/lib/cms";
 import type { CmsBodyEntry } from "@/lib/cms/types";
 import { getCollectionsListing } from "@/lib/collections/server";
 import { getProductsByIds } from "@/lib/product/server";
@@ -15,7 +15,7 @@ interface CmsBodyProps {
 export async function CmsBody({ className, entry, introHeading = "h2" }: CmsBodyProps) {
   const productIds = new Set<string>();
   const collectionIds = new Set<string>();
-  for (const block of resolveBlocks(entry.fields.body)) {
+  for (const block of everyBlock(entry.fields.body)) {
     if (block._type === "featuredPrint" && block.product) productIds.add(block.product.id);
     if (block._type === "featuredSeries") {
       for (const collection of block.collections ?? []) collectionIds.add(collection.id);
