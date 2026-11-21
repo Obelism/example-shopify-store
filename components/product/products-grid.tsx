@@ -1,8 +1,9 @@
 import { Suspense } from "react";
 
 import { ProductCard, ProductCardSkeleton } from "@/components/product-card/product-card";
+import { JustifiedGrid, JustifiedGridItem } from "@/components/ui/justified-grid";
 import { Link } from "@/components/ui/link";
-import { Masonry, MasonryItem } from "@/components/ui/masonry";
+import { getAspectRatio } from "@/lib/media";
 import { getSearchIndexProducts } from "@/lib/product/server";
 
 interface ProductsGridSkeletonProps {
@@ -12,13 +13,13 @@ interface ProductsGridSkeletonProps {
 
 export function ProductsGridSkeleton({ count, className }: ProductsGridSkeletonProps) {
   return (
-    <Masonry className={className}>
+    <JustifiedGrid className={className}>
       {Array.from({ length: count }, (_, index) => (
-        <MasonryItem key={index}>
+        <JustifiedGridItem key={index} aspectRatio={index % 3 === 1 ? 3 / 4 : 3 / 2}>
           <ProductCardSkeleton imageClassName={index % 3 === 1 ? "aspect-3/4" : "aspect-3/2"} />
-        </MasonryItem>
+        </JustifiedGridItem>
       ))}
-    </Masonry>
+    </JustifiedGrid>
   );
 }
 
@@ -67,16 +68,16 @@ async function ProductsGridContent({
   });
   if (products.length === 0) return null;
   return (
-    <Masonry>
+    <JustifiedGrid>
       {products.map((product, index) => (
-        <MasonryItem key={product.id}>
+        <JustifiedGridItem key={product.id} aspectRatio={getAspectRatio(product.featuredImage)}>
           <ProductCard
             loading={index < eagerCount ? "eager" : "lazy"}
             product={product}
             outOfStockText={outOfStockText}
           />
-        </MasonryItem>
+        </JustifiedGridItem>
       ))}
-    </Masonry>
+    </JustifiedGrid>
   );
 }

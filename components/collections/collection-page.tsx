@@ -18,7 +18,7 @@ interface CollectionLayoutProps {
   handle: string;
 }
 
-// The static and refine routes share this layout, so the header, toolbar, and filter sheet stay mounted when a filter switches between them.
+// The static and refine routes share this layout, so the header stays mounted when a filtered URL switches between them.
 export function CollectionLayout({ children, collection, handle }: CollectionLayoutProps) {
   return (
     <>

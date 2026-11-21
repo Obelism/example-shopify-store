@@ -14,9 +14,10 @@ ${escapeMarkdown(description)}
 
 ## Browse
 
-- [All products](${url}/collections/all): Browse the complete catalog.
-- [Search](${url}/search): Search products by keyword.
-- [Collections](${url}/collections): Browse products by collection.
+- [Work](${url}/): Every print, as a grid.
+- [Index of works](${url}/works): Every print, listed series by series.
+- [Series](${url}/collections): The photographer's series, each a collection of prints.
+- [Search](${url}/search): Search prints by keyword.
 
 ## Agent resources
 

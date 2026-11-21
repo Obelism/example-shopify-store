@@ -154,13 +154,12 @@ function ProductCardPrice({
   );
 }
 
-function ProductCardSkeleton({
-  className,
-  imageClassName,
-}: {
+interface ProductCardSkeletonProps {
   className?: string;
   imageClassName?: string;
-}) {
+}
+
+function ProductCardSkeleton({ className, imageClassName }: ProductCardSkeletonProps) {
   return (
     <div
       data-slot="product-card-skeleton"

@@ -29,6 +29,8 @@ export async function getProduct(params: {
 
   const product = await fetchProduct(params);
   if (product) tagProducts([product]);
+  // The series link renders the collection's title, so a collection webhook must refresh the page.
+  if (product?.collection) cacheTag(`collection-${product.collection.handle}`);
   return product;
 }
 

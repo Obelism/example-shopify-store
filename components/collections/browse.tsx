@@ -2,9 +2,10 @@ import { type ReactNode, Suspense } from "react";
 
 import { ProductCard } from "@/components/product-card/product-card";
 import { ProductsGridSkeleton } from "@/components/product/products-grid";
-import { MasonryItem } from "@/components/ui/masonry";
+import { JustifiedGridItem } from "@/components/ui/justified-grid";
 import { PRODUCTS_PER_PAGE } from "@/lib/collections";
 import type { BrowseResults, BrowseState, SortValue } from "@/lib/collections/types";
+import { getAspectRatio } from "@/lib/media";
 
 import { BrowsePublisher, CollectionBrowseProvider } from "./collection-browse-provider";
 import { CollectionFilters } from "./filters";
@@ -47,7 +48,7 @@ export function BrowseResultsFallback() {
   return <ProductsGridSkeleton count={PRODUCTS_PER_PAGE} />;
 }
 
-// Renders a collection page's grid under the layout's CollectionBrowseFrame and hands its facets and data search to the layout's toolbar.
+// Renders a collection page's grid under the layout's CollectionBrowseFrame and publishes its facets and data search to the browse store.
 export async function CollectionResults({ results }: CollectionResultsProps) {
   const resolved = await results;
   return (
@@ -83,13 +84,13 @@ function BrowseResultsGrid({ results }: BrowseResultsGridProps) {
       source={source}
     >
       {products.map((product, index) => (
-        <MasonryItem key={product.id}>
+        <JustifiedGridItem key={product.id} aspectRatio={getAspectRatio(product.featuredImage)}>
           <ProductCard
             loading={index < 6 ? "eager" : "lazy"}
             product={product}
             outOfStockText="Out of Stock"
           />
-        </MasonryItem>
+        </JustifiedGridItem>
       ))}
     </InfiniteProductGrid>
   );
