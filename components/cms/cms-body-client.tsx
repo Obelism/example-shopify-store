@@ -4,7 +4,7 @@ import { type ImproveBlock, imageUrl, isImproveBlock, linkHref } from "@obelism/
 import { editable, RichText, type RichTextMarkProps, useLiveEntry } from "@obelism/content-react";
 import { cn } from "cn";
 import Image, { type ImageLoader } from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 
 import { CollectionCard } from "@/components/collections/collection-card";
 import { ImproveVariants } from "@/components/improve/improve-variants";
@@ -72,7 +72,9 @@ interface ImproveBlockViewProps extends Omit<CmsBlockProps, "block"> {
 function ImproveBlockView({ block, ...props }: ImproveBlockViewProps) {
   const variants = block.variants ?? {};
   const fallback =
-    block.fallback && variants[block.fallback] ? block.fallback : Object.keys(variants)[0];
+    block.fallback && Object.hasOwn(variants, block.fallback)
+      ? block.fallback
+      : Object.keys(variants)[0];
   if (!fallback) return null;
   if (block.mode === "after-load") {
     return <AfterLoadVariants block={block} fallback={fallback} {...props} />;
@@ -97,16 +99,20 @@ interface AfterLoadVariantsProps extends ImproveBlockViewProps {
 }
 
 // Below the page type's fold only the fallback is in the markup; the visitor's variant swaps in after mount, and only then counts as seen.
+const subscribeNoop = () => () => {};
+
 function AfterLoadVariants({ block, fallback, ...props }: AfterLoadVariantsProps) {
-  const variants = block.variants ?? {};
-  const [option, setOption] = useState(fallback);
+  const { kind, slug, variants } = block;
+  const chosen = useSyncExternalStore(
+    subscribeNoop,
+    () => document.documentElement.getAttribute(`data-imp-${slug}`),
+    () => null,
+  );
+  const option = chosen && variants && Object.hasOwn(variants, chosen) ? chosen : fallback;
   useEffect(() => {
-    const chosen = document.documentElement.getAttribute(`data-imp-${block.slug}`);
-    if (!chosen || !Object.hasOwn(variants, chosen)) return;
-    setOption(chosen);
-    void recordExposure(block.kind, block.slug);
-  }, [block.kind, block.slug, variants]);
-  return (variants[option] ?? []).map((child) => (
+    if (option !== fallback) void recordExposure(kind, slug);
+  }, [fallback, kind, option, slug]);
+  return (variants?.[option] ?? []).map((child) => (
     <CmsBlock key={child._uid} block={child} {...props} />
   ));
 }
