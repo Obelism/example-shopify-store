@@ -9,6 +9,8 @@ import { useCartDrawer } from "@/components/cart/context";
 import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/lib/money";
 import type { Money } from "@/lib/money/types";
+import { shopifyItemId, VISITOR_LINE_ATTRIBUTE } from "@/lib/numbers";
+import { trackEvent, useVisitorId } from "@/lib/numbers/client";
 import { getProductPurchaseOptions } from "@/lib/product";
 import { useProductForm } from "@/lib/product/client";
 import type { ProductFormVariant, SellingPlanAllocation } from "@/lib/product/types";
@@ -39,6 +41,7 @@ export function BuyButtons({
   const { plans, selectedPlan } = getProductPurchaseOptions(selectedVariant, purchaseOption);
   const missingRequiredPlan = Boolean(selectedVariant?.requiresSellingPlan && !selectedPlan);
   const { openOverlay } = useCartDrawer();
+  const visitorId = useVisitorId();
 
   useEffect(() => {
     const handlePageShow = (e: PageTransitionEvent) => {
@@ -79,6 +82,15 @@ export function BuyButtons({
             event.preventDefault();
             return;
           }
+          trackEvent("add_to_cart", "product_form", {
+            currency: selectedVariant.price.currencyCode,
+            params: {
+              item_handle: selectedVariant.product.handle,
+              item_variant_id: shopifyItemId(selectedVariant.id),
+              quantity,
+            },
+            value: Number(selectedVariant.price.amount) * quantity,
+          });
           onAddToCart?.();
           openOverlay();
         },
@@ -96,6 +108,12 @@ export function BuyButtons({
       <input type="hidden" name="sellingPlanId" value={selectedPlan?.sellingPlan.id ?? ""} />
       <input type="hidden" {...register("merchandiseId", {})} />
       <input type="hidden" {...register("quantity", { value: quantity })} />
+      {visitorId ? (
+        <input
+          type="hidden"
+          {...register("attributeValue", { key: VISITOR_LINE_ATTRIBUTE, value: visitorId })}
+        />
+      ) : null}
       <div className="flex flex-wrap gap-2.5">
         {quantityPicker ? (
           <div
@@ -132,6 +150,7 @@ export function BuyButtons({
         ) : null}
         <Button
           {...register("addToCart", {})}
+          data-numbers-id="pdp_add_to_cart"
           data-selection-unresolved={isSelectionUnresolved && !pending}
           disabled={
             isSelectionUnresolved ||

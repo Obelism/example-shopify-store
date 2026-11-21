@@ -4,6 +4,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import { isShopifyScriptsEnabled, shopConfig } from "@/lib/config";
 
+import { NumbersTracker } from "./numbers-tracker";
 import { ShopifyScriptsTracker } from "./shopify-client";
 
 export function AnalyticsComponents() {
@@ -19,6 +20,7 @@ export function AnalyticsComponents() {
 
   return (
     <>
+      {shopConfig.analytics.numbers.isEnabled && <NumbersTracker />}
       {shopConfig.analytics.vercel.isEnabled && <Analytics />}
       {shopConfig.analytics.speedInsights.isEnabled && <SpeedInsights />}
       {isShopifyScriptsEnabled && <ShopifyScriptsTracker i18n={i18n} shop={shop} />}

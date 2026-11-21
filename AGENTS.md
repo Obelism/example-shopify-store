@@ -26,6 +26,14 @@ Every feature belongs to exactly one owner. If a change cannot name its owner, o
 - Blocks render client-side in `components/cms/cms-body-client.tsx` with `useLiveEntry` and `editable(block)`; Shopify data for featured blocks is resolved on the server in `components/cms/cms-body.tsx`.
 - Content assets load from Content's image API through the `next/image` loader, not Next's optimizer.
 
+**Obelism Numbers owns analytics**: page views, clicks and the shop's events.
+
+- Lives in: `lib/numbers/**`, `components/analytics/numbers-tracker.tsx`, and the calls in `components/analytics/trackers.tsx`, `components/product-detail/buy-buttons.tsx`, `lib/cart/client.ts` and the `orders/paid` branch of `app/api/webhooks/shopify`.
+- Send events with `trackEvent` from `lib/numbers/client.ts`, using GA4 names and a stable scope (`product_page`, `product_form`, `cart`, `checkout`); put what varies, like the print, in `params`. Funnels and Improve goals match on event plus scope, so a per-item scope breaks them.
+- Tag clickable elements with a stable `data-numbers-id`; Content blocks use their `_uid`, which is what the canvas shows click rates for.
+- Nothing is sent while an editor works in Content (`cms_token` in the URL or the site-editing cookie), or when the `NEXT_PUBLIC_OBELISM_*` values are missing.
+- `purchase` comes from the server: the visitor id rides on each cart line as the hidden `_obelism_visitor_id` attribute, and the `orders/paid` webhook sends it with `NUMBERS_API_TOKEN`.
+
 ## Describe the product, not the change
 
 - Code, comments, docs, skills, commits, and pull requests describe current behavior, not the work that produced it.
@@ -48,7 +56,7 @@ Agent folders hold only `.agents/skills/` and its `.claude/skills` symlink; edit
 
 ## Commands
 
-- pnpm 12 and Node 26 (`devEngines` downloads Node on mismatch). `pnpm dev` refuses to start without the three required Shopify values in `.env.local` (see `.env.example`); `next typegen` is exempt.
+- pnpm 12 and Node 26 (`devEngines` downloads Node on mismatch). `pnpm dev` refuses to start without the required Shopify and Content values in `.env.local` (see `.env.example`); `next typegen` is exempt.
 - `pnpm lint` (oxlint + `oxfmt --check`), `pnpm format` to fix, `pnpm typecheck` (`next typegen && tsc --noEmit`; plain `tsc` fails on a fresh checkout), `pnpm build` for prerender errors.
 
 ## Template releases

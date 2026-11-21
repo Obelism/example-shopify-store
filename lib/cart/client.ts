@@ -4,6 +4,7 @@ import { createCartComponents } from "@shopify/hydrogen/react";
 import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 
 import { prepareCheckoutAction } from "@/lib/cart/action";
+import { trackEvent } from "@/lib/numbers/client";
 
 import type { cartHandlers } from "./request";
 
@@ -59,6 +60,12 @@ export function useCheckout() {
     attempt.current = currentAttempt;
     setCheckoutError(null);
     setIsCheckingOut(true);
+    trackEvent("begin_checkout", "cart", {
+      currency: cart.cost.subtotalAmount.currencyCode,
+      dedupeKey: `${cart.id}:${cart.updatedAt}`,
+      params: { quantity: cart.totalQuantity },
+      value: Number(cart.cost.subtotalAmount.amount),
+    });
 
     try {
       const { checkoutUrl } = await prepareCheckoutAction();

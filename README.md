@@ -5,6 +5,7 @@ An example print shop for a fictional photographer, built to show how Obelism wo
 - **Shopify** sells the prints: catalog, cart and checkout through the Hydrogen SDK, on the [Vercel Shop](https://github.com/vercel/shop) template (release in `.vercel-shop/template.json`), without its Eve shopping agent.
 - **Obelism Media** holds the photographs and puts them on the Shopify products.
 - **Obelism Content** holds the pages and the stories behind each series and print.
+- **Obelism Numbers** counts visitors, clicks and the shop's events, through to paid orders.
 
 ## Getting started
 
@@ -49,6 +50,12 @@ Pages (home, About, Printing), the story of each series and of some prints come 
 - The content model is `content/content-model.json`, kept in step with `pnpm exec content model plan|apply` and reviewed in pull requests. `pnpm exec content types --file content/content-model.json` regenerates `content/content-types.ts`. The `Content model` workflow plans changes on pull requests and applies them to the develop environment on merge, with a develop management token in the `CONTENT_TOKEN_DEVELOP` repository secret; production gets the model by promotion in Content.
 - Set the environment's preview URL to the site (`http://localhost:3000` locally) to edit pages in Content's canvas, or sign in on the site at `/cms/login` to edit with the prompt bar.
 - Add a webhook in Content pointing at `/api/webhooks/content` with `CONTENT_WEBHOOK_SECRET` so publishing refreshes the site.
+
+## Numbers
+
+Set the three `NEXT_PUBLIC_OBELISM_*` values and the browser sends page views, clicks on elements with a `data-numbers-id` (every Content block has one), `view_item_list`, `view_item`, `add_to_cart` and `begin_checkout` to Obelism Numbers. The site's origin has to be in the space's Allowed origins for the environment; develop allows localhost.
+
+`purchase` is sent by the server when Shopify reports a paid order: subscribe the store's `orders/paid` webhook to `/api/webhooks/shopify` (with `SHOPIFY_WEBHOOK_SECRET`) and set `NUMBERS_API_TOKEN`. The order carries the visitor id from the cart, so the purchase counts for the visitor who placed it.
 
 ## Checks
 

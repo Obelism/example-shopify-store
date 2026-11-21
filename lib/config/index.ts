@@ -6,6 +6,9 @@ const defaultUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
 
 export const shopConfig = {
   analytics: {
+    numbers: {
+      isEnabled: true,
+    },
     shopify: {
       consent: {
         isEnabled: false,
