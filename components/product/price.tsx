@@ -1,0 +1,17 @@
+import { cn } from "cn";
+import type { ComponentProps } from "react";
+
+import { formatPrice } from "@/lib/money";
+
+interface PriceProps extends ComponentProps<"span"> {
+  amount: string;
+  currencyCode: string;
+}
+
+export function Price({ amount, currencyCode, className, ...props }: PriceProps) {
+  return (
+    <span className={cn("text-xl text-foreground tabular-nums", className)} {...props}>
+      {formatPrice({ amount, currencyCode })}
+    </span>
+  );
+}

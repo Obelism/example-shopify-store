@@ -1,0 +1,38 @@
+name: Content model
+
+on:
+  pull_request:
+    paths: [content/content-model.json]
+  push:
+    branches: [main]
+    paths: [content/content-model.json]
+
+permissions:
+  contents: read
+
+jobs:
+  content-model:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v5
+        with:
+          cache: pnpm
+          node-version-file: .nvmrc
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Plan
+        if: github.event_name == 'pull_request'
+        run: pnpm exec content model plan
+        env:
+          CONTENT_MANAGEMENT_TOKEN: ${{ secrets.CONTENT_TOKEN_DEVELOP }}
+
+      - name: Apply
+        if: github.event_name == 'push'
+        run: pnpm exec content model apply
+        env:
+          CONTENT_MANAGEMENT_TOKEN: ${{ secrets.CONTENT_TOKEN_DEVELOP }}

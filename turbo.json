@@ -1,0 +1,50 @@
+{
+  "$schema": "https://turborepo.dev/schema.json",
+  "globalDependencies": [".env*"],
+  "globalEnv": [
+    "CONTENT_DELIVERY_TOKEN",
+    "CONTENT_ENVIRONMENT",
+    "CONTENT_MANAGEMENT_TOKEN",
+    "CONTENT_SPACE_ID",
+    "CONTENT_WEBHOOK_SECRET",
+    "CUSTOMER_ACCOUNT_SESSION_SECRET",
+    "DEBUG_SHOPIFY",
+    "IMPROVE_WEBHOOK_SECRET",
+    "NEXT_PUBLIC_OBELISM_ENVIRONMENT",
+    "NEXT_PUBLIC_OBELISM_ORGANIZATION_ID",
+    "NEXT_PUBLIC_OBELISM_SPACE_ID",
+    "NEXT_PUBLIC_SHOPIFY_SHOP_ID",
+    "NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN",
+    "NEXT_PUBLIC_SHOPIFY_STOREFRONT_ID",
+    "NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN",
+    "OBELISM_API_TOKEN",
+    "REVALIDATE_SECRET",
+    "SHOPIFY_ADMIN_CLIENT_ID",
+    "SHOPIFY_ADMIN_CLIENT_SECRET",
+    "SHOPIFY_API_VERSION",
+    "SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_ID",
+    "SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_SECRET",
+    "SHOPIFY_HEADLESS_PUBLICATION",
+    "SHOPIFY_WEBHOOK_SECRET",
+    "V0_CALLBACK_URL",
+    "VERCEL_PROJECT_PRODUCTION_URL"
+  ],
+  "tasks": {
+    "build": {
+      "outputs": [".next/**", "!.next/cache/**"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "format": {
+      "cache": false
+    },
+    "lint": {},
+    "start": {
+      "cache": false,
+      "persistent": true
+    },
+    "typecheck": {}
+  }
+}
