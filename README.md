@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Photo Studio example store
 
-## Getting Started
+An example print shop for a fictional photographer, built to show how Obelism works on a real storefront:
 
-First, run the development server:
+- **Shopify** sells the prints: catalog, cart and checkout through the Hydrogen SDK, on the [Vercel Shop](https://github.com/vercel/shop) template (release in `.vercel-shop/template.json`), without its Eve shopping agent.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
+## Getting started
+
+Requires pnpm 12 and Node.js 26.
+
+```
+pnpm install
+cp .env.example .env.local
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Fill in `.env.local` with the store's Storefront API credentials (Shopify admin → Settings → Apps and sales channels → Headless). See [Storefront API permissions](https://vercel.shop/docs/reference/storefront-api-permissions) for the scopes it needs.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## The catalog
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+`scripts/catalog/catalog.json` is the photographer's work: six series (Shopify collections) and a print per photo (a Shopify product with size, paper and frame variants). Shopify gets the products from the seed script and their images from Obelism Media.
 
-## Learn More
+1. Seed the collections and products. Re-running updates them by handle.
 
-To learn more about Next.js, take a look at the following resources:
+   ```
+   node --env-file=.env.local scripts/seed-shopify.mts [--only <handle>] [--dry]
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   `--dry` lists the handles and source files without calling Shopify.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   Needs `SHOPIFY_ADMIN_CLIENT_ID`, `SHOPIFY_ADMIN_CLIENT_SECRET` and `SHOPIFY_HEADLESS_PUBLICATION` (see `.env.example`).
 
-## Deploy on Vercel
+2. Prepare the photos: resized to fit Shopify's 25 MP limit, metadata stripped (only the colour profile stays), and named `<product-handle>__<image>.jpg`. Requires ImageMagick 7 (`magick`). It also writes `manifest.json` with each file's title and alt text.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   ```
+   node scripts/prepare-photos.mts --in <originals> --out <dir> [--only <handle>]
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+3. Upload them to the space's Media library, with the title and alt text from `manifest.json`. Two rules there do the rest:
+   - Upload rule: file name pattern `*__*` → folder `Prints`, tag `print`.
+   - Product rule: file name pattern `{handle}__*`, with **Send to Shopify** on. Each file goes onto the product its name starts with, with its alt text.
+
+## Checks
+
+```
+pnpm lint
+pnpm typecheck
+pnpm build
+```
+
+## License
+
+MIT, from the Vercel Shop template.
