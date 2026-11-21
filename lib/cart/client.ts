@@ -61,9 +61,10 @@ export function useCheckout() {
     setCheckoutError(null);
     setIsCheckingOut(true);
     trackEvent("begin_checkout", "cart", {
-      currency: cart.cost.totalAmount.currencyCode,
-      params: { items: cart.totalQuantity },
-      value: Number(cart.cost.totalAmount.amount),
+      currency: cart.cost.subtotalAmount.currencyCode,
+      dedupeKey: `${cart.id}:${cart.updatedAt}`,
+      params: { quantity: cart.totalQuantity },
+      value: Number(cart.cost.subtotalAmount.amount),
     });
 
     try {

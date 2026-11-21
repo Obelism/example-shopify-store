@@ -9,7 +9,7 @@ import { useCartDrawer } from "@/components/cart/context";
 import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/lib/money";
 import type { Money } from "@/lib/money/types";
-import { VISITOR_LINE_ATTRIBUTE } from "@/lib/numbers";
+import { shopifyItemId, VISITOR_LINE_ATTRIBUTE } from "@/lib/numbers";
 import { trackEvent, useVisitorId } from "@/lib/numbers/client";
 import { getProductPurchaseOptions } from "@/lib/product";
 import { useProductForm } from "@/lib/product/client";
@@ -86,7 +86,7 @@ export function BuyButtons({
             currency: selectedVariant.price.currencyCode,
             params: {
               item_handle: selectedVariant.product.handle,
-              item_variant_id: selectedVariant.id,
+              item_variant_id: shopifyItemId(selectedVariant.id),
               quantity,
             },
             value: Number(selectedVariant.price.amount) * quantity,
@@ -150,7 +150,7 @@ export function BuyButtons({
         ) : null}
         <Button
           {...register("addToCart", {})}
-          data-numbers-id="add_to_cart"
+          data-numbers-id="pdp_add_to_cart"
           data-selection-unresolved={isSelectionUnresolved && !pending}
           disabled={
             isSelectionUnresolved ||

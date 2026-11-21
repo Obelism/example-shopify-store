@@ -22,7 +22,7 @@ const TRIGGER_CLASS = "flex items-center gap-1 text-sm hover:opacity-70 transiti
 function NavItem({ item }: { item: MenuItem }) {
   if (item.items.length === 0) {
     return (
-      <li className="flex items-center h-16" data-numbers-id={item.id}>
+      <li className="flex items-center h-16" data-numbers-id={`nav_${item.title.toLowerCase()}`}>
         <MenuLink url={item.url} className={TRIGGER_CLASS}>
           {item.title}
         </MenuLink>

@@ -1,6 +1,8 @@
 import crypto from "node:crypto";
 
+import { isVisitorId } from "@obelism/numbers-sdk";
 import { revalidateTag } from "next/cache";
+import { after } from "next/server";
 import { z } from "zod";
 
 import { VISITOR_LINE_ATTRIBUTE } from "@/lib/numbers";
@@ -23,7 +25,9 @@ const paidOrderSchema = z.object({
     }),
   ),
   shipping_address: z.object({ country_code: z.string().nullish() }).nullish(),
-  total_price: z.string(),
+  subtotal_price: z.string(),
+  total_shipping_price_set: z.object({ shop_money: z.object({ amount: z.string() }) }).nullish(),
+  total_tax: z.string().nullish(),
 });
 
 // Numbers counts the purchase for the visitor who added the prints: their id rides along as a hidden line property.
@@ -43,24 +47,26 @@ async function sendPurchase(body: string) {
   const visitorId = data.line_items
     .flatMap((line) => line.properties ?? [])
     .find((property) => property.name === VISITOR_LINE_ATTRIBUTE)?.value;
-  if (typeof visitorId !== "string") return false;
+  if (typeof visitorId !== "string" || !isVisitorId(visitorId)) return false;
   return sendServerEvent({
     country: data.shipping_address?.country_code ?? undefined,
     currency: data.currency,
     event: "purchase",
     params: {
       items: data.line_items.map((line) => ({
-        item_id: line.product_id,
-        item_variant_id: line.variant_id,
+        item_id: line.product_id ? String(line.product_id) : null,
+        item_variant_id: line.variant_id ? String(line.variant_id) : null,
         price: Number(line.price),
         quantity: line.quantity,
       })),
       order_id: data.id,
+      shipping: Number(data.total_shipping_price_set?.shop_money.amount ?? 0),
+      tax: Number(data.total_tax ?? 0),
     },
     path: "/checkout",
     scope: "checkout",
     userAgent: data.client_details?.user_agent ?? undefined,
-    value: Number(data.total_price),
+    value: Number(data.subtotal_price),
     visitorId,
   });
 }
@@ -174,10 +180,10 @@ export async function POST(request: Request) {
     }
   }
 
-  const purchaseSent = topic === "orders/paid" ? await sendPurchase(body) : undefined;
+  // Answer before Numbers does: a slow send would trip Shopify's timeout and its retry would count the order twice.
+  if (topic === "orders/paid") after(() => sendPurchase(body));
 
   return Response.json({
-    purchaseSent,
     success: true,
     topic,
     tagsInvalidated,

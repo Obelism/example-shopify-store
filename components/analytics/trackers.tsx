@@ -7,6 +7,7 @@ import { use, useEffect, useRef } from "react";
 
 import { AnalyticsEvent, getAnalytics } from "@/lib/analytics/client";
 import { useCart } from "@/lib/cart/client";
+import { shopifyItemId } from "@/lib/numbers";
 import { trackEvent } from "@/lib/numbers/client";
 import type { ProductDetails, ProductVariant } from "@/lib/product/types";
 
@@ -77,7 +78,12 @@ export function ProductViewedTracker({
     trackEvent("view_item", "product_page", {
       currency: variant.price.currencyCode,
       dedupeKey: product.id,
-      params: { item_handle: product.handle, item_id: product.id, item_name: product.title },
+      params: {
+        item_handle: product.handle,
+        item_id: shopifyItemId(product.id),
+        item_name: product.title,
+        item_variant_id: shopifyItemId(variant.id),
+      },
       value: Number(variant.price.amount),
     });
     trackedHandleRef.current = product.handle;
