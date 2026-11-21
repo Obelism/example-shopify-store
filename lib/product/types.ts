@@ -115,7 +115,7 @@ export interface ProductDetails extends ProductCard {
   };
   seo: SEO;
   updatedAt: string;
-  /** Only populated by fetchProductWithVariants for Eve; the PDP and Markdown omit it. */
+  /** Only populated by queries that select `ProductWithVariantsFields`; the PDP and Markdown omit it. */
   variants?: ProductVariant[];
   variantsComplete: boolean;
   variantsCount: number;

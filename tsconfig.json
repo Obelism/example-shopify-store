@@ -23,7 +23,7 @@
     "strict": true,
     "target": "ES2017"
   },
-  "exclude": ["node_modules", "scripts", "tmp", ".eve", ".output", ".nitro", "dist"],
+  "exclude": ["node_modules", "scripts", "tmp"],
   "include": [
     "next-env.d.ts",
     "**/*.ts",

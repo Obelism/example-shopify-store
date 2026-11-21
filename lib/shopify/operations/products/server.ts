@@ -22,7 +22,6 @@ import {
   FILTERABLE_PRODUCT_CARD_FRAGMENT,
   PRODUCT_CARD_FRAGMENT,
   PRODUCT_FRAGMENT,
-  PRODUCT_WITH_VARIANTS_FRAGMENT,
 } from "@/lib/shopify/fragments/product";
 import {
   PRODUCT_VARIANT_FRAGMENT,
@@ -223,43 +222,6 @@ export async function fetchProductVariantBySelectedOptions({
     variant: product.variantBySelectedOptions
       ? transformVariant(product.variantBySelectedOptions)
       : undefined,
-  };
-}
-
-const GET_PRODUCT_WITH_VARIANTS_QUERY = gql(
-  `#graphql
-  query getProductWithVariants($handle: String!, $country: CountryCode, $language: LanguageCode) @inContext(country: $country, language: $language) {
-    product(handle: $handle) {
-      ...ProductWithVariantsFields
-    }
-  }
-`,
-  [PRODUCT_WITH_VARIANTS_FRAGMENT],
-);
-
-export async function fetchProductWithVariants({
-  handle,
-  locale = shopConfig.localization,
-}: {
-  handle: string;
-  locale?: CommerceLocale;
-}): Promise<ProductDetails | undefined> {
-  const response = await storefront.request(GET_PRODUCT_WITH_VARIANTS_QUERY, {
-    locale,
-    variables: { handle },
-  });
-  assertStorefrontOk(response, "getProductWithVariants");
-  const { data } = response;
-
-  if (!data.product) {
-    if (response.errors?.length) throw new Error("Shopify getProductWithVariants returned errors.");
-    return undefined;
-  }
-  const product = transformShopifyProductDetails(data.product);
-  return {
-    ...product,
-    descriptionHtml: sanitizeShopifyHtml(data.product.descriptionHtml),
-    variantsComplete: product.variantsComplete && !response.errors?.length,
   };
 }
 

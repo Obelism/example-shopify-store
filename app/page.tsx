@@ -35,7 +35,7 @@ export default function HomePage() {
                 A Storefront Built on Vercel Shop
               </h1>
               <p className="text-sm md:text-base max-w-xl text-foreground">
-                Agent-ready commerce, powered by Shopify, Next, and Eve.
+                Commerce powered by Shopify and Next.js.
               </p>
             </div>
           </div>

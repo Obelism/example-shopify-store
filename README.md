@@ -3,9 +3,6 @@
 An example print shop for a fictional photographer, built to show how Obelism works on a real storefront:
 
 - **Shopify** sells the prints: catalog, cart and checkout through the Hydrogen SDK, on the [Vercel Shop](https://github.com/vercel/shop) template (release in `.vercel-shop/template.json`), without its Eve shopping agent.
-- **Obelism Content** holds the pages, series and copy, editable on the site in the canvas.
-- **Obelism Numbers** counts visitors, clicks and shop events.
-- **Obelism Improve** runs the A/B tests and feature flags.
 
 ## Getting started
 
