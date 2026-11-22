@@ -8,8 +8,9 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { DialogTitle } from "@/components/ui/dialog";
 import { Icon } from "@/components/ui/icon";
-import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet } from "@/components/ui/sheet";
 import type { MenuItem } from "@/lib/menu/types";
 
 import { MenuLink } from "./menu-link";
@@ -18,23 +19,26 @@ export function MobileMenu({ items }: { items: MenuItem[] }) {
   const [open, setOpen] = useState(false);
   const close = () => setOpen(false);
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger
-        render={
-          <button type="button" className="md:hidden -ml-2 p-2" aria-label="Menu">
-            <Icon name="menu" className="size-5" />
-          </button>
-        }
-      />
-      <SheetContent side="left" className="gap-0">
+    <>
+      <button
+        aria-expanded={open}
+        aria-haspopup="dialog"
+        aria-label="Menu"
+        className="md:hidden -ml-2 p-2"
+        onClick={() => setOpen(true)}
+        type="button"
+      >
+        <Icon name="menu" className="size-5" />
+      </button>
+      <Sheet className="gap-0" onOpenChange={setOpen} open={open} side="left">
         <div className="flex h-16 items-center px-5">
-          <SheetTitle className="text-lg font-semibold">Menu</SheetTitle>
+          <DialogTitle className="text-lg font-semibold">Menu</DialogTitle>
         </div>
         <nav className="min-h-0 flex-1 overflow-y-auto px-5 pb-5">
           <MobileMenuList items={items} onLinkClick={close} />
         </nav>
-      </SheetContent>
-    </Sheet>
+      </Sheet>
+    </>
   );
 }
 
@@ -60,10 +64,10 @@ function MobileMenuList({ items, onLinkClick }: { items: MenuItem[]; onLinkClick
   }
 
   return (
-    <Accordion multiple className="w-full">
+    <Accordion className="w-full">
       {items.map((item) =>
         item.items.length > 0 ? (
-          <AccordionItem key={item.id} value={item.id}>
+          <AccordionItem key={item.id}>
             <AccordionTrigger className="py-3 text-base">{item.title}</AccordionTrigger>
             <AccordionContent>
               <NestedItems items={item.items} onLinkClick={onLinkClick} />

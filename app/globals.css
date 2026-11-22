@@ -1,3 +1,6 @@
+/* `ui` primitives sit below utilities so a consumer's className overrides them. */
+@layer theme, base, ui, components, utilities;
+
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -92,6 +95,9 @@
   button:disabled,
   [role="button"][aria-disabled="true"] {
     cursor: not-allowed;
+  }
+  html:has(dialog[open]:modal) {
+    overflow: hidden;
   }
 }
 

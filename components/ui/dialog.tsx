@@ -1,116 +1,176 @@
 "use client";
 
-import { Dialog as DialogPrimitive } from "@base-ui/react/dialog";
 import { cn } from "cn";
-import type { ComponentProps } from "react";
+import {
+  type ComponentProps,
+  createContext,
+  type RefObject,
+  useContext,
+  useEffect,
+  useEffectEvent,
+  useId,
+  useRef,
+  useState,
+} from "react";
 
 import { Icon } from "@/components/ui/icon";
 
-function Dialog({ ...props }: DialogPrimitive.Root.Props) {
-  return <DialogPrimitive.Root data-slot="dialog" {...props} />;
+import styles from "./dialog.module.css";
+
+interface DialogContextValue {
+  close: () => void;
+  descriptionId: string;
+  titleId: string;
 }
 
-function DialogTrigger({ ...props }: DialogPrimitive.Trigger.Props) {
-  return <DialogPrimitive.Trigger data-slot="dialog-trigger" {...props} />;
+const DialogContext = createContext<DialogContextValue | null>(null);
+
+function useDialog() {
+  const context = useContext(DialogContext);
+  if (!context) throw new Error("Dialog parts must render inside a Dialog");
+  return context;
 }
 
-function DialogPortal({ ...props }: DialogPrimitive.Portal.Props) {
-  return <DialogPrimitive.Portal data-slot="dialog-portal" {...props} />;
+interface DialogProps extends Omit<ComponentProps<"dialog">, "open"> {
+  backdrop?: "blur" | "dim" | "none";
+  initialFocus?: RefObject<HTMLElement | null>;
+  onOpenChange: (open: boolean) => void;
+  onOpenChangeComplete?: (open: boolean) => void;
+  open: boolean;
 }
 
-function DialogOverlay({ className, ...props }: DialogPrimitive.Backdrop.Props) {
+function Dialog({
+  backdrop = "dim",
+  children,
+  className,
+  initialFocus,
+  onOpenChange,
+  onOpenChangeComplete,
+  open,
+  ...props
+}: DialogProps) {
+  const ref = useRef<HTMLDialogElement>(null);
+  const generation = useRef(0);
+  const pressedBackdrop = useRef(false);
+  const titleId = useId();
+  const descriptionId = useId();
+  const [mounted, setMounted] = useState(open);
+  if (open && !mounted) setMounted(true);
+
+  const show = useEffectEvent((dialog: HTMLDialogElement) => {
+    generation.current += 1;
+    if (!dialog.open) dialog.showModal();
+    initialFocus?.current?.focus();
+  });
+
+  // Children stay mounted until the exit transition ends, then unmount like a closed popup.
+  const hide = useEffectEvent((dialog: HTMLDialogElement) => {
+    if (!dialog.open) return;
+    const closing = generation.current;
+    dialog.close();
+    const transitions = dialog.getAnimations({ subtree: true }).map(({ finished }) => finished);
+    void Promise.allSettled(transitions).then(() => {
+      if (generation.current !== closing) return;
+      setMounted(false);
+      onOpenChangeComplete?.(false);
+    });
+  });
+
+  useEffect(() => {
+    const dialog = ref.current;
+    if (!dialog) return;
+    if (open) show(dialog);
+    else hide(dialog);
+  }, [open]);
+
   return (
-    <DialogPrimitive.Backdrop
-      data-slot="dialog-overlay"
-      className={cn(
-        "fixed inset-0 z-60 bg-black/50 transition-opacity duration-200 data-starting-style:opacity-0 data-ending-style:opacity-0",
-        className,
-      )}
+    <DialogContext value={{ close: () => onOpenChange(false), descriptionId, titleId }}>
+      <dialog
+        aria-describedby={descriptionId}
+        aria-labelledby={titleId}
+        className={cn(styles.dialog, className)}
+        data-backdrop={backdrop}
+        onCancel={(event) => {
+          event.preventDefault();
+          onOpenChange(false);
+        }}
+        // A press that starts inside and ends on the backdrop is a text selection, not a dismissal.
+        onClick={(event) => {
+          if (pressedBackdrop.current && event.target === event.currentTarget) onOpenChange(false);
+          pressedBackdrop.current = false;
+        }}
+        onClose={() => {
+          if (open) onOpenChange(false);
+        }}
+        onPointerDown={(event) => {
+          pressedBackdrop.current = event.target === event.currentTarget;
+        }}
+        ref={ref}
+        {...props}
+      >
+        {mounted ? children : null}
+      </dialog>
+    </DialogContext>
+  );
+}
+
+function DialogClose({ className, onClick, type = "button", ...props }: ComponentProps<"button">) {
+  const { close } = useDialog();
+  return (
+    <button
+      className={className}
+      onClick={(event) => {
+        onClick?.(event);
+        if (!event.defaultPrevented) close();
+      }}
+      type={type}
       {...props}
     />
   );
 }
 
-function DialogContent({
-  className,
-  children,
-  showCloseButton = true,
-  ...props
-}: DialogPrimitive.Popup.Props & {
+interface DialogPanelProps extends ComponentProps<"div"> {
   showCloseButton?: boolean;
-}) {
+}
+
+function DialogPanel({ children, className, showCloseButton = true, ...props }: DialogPanelProps) {
   return (
-    <DialogPortal>
-      <DialogOverlay />
-      <DialogPrimitive.Popup
-        data-slot="dialog-content"
-        className={cn(
-          "bg-background fixed top-1/2 left-1/2 z-60 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-5 rounded-lg border p-5 shadow-lg transition duration-200 outline-none sm:max-w-lg data-starting-style:scale-95 data-starting-style:opacity-0 data-ending-style:scale-95 data-ending-style:opacity-0",
-          className,
-        )}
-        {...props}
-      >
-        {children}
-        {showCloseButton && (
-          <DialogPrimitive.Close
-            data-slot="dialog-close"
-            className="ring-offset-background focus:ring-ring absolute top-4 right-4 rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
-          >
-            <Icon name="x" />
-            <span className="sr-only">Close</span>
-          </DialogPrimitive.Close>
-        )}
-      </DialogPrimitive.Popup>
-    </DialogPortal>
+    <div className={cn(styles.panel, className)} {...props}>
+      {children}
+      {showCloseButton ? (
+        <DialogClose className={styles.close}>
+          <Icon name="x" className={styles.closeIcon} />
+          <span className="sr-only">Close</span>
+        </DialogClose>
+      ) : null}
+    </div>
   );
 }
 
 function DialogHeader({ className, ...props }: ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="dialog-header"
-      className={cn("flex flex-col gap-2 text-center sm:text-left", className)}
-      {...props}
-    />
-  );
+  return <div className={cn(styles.header, className)} {...props} />;
 }
 
 function DialogFooter({ className, ...props }: ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="dialog-footer"
-      className={cn("flex flex-col-reverse gap-2 sm:flex-row sm:justify-end", className)}
-      {...props}
-    />
-  );
+  return <div className={cn(styles.footer, className)} {...props} />;
 }
 
-function DialogTitle({ className, ...props }: DialogPrimitive.Title.Props) {
-  return (
-    <DialogPrimitive.Title
-      data-slot="dialog-title"
-      className={cn("text-lg leading-none font-semibold", className)}
-      {...props}
-    />
-  );
+function DialogTitle({ className, ...props }: ComponentProps<"h2">) {
+  const { titleId } = useDialog();
+  return <h2 className={cn(styles.title, className)} id={titleId} {...props} />;
 }
 
-function DialogDescription({ className, ...props }: DialogPrimitive.Description.Props) {
-  return (
-    <DialogPrimitive.Description
-      data-slot="dialog-description"
-      className={cn("text-muted-foreground text-sm", className)}
-      {...props}
-    />
-  );
+function DialogDescription({ className, ...props }: ComponentProps<"p">) {
+  const { descriptionId } = useDialog();
+  return <p className={cn(styles.description, className)} id={descriptionId} {...props} />;
 }
 
 export {
   Dialog,
-  DialogContent,
+  DialogClose,
   DialogDescription,
   DialogFooter,
   DialogHeader,
+  DialogPanel,
   DialogTitle,
-  DialogTrigger,
 };

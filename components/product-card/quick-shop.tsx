@@ -1,6 +1,5 @@
 "use client";
 
-import { Dialog as DialogPrimitive } from "@base-ui/react/dialog";
 import type { ValidProductSelectionResult } from "@shopify/hydrogen/react";
 import Image from "next/image";
 import { type ReactNode, useEffect, useRef, useState } from "react";
@@ -8,7 +7,7 @@ import { type ReactNode, useEffect, useRef, useState } from "react";
 import { BuyButtons } from "@/components/product-detail/buy-buttons";
 import { ProductFormOptions, ProductFormPrice } from "@/components/product-detail/product-form";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogClose, DialogPanel, DialogTitle } from "@/components/ui/dialog";
 import { Icon } from "@/components/ui/icon";
 import { ImagePlaceholder } from "@/components/ui/image-placeholder";
 import { Link } from "@/components/ui/link";
@@ -38,7 +37,6 @@ export function QuickShop({ handle, href, image, label, title }: QuickShopProps)
   const [open, setOpen] = useState(false);
   const [product, setProduct] = useState<QuickShopProduct | null>(null);
   const [status, setStatus] = useState<QuickShopStatus>("idle");
-  const [cartHandoff, setCartHandoff] = useState(false);
   const [imageUrl, setImageUrl] = useState(image);
   const [confirmedVariant, setConfirmedVariant] = useState<ProductFormVariant>();
   const [resolvedForm, setResolvedForm] = useState<ProductFormInput | null>(null);
@@ -95,7 +93,6 @@ export function QuickShop({ handle, href, image, label, title }: QuickShopProps)
 
   function changeOpen(nextOpen: boolean) {
     if (nextOpen) {
-      setCartHandoff(false);
       if (selectionStatus === "loading" && selectionRequest.current) {
         void resolveSelection(selectionRequest.current.selectedOptions);
       }
@@ -125,107 +122,102 @@ export function QuickShop({ handle, href, image, label, title }: QuickShopProps)
     }
   }
 
-  function closeForCart() {
-    setCartHandoff(true);
-    changeOpen(false);
-  }
-
   return (
-    <Dialog
-      onOpenChange={changeOpen}
-      onOpenChangeComplete={(nextOpen) => {
-        if (!nextOpen) {
-          selectionRequest.current = null;
-          setSelectionStatus("idle");
-          setResolvedForm(null);
-          setConfirmedVariant(product?.form.selectedOrFirstAvailableVariant ?? undefined);
-          setImageUrl(
-            product
-              ? (product.form.selectedOrFirstAvailableVariant?.image?.url ?? product.image)
-              : image,
-          );
-        }
-      }}
-      open={open}
-    >
-      <DialogTrigger
-        render={
-          <button
-            aria-label={`${label}: ${title}`}
-            className="absolute right-2.5 bottom-2.5 z-10 hidden size-9 cursor-pointer items-center justify-center rounded-full bg-background/90 text-foreground shadow-sm backdrop-blur-sm transition-colors hover:bg-background lg:flex"
-            onClick={load}
-            type="button"
-          >
-            <Icon name="plus" className="size-4" />
-          </button>
-        }
-      />
-      {/* Hidden overflow is programmatically scrollable, which can displace the close button. */}
-      <DialogContent
-        aria-describedby={undefined}
-        className="flex max-h-[calc(100dvh-2.5rem)] w-[calc(100%-2.5rem)] max-w-3xl flex-col gap-0 overflow-clip p-0 sm:max-w-[min(48rem,calc(200dvh-5rem-2px))]"
-        finalFocus={cartHandoff ? false : undefined}
-        initialFocus={closeButtonRef}
-        showCloseButton={false}
+    <>
+      <button
+        aria-haspopup="dialog"
+        aria-label={`${label}: ${title}`}
+        className="absolute right-2.5 bottom-2.5 z-10 hidden size-9 cursor-pointer items-center justify-center rounded-full bg-background/90 text-foreground shadow-sm backdrop-blur-sm transition-colors hover:bg-background lg:flex"
+        onClick={() => {
+          void load();
+          changeOpen(true);
+        }}
+        type="button"
       >
-        <div className="min-h-0 overflow-y-auto overscroll-contain sm:overflow-visible">
-          <QuickShopLayout image={imageUrl} title={product?.title ?? title}>
-            {product ? (
-              <ProductProvider onSelect={selectVariant} product={resolvedForm ?? product.form}>
-                <QuickShopDetails
-                  confirmedVariant={confirmedVariant}
-                  handle={handle}
-                  onAddToCart={closeForCart}
-                  onNavigate={() => changeOpen(false)}
-                  onRetrySelection={retrySelection}
-                  product={product}
-                  selectionStatus={selectionStatus}
-                />
-              </ProductProvider>
-            ) : (
-              <QuickShopPurchasePanel
-                price={
-                  status === "failed" || status === "unavailable" ? null : (
-                    <Skeleton className="h-7 w-24" />
-                  )
-                }
-                title={title}
-              >
-                {status === "failed" || status === "unavailable" ? (
-                  <div className="grid gap-4">
-                    <p className="text-sm text-muted-foreground" role="status">
-                      {status === "failed"
-                        ? "We couldn’t load the purchase options. Try again or open the product page."
-                        : "Quick shop is unavailable for this product."}
-                    </p>
-                    {status === "failed" ? (
-                      <Button
-                        className="h-12 w-full"
-                        onClick={load}
-                        type="button"
-                        variant="outline"
-                      >
-                        Try again
-                      </Button>
-                    ) : null}
-                  </div>
-                ) : (
-                  <QuickShopSkeleton />
-                )}
-                <QuickShopDetailsLink href={href} onNavigate={() => changeOpen(false)} />
-              </QuickShopPurchasePanel>
-            )}
-          </QuickShopLayout>
-        </div>
-        <DialogPrimitive.Close
-          aria-label="Close quick shop"
-          className="absolute top-6.5 right-5 z-10 flex size-5 cursor-pointer items-center justify-center text-foreground transition-colors hover:text-foreground/80 focus-visible:outline-2 focus-visible:outline-offset-2"
-          ref={closeButtonRef}
+        <Icon name="plus" className="size-4" />
+      </button>
+      <Dialog
+        initialFocus={closeButtonRef}
+        onOpenChange={changeOpen}
+        onOpenChangeComplete={(nextOpen) => {
+          if (!nextOpen) {
+            selectionRequest.current = null;
+            setSelectionStatus("idle");
+            setResolvedForm(null);
+            setConfirmedVariant(product?.form.selectedOrFirstAvailableVariant ?? undefined);
+            setImageUrl(
+              product
+                ? (product.form.selectedOrFirstAvailableVariant?.image?.url ?? product.image)
+                : image,
+            );
+          }
+        }}
+        open={open}
+      >
+        {/* Hidden overflow is programmatically scrollable, which can displace the close button. */}
+        <DialogPanel
+          className="flex max-h-[calc(100dvh-2.5rem)] w-[calc(100%-2.5rem)] max-w-3xl flex-col gap-0 overflow-clip p-0 sm:max-w-[min(48rem,calc(200dvh-5rem-2px))]"
+          showCloseButton={false}
         >
-          <Icon name="x" className="size-5" />
-        </DialogPrimitive.Close>
-      </DialogContent>
-    </Dialog>
+          <div className="min-h-0 overflow-y-auto overscroll-contain sm:overflow-visible">
+            <QuickShopLayout image={imageUrl} title={product?.title ?? title}>
+              {product ? (
+                <ProductProvider onSelect={selectVariant} product={resolvedForm ?? product.form}>
+                  <QuickShopDetails
+                    confirmedVariant={confirmedVariant}
+                    handle={handle}
+                    onAddToCart={() => changeOpen(false)}
+                    onNavigate={() => changeOpen(false)}
+                    onRetrySelection={retrySelection}
+                    product={product}
+                    selectionStatus={selectionStatus}
+                  />
+                </ProductProvider>
+              ) : (
+                <QuickShopPurchasePanel
+                  price={
+                    status === "failed" || status === "unavailable" ? null : (
+                      <Skeleton className="h-7 w-24" />
+                    )
+                  }
+                  title={title}
+                >
+                  {status === "failed" || status === "unavailable" ? (
+                    <div className="grid gap-4">
+                      <p className="text-sm text-muted-foreground" role="status">
+                        {status === "failed"
+                          ? "We couldn’t load the purchase options. Try again or open the product page."
+                          : "Quick shop is unavailable for this product."}
+                      </p>
+                      {status === "failed" ? (
+                        <Button
+                          className="h-12 w-full"
+                          onClick={load}
+                          type="button"
+                          variant="outline"
+                        >
+                          Try again
+                        </Button>
+                      ) : null}
+                    </div>
+                  ) : (
+                    <QuickShopSkeleton />
+                  )}
+                  <QuickShopDetailsLink href={href} onNavigate={() => changeOpen(false)} />
+                </QuickShopPurchasePanel>
+              )}
+            </QuickShopLayout>
+          </div>
+          <DialogClose
+            aria-label="Close quick shop"
+            className="absolute top-6.5 right-5 z-10 flex size-5 cursor-pointer items-center justify-center text-foreground transition-colors hover:text-foreground/80 focus-visible:outline-2 focus-visible:outline-offset-2"
+            ref={closeButtonRef}
+          >
+            <Icon name="x" className="size-5" />
+          </DialogClose>
+        </DialogPanel>
+      </Dialog>
+    </>
   );
 }
 

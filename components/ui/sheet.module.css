@@ -1,0 +1,118 @@
+@layer ui {
+  .dialog {
+    --dialog-dim: rgb(0 0 0 / 0.3);
+    --dialog-duration: 500ms;
+
+    &:not([open]) {
+      --dialog-duration: 300ms;
+    }
+  }
+
+  .sheet {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    background: var(--card);
+    box-shadow:
+      0 10px 15px -3px rgb(0 0 0 / 0.1),
+      0 4px 6px -4px rgb(0 0 0 / 0.1);
+    transition: translate var(--dialog-duration) ease-in-out;
+
+    &[data-side="left"],
+    &[data-side="right"] {
+      inset-block: 0;
+      width: calc(100% - 2.5rem);
+      max-width: 28rem;
+      height: 100%;
+    }
+
+    &[data-side="right"] {
+      right: 0;
+      border-left: 1px solid var(--border);
+    }
+
+    &[data-side="left"] {
+      left: 0;
+      border-right: 1px solid var(--border);
+    }
+
+    &[data-side="top"],
+    &[data-side="bottom"] {
+      inset-inline: 0;
+    }
+
+    &[data-side="top"] {
+      top: 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    &[data-side="bottom"] {
+      bottom: 0;
+      border-top: 1px solid var(--border);
+      border-radius: 1.5rem 1.5rem 0 0;
+    }
+
+    dialog:not([open]) &[data-side="right"] {
+      translate: 100% 0;
+    }
+
+    dialog:not([open]) &[data-side="left"] {
+      translate: -100% 0;
+    }
+
+    dialog:not([open]) &[data-side="top"] {
+      translate: 0 -100%;
+    }
+
+    dialog:not([open]) &[data-side="bottom"] {
+      translate: 0 100%;
+    }
+  }
+
+  @starting-style {
+    dialog[open] .sheet[data-side="right"] {
+      translate: 100% 0;
+    }
+
+    dialog[open] .sheet[data-side="left"] {
+      translate: -100% 0;
+    }
+
+    dialog[open] .sheet[data-side="top"] {
+      translate: 0 -100%;
+    }
+
+    dialog[open] .sheet[data-side="bottom"] {
+      translate: 0 100%;
+    }
+  }
+
+  .close {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.625rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 9999px;
+    opacity: 0.7;
+    transition: opacity 150ms;
+
+    &:hover {
+      opacity: 1;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--ring);
+      outline-offset: 2px;
+    }
+  }
+
+  .closeIcon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}

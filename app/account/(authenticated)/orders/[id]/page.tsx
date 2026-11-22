@@ -9,7 +9,7 @@ import {
 } from "@/components/account/order-display";
 import { AccountPageHeader } from "@/components/account/page-header";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { buttonClassName } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { OrderLineItem } from "@/lib/customer/types";
 import { formatPrice } from "@/lib/money";
@@ -70,13 +70,14 @@ async function OrderDetailContent({ params }: { params: Promise<{ id: string }> 
       ) : null}
 
       <div className="flex gap-2">
-        <Button
-          variant="outline"
-          size="sm"
-          render={<a href={order.statusPageUrl} target="_blank" rel="noopener noreferrer" />}
+        <a
+          className={buttonClassName({ size: "sm", variant: "outline" })}
+          href={order.statusPageUrl}
+          rel="noopener noreferrer"
+          target="_blank"
         >
           View order status
-        </Button>
+        </a>
       </div>
     </>
   );
