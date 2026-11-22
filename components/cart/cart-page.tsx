@@ -9,7 +9,7 @@ import { Sections } from "@/components/ui/sections";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useSuspenseCart } from "@/lib/cart/client";
 
-import { DevStoreNotice } from "./dev-store-notice";
+import { DemoStoreNotice } from "./demo-store-notice";
 import { CartLineItems } from "./line-item";
 import { CartSummary } from "./summary";
 import { CartWarnings } from "./warnings";
@@ -109,7 +109,7 @@ function CartPageLayout({ children, count, summary, warnings, ...props }: CartPa
             <div className="lg:col-span-8 xl:col-span-9">{children}</div>
             <aside className="lg:col-span-4 xl:col-span-3">
               <div className="grid gap-5 lg:sticky lg:top-20">
-                <DevStoreNotice />
+                <DemoStoreNotice />
                 {summary}
               </div>
             </aside>

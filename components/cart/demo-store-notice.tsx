@@ -1,6 +1,6 @@
 import { Icon } from "@/components/ui/icon";
 
-export function DevStoreNotice() {
+export function DemoStoreNotice() {
   return (
     <div
       role="note"
