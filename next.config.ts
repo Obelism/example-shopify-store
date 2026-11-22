@@ -36,8 +36,8 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   reactCompiler: true,
   async redirects() {
-    // Content's canvas opens the home entry at its path; the redirect keeps the canvas's query, and with it the draft.
-    return [{ destination: "/", permanent: true, source: `/${HOME_PATH}` }];
+    // Content's canvas opens the home entry at its path.
+    return [{ destination: "/", permanent: false, source: `/${HOME_PATH}` }];
   },
   turbopack: {
     rules: {
