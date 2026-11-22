@@ -21,7 +21,7 @@ Every feature belongs to exactly one owner. If a change cannot name its owner, o
 **Obelism Content owns editorial content**: pages, series and print stories, editable in Content's canvas and on the site.
 
 - Lives in: `content/` (the model file, generated `content-types.ts`, delivery examples), `lib/cms/**`, `components/cms/**`, `app/[slug]`, `app/cms/[...path]` (site editing), `app/api/webhooks/content`.
-- The model is `content/content-model.json`: change it there, run `pnpm exec content model plan` then `apply` (needs `CONTENT_MANAGEMENT_TOKEN`), and regenerate types with `pnpm exec content types --file content/content-model.json`. Don't edit `content-types.ts` by hand. CI plans on pull requests and applies to develop on merge (`.github/workflows/content-model.yml`).
+- The model is `content/content-model.json`: change it there, run `npx content model plan` then `apply` (needs `CONTENT_MANAGEMENT_TOKEN`), and regenerate types with `npx content types --file content/content-model.json`. Don't edit `content-types.ts` by hand. CI plans on pull requests and applies to develop on merge (`.github/workflows/content-model.yml`).
 - Published content is read through the cached `get*` functions in `lib/cms/server.ts` and rendered in the static shell; `CmsEntry` swaps in a draft only for a request carrying an editor's token (the canvas's `cms_token`, or the site-editing cookie in draft mode). Never read drafts because `cms_preview` is set, and never cache them.
 - Blocks render client-side in `components/cms/cms-body-client.tsx` with `useLiveEntry` and `editable(block)`; Shopify data for featured blocks is resolved on the server in `components/cms/cms-body.tsx`.
 - Content assets load from Content's image API through the `next/image` loader, not Next's optimizer.
@@ -63,8 +63,8 @@ Agent folders hold only `.agents/skills/` and its `.claude/skills` symlink; edit
 
 ## Commands
 
-- pnpm 12 and Node 26 (`devEngines` downloads Node on mismatch). `pnpm dev` refuses to start without the required Shopify and Content values in `.env.local` (see `.env.example`); `next typegen` is exempt.
-- `pnpm lint` (oxlint + `oxfmt --check`), `pnpm format` to fix, `pnpm typecheck` (`next typegen && tsc --noEmit`; plain `tsc` fails on a fresh checkout), `pnpm build` for prerender errors.
+- npm 12 and Node 26 (`devEngines` refuses other package managers and downloads Node on mismatch). `npm run dev` refuses to start without the required Shopify and Content values in `.env.local` (see `.env.example`); `next typegen` is exempt.
+- `npm run lint` (oxlint + `oxfmt --check`), `npm run format` to fix, `npm run typecheck` (`next typegen && tsc --noEmit`; plain `tsc` fails on a fresh checkout), `npm run build` for prerender errors.
 
 ## Template releases
 
@@ -122,7 +122,7 @@ Opt-in through `shopConfig.auth.isEnabled`, read directly in server and client c
 - Link internally with `Link` from `@/components/ui/link`, never `next/link`. It upgrades to the per-link prefetch only on intent, so grids never prefetch every card. Any other prefetch change is a production-measured traffic-versus-latency choice.
 - The default is one deployment with clean unprefixed URLs, inline copy, and `shopConfig.localization` `{ country: "US", language: "EN", locale: "en-US" }`: country and language set the Shopify context, locale sets formatting. It has no next-intl, `lib/i18n/`, or `getLocale()`; keep operation locale arguments and cache inputs anyway. The i18n and Markets skills start from this baseline and preserve localized installations.
 - Read `shopConfig` from `lib/config/index.ts` directly in server and client code.
-- Keep Portless out of `package.json`; `pnpm dev:portless` uses a global install.
+- Keep Portless out of `package.json`; `npm run dev:portless` uses a global install.
 
 Use the `build-shop` skill for route-specific workflow and audits.
 
@@ -140,7 +140,7 @@ Do not add tests, test files, runners, dependencies, or scripts unless the user 
 
 ### Ordering and exports
 
-- Alphabetize export specifiers, destructuring patterns, interface and type properties, config object keys, i18n JSON keys, and string union members. `pnpm format` sorts imports.
+- Alphabetize export specifiers, destructuring patterns, interface and type properties, config object keys, i18n JSON keys, and string union members. `npm run format` sorts imports.
 - No barrel files: never an `index.ts` that only re-exports.
 - Named exports only in component files; pages use default exports.
 

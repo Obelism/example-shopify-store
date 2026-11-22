@@ -23,13 +23,13 @@ If yes, ask for the container ID (`GTM-XXXXXX`), stored in `NEXT_PUBLIC_GTM_ID`.
 
 Set the selected flags to `true` in `lib/config/index.ts`. Nothing else changes: both packages are dependencies, `components/analytics/index.tsx` gates each provider with `&&`, and `app/layout.tsx` already mounts `<AnalyticsComponents />`.
 
-Only if the storefront lacks the integration, add the selected package with `pnpm add @vercel/analytics` and/or `pnpm add @vercel/speed-insights`, import from the `/next` subpath, and render it inside the existing gate in `components/analytics/index.tsx`.
+Only if the storefront lacks the integration, add the selected package with `npm install @vercel/analytics` and/or `npm install @vercel/speed-insights`, import from the `/next` subpath, and render it inside the existing gate in `components/analytics/index.tsx`.
 
 ## Part B: Google Tag Manager
 
 Skip this section if the user did not want GTM.
 
-1. Install the integration: `pnpm add @next/third-parties`.
+1. Install the integration: `npm install @next/third-parties`.
 2. Add this row to the `# Optional` block of `.env.example`, keeping it alphabetical:
 
    ```bash
