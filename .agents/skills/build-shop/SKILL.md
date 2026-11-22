@@ -70,7 +70,7 @@ node scripts/audit-storefront.mjs <storefront-root>
 
 Then:
 
-1. Run the project's check command (`pnpm check` in the template: lint, format, typecheck), plus the targeted tests and flows available in the current environment.
+1. Run the project's check command (`npm run check` in the template: lint, format, typecheck), plus the targeted tests and flows available in the current environment.
 2. Test direct visits, client navigation, back/forward navigation, and URL round-trips for the routes changed, and run every affected flow in `references/commerce-flows.md`, including failure, empty, sold-out, and missing-media states.
 3. Confirm non-critical Shopify work does not delay the shell, primary media, selected price or availability, or the primary interaction.
 4. Inspect failed requests, layout shifts, LCP discovery, hydration, and interaction behavior when relevant.

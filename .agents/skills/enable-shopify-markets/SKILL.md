@@ -268,8 +268,8 @@ Never put internal `/[locale]/...` rewrite targets into metadata or sitemap XML.
 Run focused checks from the storefront root, then run the app and verify the selected strategy:
 
 ```bash
-pnpm lint
-pnpm build
+npm run lint
+npm run build
 ```
 
 ### All strategies

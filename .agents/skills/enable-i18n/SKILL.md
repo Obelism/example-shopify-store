@@ -29,7 +29,7 @@ Confirm the default copy locale and supported copy locales with the user. In a n
 
 ## Introduce next-intl and migrate copy
 
-1. On a fresh installation, run `pnpm add next-intl` from the storefront root. Read the installed next-intl plugin/request/routing APIs and local Next.js guides before wiring them. If next-intl already exists, preserve its compatible version rather than reinstalling blindly.
+1. On a fresh installation, run `npm install next-intl` from the storefront root. Read the installed next-intl plugin/request/routing APIs and local Next.js guides before wiring them. If next-intl already exists, preserve its compatible version rather than reinstalling blindly.
 2. Create `lib/i18n/request/server.ts` as described below, then create the plugin with `createNextIntlPlugin` from `next-intl/plugin` and the explicit request-config path. In the current template, add that plugin to the list passed to `withShopConfig(nextConfig, plugins)`; preserve the conditional `withBotId` and `withEve` entries and their existing order. Do not pass the exported async config factory to a plugin that expects a config object. Preserve customized wrapper composition, rewrites, redirects, and Cache Components settings, and do not enable optional features as part of localization.
 3. Inventory inline JSX text, labels in component configuration, template literals, and reusable functions in `lib/content/index.ts`. Create the default catalog from the storefront's actual customized copy, not a template snapshot. Convert functions to equivalent ICU messages with the same parameter names, zero/one/many behavior, number formatting, rich text, and accessibility labels. Do not serialize functions into JSON or build a custom `t()` parser.
 4. Create catalogs and explicit loaders for each approved locale. Keep keys and interpolation arguments aligned. Do not present an English fallback as a completed translation; agree on any temporary fallback before enabling that locale publicly.
@@ -333,9 +333,9 @@ Inspect the current navigation, including any Shopify-menu customization. The si
 After applying:
 
 ```bash
-pnpm lint
-pnpm build
-pnpm dev
+npm run lint
+npm run build
+npm run dev
 # In another terminal, replace locale/handle with actual supported values:
 curl -I http://localhost:3000/
 curl -I http://localhost:3000/products/actual-handle
