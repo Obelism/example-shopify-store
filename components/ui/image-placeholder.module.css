@@ -1,0 +1,15 @@
+@layer ui {
+  .placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--muted);
+  }
+
+  .icon {
+    width: 25%;
+    max-width: 6rem;
+    height: auto;
+    color: var(--background);
+  }
+}

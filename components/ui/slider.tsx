@@ -12,6 +12,8 @@ import {
 
 import { Icon } from "@/components/ui/icon";
 
+import styles from "./slider.module.css";
+
 interface SliderContextValue {
   canScrollLeft: boolean;
   canScrollRight: boolean;
@@ -89,7 +91,7 @@ function Slider({ className, children, ...props }: ComponentProps<"section">) {
         scroll,
       }}
     >
-      <section data-slot="slider" className={cn("grid min-w-0 gap-4", className)} {...props}>
+      <section className={cn(styles.slider, className)} {...props}>
         {children}
       </section>
     </SliderContext.Provider>
@@ -97,41 +99,31 @@ function Slider({ className, children, ...props }: ComponentProps<"section">) {
 }
 
 function SliderHeader({ className, ...props }: ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="slider-header"
-      className={cn("flex items-center justify-between", className)}
-      {...props}
-    />
-  );
+  return <div className={cn(styles.header, className)} {...props} />;
 }
 
 function SliderNav({ className, ...props }: ComponentProps<"div">) {
   const { canScrollLeft, canScrollRight, scroll } = useSlider();
   const hidden = !canScrollLeft && !canScrollRight;
   return (
-    <div
-      data-slot="slider-nav"
-      className={cn("flex items-center gap-1", hidden && "invisible", className)}
-      {...props}
-    >
+    <div className={cn(styles.nav, className)} data-hidden={hidden} {...props}>
       <button
         aria-label="Scroll left"
-        className="cursor-pointer text-foreground transition-colors disabled:cursor-not-allowed disabled:text-foreground/30"
+        className={styles.navButton}
         disabled={!canScrollLeft}
         onClick={() => scroll("left")}
         type="button"
       >
-        <Icon name="chevron-left" className="size-5" />
+        <Icon name="chevron-left" size={20} />
       </button>
       <button
         aria-label="Scroll right"
-        className="cursor-pointer text-foreground transition-colors disabled:cursor-not-allowed disabled:text-foreground/30"
+        className={styles.navButton}
         disabled={!canScrollRight}
         onClick={() => scroll("right")}
         type="button"
       >
-        <Icon name="chevron-right" className="size-5" />
+        <Icon name="chevron-right" size={20} />
       </button>
     </div>
   );
@@ -142,20 +134,15 @@ function SliderContent({ className, ...props }: ComponentProps<"div">) {
   return (
     <div
       ref={registerContainer}
-      data-slot="slider-content"
       onScroll={handleScroll}
-      className={cn(
-        "scrollbar-hide grid snap-x snap-mandatory grid-flow-col gap-5 overflow-x-auto overscroll-x-contain",
-        className,
-      )}
-      style={{ msOverflowStyle: "none", scrollbarWidth: "none" }}
+      className={cn(styles.content, className)}
       {...props}
     />
   );
 }
 
 function SliderItem({ className, ...props }: ComponentProps<"div">) {
-  return <div data-slot="slider-item" className={cn("snap-start", className)} {...props} />;
+  return <div data-slot="slider-item" className={cn(styles.item, className)} {...props} />;
 }
 
 export { Slider, SliderContent, SliderHeader, SliderItem, SliderNav };

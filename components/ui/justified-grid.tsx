@@ -1,16 +1,11 @@
 import { cn } from "cn";
 import type { ComponentProps } from "react";
 
+import styles from "./justified-grid.module.css";
+
 export function JustifiedGrid({ children, className, ...props }: ComponentProps<"div">) {
   return (
-    <div
-      data-slot="justified-grid"
-      className={cn(
-        "flex flex-wrap gap-x-4 gap-y-8 [--row-height:8rem] after:grow-[1000] after:content-[''] sm:[--row-height:12rem] md:gap-x-6 md:gap-y-12 lg:[--row-height:16rem]",
-        className,
-      )}
-      {...props}
-    >
+    <div className={cn(styles.grid, className)} {...props}>
       {children}
     </div>
   );
@@ -30,8 +25,7 @@ export function JustifiedGridItem({
 }: JustifiedGridItemProps) {
   return (
     <div
-      data-slot="justified-grid-item"
-      className={cn("min-w-0", className)}
+      className={cn(styles.item, className)}
       style={{
         flexBasis: `calc(var(--row-height) * ${aspectRatio})`,
         flexGrow: aspectRatio,

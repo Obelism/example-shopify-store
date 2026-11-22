@@ -153,7 +153,7 @@ function DialogPanel({ children, className, showCloseButton = true, ...props }: 
       {children}
       {showCloseButton ? (
         <DialogClose className={styles.close}>
-          <Icon name="x" className={styles.closeIcon} />
+          <Icon name="x" size={16} />
           <span className="sr-only">Close</span>
         </DialogClose>
       ) : null}

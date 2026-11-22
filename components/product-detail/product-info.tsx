@@ -1,6 +1,7 @@
 import { cn } from "cn";
 import type { ComponentProps } from "react";
 
+import { proseClassName } from "@/components/ui/prose";
 import { isColorOption } from "@/lib/product";
 import type { OptionGroupState } from "@/lib/product/types";
 
@@ -76,7 +77,7 @@ function ProductInfoDescription({
   return (
     <div data-slot="product-info-description" className={className} {...props}>
       <div
-        className="prose prose-sm text-foreground/80"
+        className={proseClassName({ className: "text-foreground/80", size: "sm" })}
         // oxlint-disable-next-line react/no-danger -- Product descriptions pass through sanitizeShopifyHtml when fetched.
         dangerouslySetInnerHTML={{ __html: descriptionHtml }}
       />

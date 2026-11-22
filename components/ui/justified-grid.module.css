@@ -1,0 +1,30 @@
+@layer ui {
+  .grid {
+    --row-height: 8rem;
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem 1rem;
+
+    &::after {
+      flex-grow: 1000;
+      content: "";
+    }
+
+    @media (width >= 40rem) {
+      --row-height: 12rem;
+    }
+
+    @media (width >= 48rem) {
+      gap: 3rem 1.5rem;
+    }
+
+    @media (width >= 64rem) {
+      --row-height: 16rem;
+    }
+  }
+
+  .item {
+    min-width: 0;
+  }
+}

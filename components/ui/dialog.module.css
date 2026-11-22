@@ -112,12 +112,6 @@
     }
   }
 
-  .closeIcon {
-    width: 1rem;
-    height: 1rem;
-    flex-shrink: 0;
-  }
-
   .header {
     display: flex;
     flex-direction: column;

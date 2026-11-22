@@ -1,0 +1,50 @@
+@layer ui {
+  .slider {
+    display: grid;
+    gap: 1rem;
+    min-width: 0;
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav {
+    display: flex;
+    gap: 0.25rem;
+    align-items: center;
+
+    &[data-hidden="true"] {
+      visibility: hidden;
+    }
+  }
+
+  .navButton {
+    color: var(--foreground);
+    transition: color 150ms;
+
+    &:disabled {
+      color: color-mix(in oklab, var(--foreground) 30%, transparent);
+    }
+  }
+
+  .content {
+    display: grid;
+    grid-auto-flow: column;
+    gap: 1.25rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .item {
+    scroll-snap-align: start;
+  }
+}

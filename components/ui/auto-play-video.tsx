@@ -6,6 +6,8 @@ import { type ComponentProps, useEffect, useRef, useState, useSyncExternalStore 
 
 import { Icon } from "@/components/ui/icon";
 
+import styles from "./auto-play-video.module.css";
+
 interface AutoPlayVideoPreviewImage {
   src: string;
   alt: string;
@@ -82,7 +84,7 @@ export function AutoPlayVideo({
           src={previewImage.src}
           alt={previewImage.alt}
           fill
-          className={cn("object-cover", className)}
+          className={cn(styles.preview, className)}
           sizes="100vw"
           fetchPriority={previewImageFetchPriority}
           loading={previewImageLoading}
@@ -95,20 +97,17 @@ export function AutoPlayVideo({
         loop
         playsInline
         onCanPlay={() => setVideoReady(true)}
-        className={cn(className, !videoReady && "opacity-0")}
+        className={cn(styles.video, className)}
+        data-ready={videoReady}
         {...props}
       />
       <button
         type="button"
         aria-label={playing ? "Pause video" : "Play video"}
-        className="absolute right-2.5 bottom-2.5 flex size-8 cursor-pointer items-center justify-center rounded-full bg-background/80 text-foreground backdrop-blur-sm transition-colors outline-none hover:bg-background focus-visible:ring-3 focus-visible:ring-ring/50"
+        className={styles.toggle}
         onClick={() => setPlayRequested(!playing)}
       >
-        {playing ? (
-          <Icon name="pause" className="size-4" />
-        ) : (
-          <Icon name="play" className="size-4" />
-        )}
+        {playing ? <Icon name="pause" size={16} /> : <Icon name="play" size={16} />}
       </button>
     </>
   );

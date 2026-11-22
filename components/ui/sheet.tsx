@@ -28,7 +28,7 @@ function Sheet({
         {children}
         {closeButton ? (
           <DialogClose className={styles.close}>
-            <Icon name="x" className={styles.closeIcon} />
+            <Icon name="x" size={20} />
             <span className="sr-only">Close</span>
           </DialogClose>
         ) : null}

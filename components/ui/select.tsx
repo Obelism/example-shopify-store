@@ -17,7 +17,7 @@ function Select({ children, className, label, ...props }: SelectProps) {
       <select className={styles.select} {...props}>
         {children}
       </select>
-      <Icon name="chevron-down" className={styles.icon} />
+      <Icon name="chevron-down" className={styles.icon} size={16} />
     </span>
   );
 }

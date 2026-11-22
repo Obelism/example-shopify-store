@@ -13,7 +13,7 @@ function AccordionTrigger({ children, className, ...props }: ComponentProps<"sum
   return (
     <summary className={cn(styles.trigger, className)} {...props}>
       {children}
-      <Icon name="chevron-down" className={styles.icon} />
+      <Icon name="chevron-down" className={styles.icon} size={16} />
     </summary>
   );
 }
