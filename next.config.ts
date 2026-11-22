@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 
+import { HOME_PATH } from "./lib/cms";
 import { withShopConfig } from "./lib/config/server";
 
 const nextConfig: NextConfig = {
@@ -34,6 +35,10 @@ const nextConfig: NextConfig = {
   // The `powered-by` header from lib/auth/request.ts already names Next.js.
   poweredByHeader: false,
   reactCompiler: true,
+  async redirects() {
+    // Content's canvas opens the home entry at its path.
+    return [{ destination: "/", permanent: false, source: `/${HOME_PATH}` }];
+  },
   turbopack: {
     rules: {
       "*.css": {
