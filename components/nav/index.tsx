@@ -1,6 +1,7 @@
 import { PredictiveSearchProvider } from "@shopify/hydrogen/react";
 import { Suspense } from "react";
 
+import { ThemeSelect } from "@/components/theme/theme-select";
 import { Container } from "@/components/ui/container";
 import { Link } from "@/components/ui/link";
 import { shopConfig } from "@/lib/config";
@@ -32,6 +33,7 @@ export function Nav() {
         <QuickLinks items={items} />
 
         <div className={styles.actions}>
+          <ThemeSelect />
           {shopConfig.search.isEnabled && (
             <PredictiveSearchProvider
               debounceInMs={300}

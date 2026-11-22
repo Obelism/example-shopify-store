@@ -19,7 +19,7 @@
 .error {
   font-size: var(--text-xs);
   line-height: var(--text-xs--leading);
-  color: var(--destructive);
+  color: var(--destructive-text);
 }
 
 .codes {
