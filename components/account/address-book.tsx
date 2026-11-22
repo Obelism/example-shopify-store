@@ -6,10 +6,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
+  DialogPanel,
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Icon } from "@/components/ui/icon";
@@ -95,7 +95,7 @@ export function AddressBook({ addresses }: { addresses: CustomerAddress[] }) {
       )}
 
       <Dialog open={formState !== null} onOpenChange={(open) => !open && setFormState(null)}>
-        <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-xl">
+        <DialogPanel className="max-h-[90vh] overflow-y-auto sm:max-w-xl">
           <DialogHeader>
             <DialogTitle>{formState?.mode === "edit" ? "Edit address" : "Add address"}</DialogTitle>
           </DialogHeader>
@@ -106,7 +106,7 @@ export function AddressBook({ addresses }: { addresses: CustomerAddress[] }) {
               onSuccess={() => setFormState(null)}
             />
           ) : null}
-        </DialogContent>
+        </DialogPanel>
       </Dialog>
 
       <DeleteDialog target={deleteTarget} onClose={() => setDeleteTarget(null)} />
@@ -229,7 +229,7 @@ function DeleteDialog({
   };
   return (
     <Dialog open={target !== null} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent>
+      <DialogPanel>
         <DialogHeader>
           <DialogTitle>Delete address?</DialogTitle>
           <DialogDescription>
@@ -249,7 +249,7 @@ function DeleteDialog({
             {isPending ? <Icon name="loader-circle" className="size-4 animate-spin" /> : "Delete"}
           </Button>
         </DialogFooter>
-      </DialogContent>
+      </DialogPanel>
     </Dialog>
   );
 }

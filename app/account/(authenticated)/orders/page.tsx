@@ -2,7 +2,7 @@ import { Suspense } from "react";
 
 import { formatOrderDate, OrderStatusBadge } from "@/components/account/order-display";
 import { AccountPageHeader } from "@/components/account/page-header";
-import { Button } from "@/components/ui/button";
+import { buttonClassName } from "@/components/ui/button";
 import { Link } from "@/components/ui/link";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatPrice } from "@/lib/money";
@@ -67,28 +67,22 @@ async function OrdersContent({
       {pageInfo.hasNextPage || pageInfo.hasPreviousPage ? (
         <div className="flex items-center justify-between">
           {pageInfo.hasPreviousPage && pageInfo.startCursor ? (
-            <Button
-              variant="outline"
-              size="sm"
-              render={
-                <Link href={`/account/orders?before=${encodeURIComponent(pageInfo.startCursor)}`} />
-              }
+            <Link
+              className={buttonClassName({ size: "sm", variant: "outline" })}
+              href={`/account/orders?before=${encodeURIComponent(pageInfo.startCursor)}`}
             >
               Newer
-            </Button>
+            </Link>
           ) : (
             <span />
           )}
           {pageInfo.hasNextPage && pageInfo.endCursor ? (
-            <Button
-              variant="outline"
-              size="sm"
-              render={
-                <Link href={`/account/orders?after=${encodeURIComponent(pageInfo.endCursor)}`} />
-              }
+            <Link
+              className={buttonClassName({ size: "sm", variant: "outline" })}
+              href={`/account/orders?after=${encodeURIComponent(pageInfo.endCursor)}`}
             >
               Older
-            </Button>
+            </Link>
           ) : (
             <span />
           )}

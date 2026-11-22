@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Button, buttonClassName } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
 import { Link } from "@/components/ui/link";
 
@@ -18,9 +18,9 @@ export function ErrorBoundaryContent({ retry }: { retry: () => void }) {
       </p>
       <div className="flex flex-col gap-2.5 sm:flex-row">
         <Button onClick={() => retry()}>Try again</Button>
-        <Button variant="outline" render={<Link href="/" />}>
+        <Link className={buttonClassName({ variant: "outline" })} href="/">
           Go back to the home page
-        </Button>
+        </Link>
       </div>
     </div>
   );

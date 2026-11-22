@@ -22,15 +22,13 @@ export function BrowseToolbar({ filters, resultCount, sortExclude }: BrowseToolb
         <FilterSheet
           label="Filters"
           trigger={
-            <button
-              type="button"
-              className="flex cursor-pointer items-center gap-2 text-sm font-medium"
-            >
+            <>
               <Icon name="sliders-horizontal" className="size-4" />
               <span>Filters</span>
               <CollectionActiveFilterCountBadge />
-            </button>
+            </>
           }
+          triggerClassName="flex cursor-pointer items-center gap-2 text-sm font-medium"
         >
           {filters}
         </FilterSheet>

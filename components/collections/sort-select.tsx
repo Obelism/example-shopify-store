@@ -3,7 +3,7 @@
 import { getSortByValue } from "@shopify/hydrogen";
 import { useCollection, useCollectionActions } from "@shopify/hydrogen/react";
 
-import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select";
+import { Select } from "@/components/ui/select";
 import { SORT_VALUES } from "@/lib/collections";
 import type { SortValue } from "@/lib/collections/types";
 
@@ -24,20 +24,18 @@ export function CollectionsSortSelect({ exclude = [] }: { exclude?: SortValue[] 
   const options = SORT_VALUES.filter((value) => !exclude.includes(value));
   return (
     <Select
-      value={sortKey ? getSortByValue(sortKey, reverse) : "manual"}
-      onValueChange={(value) => setSortByValue(value ?? "manual")}
+      aria-label="Sort"
+      className="border-0 shadow-none bg-transparent px-0"
       disabled={status === "loading"}
+      label="Sort"
+      onChange={(event) => setSortByValue(event.target.value)}
+      value={sortKey ? getSortByValue(sortKey, reverse) : "manual"}
     >
-      <SelectTrigger className="border-0 shadow-none bg-transparent px-0">
-        <span>Sort</span>
-      </SelectTrigger>
-      <SelectContent>
-        {options.map((value) => (
-          <SelectItem key={value} value={value}>
-            {SORT_LABELS[value]}
-          </SelectItem>
-        ))}
-      </SelectContent>
+      {options.map((value) => (
+        <option key={value} value={value}>
+          {SORT_LABELS[value]}
+        </option>
+      ))}
     </Select>
   );
 }

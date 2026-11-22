@@ -1,6 +1,5 @@
 "use client";
 
-import { Dialog as DialogPrimitive } from "@base-ui/react/dialog";
 import { getSearchResultUrl } from "@shopify/hydrogen";
 import { cn } from "cn";
 import Image from "next/image";
@@ -8,6 +7,7 @@ import { useRouter } from "next/navigation";
 import {
   type FormEvent,
   type KeyboardEvent as ReactKeyboardEvent,
+  type RefObject,
   useCallback,
   useEffect,
   useRef,
@@ -15,7 +15,7 @@ import {
 } from "react";
 
 import { Price } from "@/components/product/price";
-import { Dialog, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogClose, DialogTitle } from "@/components/ui/dialog";
 import { Icon } from "@/components/ui/icon";
 import { useRecentlyViewedProducts } from "@/lib/product/client";
 import { SEARCH_TERM_MAX_LENGTH } from "@/lib/search";
@@ -36,32 +36,33 @@ export function SearchModal() {
     return () => document.removeEventListener("keydown", handleShortcut);
   }, []);
 
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <SearchTrigger />
-      <SearchDialogContent open={open} onClose={() => setOpen(false)} />
-    </Dialog>
-  );
-}
-
-function SearchTrigger() {
-  return (
-    <DialogTrigger
-      render={
-        <button
-          type="button"
-          className="flex items-center justify-center text-foreground hover:text-foreground/80 transition-colors"
-        >
-          <Icon name="search" className="size-5" />
-          <span className="sr-only">Search</span>
-        </button>
-      }
-    />
-  );
-}
-
-function SearchDialogContent({ onClose, open }: { onClose: () => void; open: boolean }) {
   const inputRef = useRef<HTMLInputElement>(null);
+  return (
+    <>
+      <button
+        aria-expanded={open}
+        aria-haspopup="dialog"
+        type="button"
+        className="flex items-center justify-center text-foreground hover:text-foreground/80 transition-colors"
+        onClick={() => setOpen(true)}
+      >
+        <Icon name="search" className="size-5" />
+        <span className="sr-only">Search</span>
+      </button>
+      <Dialog backdrop="blur" initialFocus={inputRef} open={open} onOpenChange={setOpen}>
+        <SearchDialogContent inputRef={inputRef} open={open} onClose={() => setOpen(false)} />
+      </Dialog>
+    </>
+  );
+}
+
+interface SearchDialogContentProps {
+  inputRef: RefObject<HTMLInputElement | null>;
+  onClose: () => void;
+  open: boolean;
+}
+
+function SearchDialogContent({ inputRef, onClose, open }: SearchDialogContentProps) {
   const router = useRouter();
   const { query, setQuery, results, isLoading, activeIndex, setActiveIndex, reset } =
     usePredictiveSearch();
@@ -70,9 +71,6 @@ function SearchDialogContent({ onClose, open }: { onClose: () => void; open: boo
   // An empty query falls back to recently viewed, so both states drive one keyboard list.
   const suggestions = hasQuery ? (results?.queries ?? []) : [];
   const products = hasQuery ? (results?.products ?? []) : recentlyViewed;
-  useEffect(() => {
-    requestAnimationFrame(() => inputRef.current?.focus());
-  }, []);
   const navigate = useCallback(
     (href: string) => {
       router.push(href);
@@ -121,128 +119,116 @@ function SearchDialogContent({ onClose, open }: { onClose: () => void; open: boo
   }
   const show = hasQuery ? results !== null || isLoading : products.length > 0;
   return (
-    <DialogPrimitive.Portal>
-      <DialogPrimitive.Backdrop className="data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 fixed inset-0 z-60 bg-black/30 backdrop-blur-sm" />
-      <DialogPrimitive.Popup
-        aria-describedby={undefined}
-        className="fixed inset-0 z-60 flex justify-center pt-[15vh] px-4 outline-none"
-        initialFocus={inputRef}
-        onClick={(e) => {
-          if (e.target === e.currentTarget) onClose();
-        }}
-      >
-        <div className="w-full max-w-xl h-fit">
-          <DialogTitle className="sr-only">Search</DialogTitle>
-          <div className="bg-background rounded-xl shadow-lg overflow-hidden duration-200">
-            <form onSubmit={handleSubmit} className="flex items-center gap-3 px-4 py-3">
-              <Icon name="search" className="size-4 shrink-0 text-foreground/40" />
-              <input
-                ref={inputRef}
-                type="text"
-                name="q"
-                role="combobox"
-                placeholder="Search products"
-                maxLength={SEARCH_TERM_MAX_LENGTH}
-                onChange={(e) => setQuery(e.target.value)}
-                onKeyDown={handleKeyDown}
-                aria-expanded={!!results}
-                aria-controls="search-modal-results"
-                aria-activedescendant={
-                  activeIndex >= 0 ? `search-modal-item-${activeIndex}` : undefined
+    <div className="mx-auto mt-[15vh] h-fit w-[calc(100%-2rem)] max-w-xl">
+      <DialogTitle className="sr-only">Search</DialogTitle>
+      <div className="bg-background rounded-xl shadow-lg overflow-hidden duration-200">
+        <form onSubmit={handleSubmit} className="flex items-center gap-3 px-4 py-3">
+          <Icon name="search" className="size-4 shrink-0 text-foreground/40" />
+          <input
+            ref={inputRef}
+            type="text"
+            name="q"
+            role="combobox"
+            placeholder="Search products"
+            maxLength={SEARCH_TERM_MAX_LENGTH}
+            onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={handleKeyDown}
+            aria-expanded={!!results}
+            aria-controls="search-modal-results"
+            aria-activedescendant={
+              activeIndex >= 0 ? `search-modal-item-${activeIndex}` : undefined
+            }
+            autoComplete="off"
+            className="flex-1 min-w-0 bg-transparent text-base text-foreground placeholder:text-foreground/40 focus:outline-none"
+          />
+          {query.trim() && (
+            <button
+              type="button"
+              onClick={() => {
+                reset();
+                if (inputRef.current) {
+                  inputRef.current.value = "";
+                  inputRef.current.focus();
                 }
-                autoComplete="off"
-                className="flex-1 min-w-0 bg-transparent text-base text-foreground placeholder:text-foreground/40 focus:outline-none"
-              />
-              {query.trim() && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    reset();
-                    if (inputRef.current) {
-                      inputRef.current.value = "";
-                      inputRef.current.focus();
-                    }
-                  }}
-                  className="shrink-0 text-sm text-foreground/60 hover:text-foreground transition-colors"
-                >
-                  Clear
-                </button>
-              )}
-              <DialogPrimitive.Close className="shrink-0 flex items-center justify-center rounded-full text-foreground/40 hover:text-foreground transition-colors">
-                <Icon name="x" className="size-4" />
-                <span className="sr-only">Close</span>
-              </DialogPrimitive.Close>
-            </form>
+              }}
+              className="shrink-0 text-sm text-foreground/60 hover:text-foreground transition-colors"
+            >
+              Clear
+            </button>
+          )}
+          <DialogClose className="shrink-0 flex items-center justify-center rounded-full text-foreground/40 hover:text-foreground transition-colors">
+            <Icon name="x" className="size-4" />
+            <span className="sr-only">Close</span>
+          </DialogClose>
+        </form>
 
-            {show && (
-              <div
-                id="search-modal-results"
-                role="listbox"
-                className="border-t border-border/30 max-h-[60vh] overflow-y-auto overscroll-contain"
-              >
-                {hasQuery && isLoading && !results && <LoadingSkeleton />}
+        {show && (
+          <div
+            id="search-modal-results"
+            role="listbox"
+            className="border-t border-border/30 max-h-[60vh] overflow-y-auto overscroll-contain"
+          >
+            {hasQuery && isLoading && !results && <LoadingSkeleton />}
 
-                {(!hasQuery || results) && (
-                  <>
-                    {suggestions.length > 0 && (
-                      <div className="px-4 pt-3 pb-2 flex flex-wrap gap-2">
-                        {suggestions.map((suggestion, i) => (
-                          <SuggestionChip
-                            key={suggestion.text}
-                            suggestion={suggestion}
-                            active={activeIndex === i}
-                            onClick={() => {
-                              setQuery(suggestion.text);
-                              if (inputRef.current) inputRef.current.value = suggestion.text;
-                            }}
-                          />
-                        ))}
-                      </div>
-                    )}
-
-                    {products.length > 0 && (
-                      <div>
-                        <div className="px-4 pt-3 pb-1.5 text-xs font-medium text-foreground/50 uppercase tracking-wider">
-                          {hasQuery ? "Products" : "Recently viewed"}
-                        </div>
-                        {products.map((product, i) => (
-                          <ProductResult
-                            key={product.id}
-                            product={product}
-                            active={activeIndex === suggestions.length + i}
-                            onNavigate={navigate}
-                          />
-                        ))}
-                      </div>
-                    )}
-
-                    {hasQuery && visibleItems === 0 && (
-                      <div className="px-4 py-6 text-center text-sm text-foreground/50">
-                        {`No results for "${query}"`}
-                      </div>
-                    )}
-
-                    {hasQuery && visibleItems > 0 && (
-                      <div className="px-4 py-3 flex justify-center">
-                        <button
-                          type="button"
-                          onClick={() =>
-                            navigate(getSearchResultUrl({ baseUrl: "/search", term: query.trim() }))
-                          }
-                          className="inline-flex items-center justify-center rounded-lg bg-primary text-primary-foreground text-sm font-medium h-9 px-5 hover:bg-primary/90 transition-colors"
-                        >
-                          View All
-                        </button>
-                      </div>
-                    )}
-                  </>
+            {(!hasQuery || results) && (
+              <>
+                {suggestions.length > 0 && (
+                  <div className="px-4 pt-3 pb-2 flex flex-wrap gap-2">
+                    {suggestions.map((suggestion, i) => (
+                      <SuggestionChip
+                        key={suggestion.text}
+                        suggestion={suggestion}
+                        active={activeIndex === i}
+                        onClick={() => {
+                          setQuery(suggestion.text);
+                          if (inputRef.current) inputRef.current.value = suggestion.text;
+                        }}
+                      />
+                    ))}
+                  </div>
                 )}
-              </div>
+
+                {products.length > 0 && (
+                  <div>
+                    <div className="px-4 pt-3 pb-1.5 text-xs font-medium text-foreground/50 uppercase tracking-wider">
+                      {hasQuery ? "Products" : "Recently viewed"}
+                    </div>
+                    {products.map((product, i) => (
+                      <ProductResult
+                        key={product.id}
+                        product={product}
+                        active={activeIndex === suggestions.length + i}
+                        onNavigate={navigate}
+                      />
+                    ))}
+                  </div>
+                )}
+
+                {hasQuery && visibleItems === 0 && (
+                  <div className="px-4 py-6 text-center text-sm text-foreground/50">
+                    {`No results for "${query}"`}
+                  </div>
+                )}
+
+                {hasQuery && visibleItems > 0 && (
+                  <div className="px-4 py-3 flex justify-center">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        navigate(getSearchResultUrl({ baseUrl: "/search", term: query.trim() }))
+                      }
+                      className="inline-flex items-center justify-center rounded-lg bg-primary text-primary-foreground text-sm font-medium h-9 px-5 hover:bg-primary/90 transition-colors"
+                    >
+                      View All
+                    </button>
+                  </div>
+                )}
+              </>
             )}
           </div>
-        </div>
-      </DialogPrimitive.Popup>
-    </DialogPrimitive.Portal>
+        )}
+      </div>
+    </div>
   );
 }
 

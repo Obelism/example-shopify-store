@@ -8,18 +8,13 @@ import {
   serializeCollectionParams,
 } from "@shopify/hydrogen";
 import { useCollection, useCollectionActions } from "@shopify/hydrogen/react";
-import {
-  type KeyboardEvent,
-  type MouseEventHandler,
-  type ReactElement,
-  type ReactNode,
-  useState,
-} from "react";
+import { type KeyboardEvent, type MouseEventHandler, type ReactNode, useState } from "react";
 
+import { DialogTitle } from "@/components/ui/dialog";
 import { Icon } from "@/components/ui/icon";
 import { Input } from "@/components/ui/input";
 import { Link } from "@/components/ui/link";
-import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet } from "@/components/ui/sheet";
 import { Swatch } from "@/components/ui/swatch";
 import { parseFilterInput } from "@/lib/collections";
 import { shopConfig } from "@/lib/config";
@@ -32,20 +27,35 @@ import { usePublishedFacets } from "./collection-browse-provider";
 interface FilterSheetProps {
   children: ReactNode;
   label: string;
-  trigger: ReactElement;
+  trigger: ReactNode;
+  triggerClassName?: string;
 }
 
-export function FilterSheet({ children, label, trigger }: FilterSheetProps) {
+export function FilterSheet({ children, label, trigger, triggerClassName }: FilterSheetProps) {
+  const [open, setOpen] = useState(false);
   return (
-    <Sheet>
-      <SheetTrigger render={trigger} />
-      <SheetContent side="left" className="gap-0 overflow-y-auto px-5 pb-5">
+    <>
+      <button
+        aria-expanded={open}
+        aria-haspopup="dialog"
+        className={triggerClassName}
+        onClick={() => setOpen(true)}
+        type="button"
+      >
+        {trigger}
+      </button>
+      <Sheet
+        className="gap-0 overflow-y-auto px-5 pb-5"
+        onOpenChange={setOpen}
+        open={open}
+        side="left"
+      >
         <div className="flex h-16 shrink-0 items-center gap-2">
-          <SheetTitle className="text-lg font-semibold">{label}</SheetTitle>
+          <DialogTitle className="text-lg font-semibold">{label}</DialogTitle>
         </div>
         {children}
-      </SheetContent>
-    </Sheet>
+      </Sheet>
+    </>
   );
 }
 

@@ -3,14 +3,9 @@
 import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
+import { DialogClose, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { Icon } from "@/components/ui/icon";
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetTitle,
-} from "@/components/ui/sheet";
+import { Sheet } from "@/components/ui/sheet";
 import { useCart } from "@/lib/cart/client";
 
 import { useCartDrawer } from "./context";
@@ -38,23 +33,28 @@ export function CartOverlay({ description, title }: CartOverlayProps) {
   const { isOverlayOpen, setOverlayOpen } = useCartDrawer();
 
   return (
-    <Sheet open={isOverlayOpen} onOpenChange={setOverlayOpen}>
-      <SheetContent closeButton={false} overlay={false} side="right" className="gap-0 p-0">
-        <div className="flex h-16 shrink-0 items-center justify-between gap-2 px-2.5">
-          <div className="flex items-center gap-1.5">
-            <SheetTitle className="font-normal text-xl leading-4">{title}</SheetTitle>
-            <CartCountBadge />
-          </div>
-          <SheetClose
-            aria-label="Close cart"
-            className="flex cursor-pointer items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
-          >
-            <Icon name="x" className="size-5" />
-          </SheetClose>
+    <Sheet
+      className="gap-0 p-0"
+      closeButton={false}
+      onOpenChange={setOverlayOpen}
+      open={isOverlayOpen}
+      overlay={false}
+      side="right"
+    >
+      <div className="flex h-16 shrink-0 items-center justify-between gap-2 px-2.5">
+        <div className="flex items-center gap-1.5">
+          <DialogTitle className="font-normal text-xl leading-4">{title}</DialogTitle>
+          <CartCountBadge />
         </div>
-        <SheetDescription className="sr-only">{description}</SheetDescription>
-        <OverlayContent />
-      </SheetContent>
+        <DialogClose
+          aria-label="Close cart"
+          className="flex cursor-pointer items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
+        >
+          <Icon name="x" className="size-5" />
+        </DialogClose>
+      </div>
+      <DialogDescription className="sr-only">{description}</DialogDescription>
+      <OverlayContent />
     </Sheet>
   );
 }

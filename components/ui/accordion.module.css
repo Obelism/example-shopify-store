@@ -1,0 +1,57 @@
+@layer ui {
+  .item {
+    border-bottom: 1px solid var(--border);
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  .trigger {
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding-block: 1.25rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.25rem;
+    text-align: left;
+    list-style: none;
+    cursor: pointer;
+    border-radius: var(--radius);
+    outline: none;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &:focus-visible {
+      box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 50%, transparent);
+    }
+  }
+
+  .icon {
+    flex-shrink: 0;
+    width: 1rem;
+    height: 1rem;
+    color: var(--muted-foreground);
+    pointer-events: none;
+    translate: 0 0.125rem;
+    transition: rotate 200ms;
+
+    .item[open] & {
+      rotate: 180deg;
+    }
+  }
+
+  .content {
+    padding-bottom: 1.25rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+}
