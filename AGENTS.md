@@ -105,7 +105,7 @@ Read the installed Hydrogen README and bundled skills before changing an SDK int
 Opt-in through `shopConfig.auth.isEnabled`, read directly in server and client code. Enabling it requires `CUSTOMER_ACCOUNT_SESSION_SECRET`, an app-generated secret that is not the Shopify client secret, plus `SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_ID` and `SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_SECRET`; all three are server-only.
 
 - Token refresh happens only where Hydrogen can commit cookies: `requireCustomerAccessToken()` redirects refreshable sessions through `/account/refresh`.
-- `components/nav/account.tsx` reads session state inside Suspense with a fixed `size-5` icon container.
+- `components/nav/account.tsx` reads session state inside Suspense with a fixed 1.25rem icon container.
 - Sign-out is a same-origin POST so Hydrogen can clear the session and perform Shopify RP-initiated logout.
 
 ## Next.js layer
@@ -160,18 +160,19 @@ Do not add tests, test files, runners, dependencies, or scripts unless the user 
 
 ### Spacing
 
-- `Container` sets horizontal padding and max width only; never put `py-*` on it.
-- `Page` owns top padding (`pt-10` by default, overridden through `className`) and has no bottom padding; the footer's `pt-20` provides that gap. Full-height layouts add `flex flex-1 flex-col`.
-- Wrap sibling sections in `Sections` (`gap-10` by default). Inside a section, the parent spaces its children with `grid gap-*`; children carry no outer margins or `space-y-*`, so a component keeps its layout wherever it is placed. Padding inside components, negative-margin breakouts, and margin resets on rendered rich text are fine.
+- `Container` sets horizontal padding and max width only; never give it vertical padding.
+- `Page` owns top padding (2.5rem by default, overridden through `className`) and has no bottom padding; the footer's 5rem top padding provides that gap. Full-height layouts are `display: flex; flex: 1; flex-direction: column`.
+- Wrap sibling sections in `Sections` (2.5rem gap by default). Inside a section, the parent spaces its children with `display: grid` and `gap`; children carry no outer margins, so a component keeps its layout wherever it is placed. Padding inside components, negative-margin breakouts, and margin resets on rendered rich text are fine.
 - Spacing values are the storefront's design choice: reuse the values nearby code already uses, and do not change spacing outside the task.
 
-### Tailwind
+### CSS Modules
 
-- Style with utilities, not `app/globals.css`. Register new values in `@theme`; keep `globals.css` to tokens, resets, keyframes, and shared utilities, with no global element rules.
-- `@theme inline` does not emit `:root` variables; outside utilities, reference the underlying variable.
-- Prefer scale utilities (`h-18`, `top-1/2`) to arbitrary values, which are for off-scale values such as `calc()` or grid templates.
-- Prefer `data-[attr=value]` selectors to conditional classes; use `cn()` when classes must be conditional, `data-slot` as styling hooks, and `cva` for variants.
-- Interactive elements use `cursor-pointer`; disabled ones use `cursor-not-allowed`.
+- Style a component with a `*.module.css` file beside it, imported as `styles`, and name classes by role (`.title`, `.price`), not by appearance. `app/globals.css` holds only tokens, the reset, the `sr-only` class, and keyframes; a new shared value becomes a custom property there.
+- Use the tokens for anything the theme defines: colors (`var(--muted-foreground)`), type (`var(--text-sm)` with `var(--text-sm--leading)` and, from `lg` up, `var(--text-lg--tracking)`), `var(--radius)`, `var(--shadow-xs)`, `var(--focus-ring)`. Module keyframe names are scoped, so animate through `var(--animate-spin)` and `var(--animate-pulse)`.
+- `components/ui/` modules wrap their rules in `@layer ui`, below unlayered component modules: a consumer overrides a primitive by passing its own module class as `className`, never with `!important`.
+- Express state with data and ARIA attributes (`&[data-selected="true"]`, `&[aria-expanded="true"]`); use `cn()` only when a class must be conditional. A primitive's variants are classes picked by a prop, as in `Button`; `Icon` takes its `size` in pixels.
+- Breakpoints are min-width media queries nested in the rule: 40rem, 48rem, 64rem, 80rem. Wrap `:hover` in `@media (hover: hover)`.
+- Interactive elements use `cursor: pointer`; disabled ones use `cursor: not-allowed`.
 
 ### Comments
 

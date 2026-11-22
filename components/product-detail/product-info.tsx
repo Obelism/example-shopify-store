@@ -8,6 +8,8 @@ import type { OptionGroupState } from "@/lib/product/types";
 import { ColorPicker } from "./color-picker";
 import { OptionPicker } from "./option-picker";
 
+import styles from "./product-info.module.css";
+
 interface ProductInfoOptionsProps extends ComponentProps<"div"> {
   compact?: boolean;
   hideImages?: boolean;
@@ -34,11 +36,11 @@ function ProductInfoOptions({
   const colorOptions = renderable.filter((opt) => !isSingleValueOption(opt) && isColorOption(opt));
   const otherOptions = renderable.filter((opt) => !isSingleValueOption(opt) && !isColorOption(opt));
   return (
-    <div data-slot="product-info-options" className={className} {...props}>
-      <div className={cn("grid", compact ? "gap-2.5" : "gap-5")}>
+    <div className={className} {...props}>
+      <div className={cn(styles.options, compact && styles.compact)}>
         {singleValueOptions.map((option) => (
-          <p key={option.name} className="text-sm font-medium text-foreground/70">
-            {option.name}: <span className="text-foreground">{option.values[0]?.name}</span>
+          <p key={option.name} className={styles.label}>
+            {option.name}: <span className={styles.value}>{option.values[0]?.name}</span>
           </p>
         ))}
 
@@ -75,9 +77,9 @@ function ProductInfoDescription({
 }: ProductInfoDescriptionProps) {
   if (!descriptionHtml) return null;
   return (
-    <div data-slot="product-info-description" className={className} {...props}>
+    <div className={className} {...props}>
       <div
-        className={proseClassName({ className: "text-foreground/80", size: "sm" })}
+        className={proseClassName({ className: styles.description, size: "sm" })}
         // oxlint-disable-next-line react/no-danger -- Product descriptions pass through sanitizeShopifyHtml when fetched.
         dangerouslySetInnerHTML={{ __html: descriptionHtml }}
       />

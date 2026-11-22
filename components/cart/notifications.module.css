@@ -1,0 +1,32 @@
+.notification {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 5rem;
+  z-index: 50;
+  display: flex;
+  gap: 0.625rem;
+  align-items: center;
+  max-width: 24rem;
+  padding: 0.625rem 1rem;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--leading);
+  color: var(--destructive);
+  background: var(--background);
+  border: 1px solid color-mix(in oklab, var(--destructive) 20%, transparent);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+}
+
+.dismiss {
+  display: flex;
+  align-items: center;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  @media (hover: hover) {
+    &:hover {
+      color: var(--foreground);
+    }
+  }
+}

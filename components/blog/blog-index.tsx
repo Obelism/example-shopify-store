@@ -5,24 +5,26 @@ import { Sections } from "@/components/ui/sections";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { Blog } from "@/lib/blog/types";
 
+import styles from "./blog-index.module.css";
+
 export interface BlogIndexProps {
   blog: Blog;
 }
 
 export function BlogIndex({ blog }: BlogIndexProps) {
   return (
-    <Page className="pt-2.5 md:pt-10">
+    <Page className={styles.page}>
       <Container>
-        <Sections className="gap-5">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl">{blog.title}</h1>
+        <Sections className={styles.sections}>
+          <h1 className={styles.title}>{blog.title}</h1>
           {blog.articles.length > 0 ? (
-            <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
+            <div className={styles.grid}>
               {blog.articles.map((article) => (
                 <ArticleCard article={article} key={article.handle} />
               ))}
             </div>
           ) : (
-            <p className="text-muted-foreground">No articles found.</p>
+            <p className={styles.empty}>No articles found.</p>
           )}
         </Sections>
       </Container>
@@ -32,18 +34,18 @@ export function BlogIndex({ blog }: BlogIndexProps) {
 
 export function BlogIndexSkeleton() {
   return (
-    <Page aria-busy="true" className="pt-2.5 md:pt-10">
+    <Page aria-busy="true" className={styles.page}>
       <Container>
-        <Sections className="gap-5">
-          <Skeleton className="h-9 w-1/2 sm:h-10 md:h-12" />
-          <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
+        <Sections className={styles.sections}>
+          <Skeleton className={styles.titleSkeleton} />
+          <div className={styles.grid}>
             {[0, 1, 2].map((index) => (
-              <div className="grid content-start gap-4" key={index}>
-                <Skeleton className="aspect-3/2 w-full rounded-xl" />
-                <div className="grid gap-2.5">
-                  <Skeleton className="h-5 w-24" />
-                  <Skeleton className="h-7 w-3/4" />
-                  <Skeleton className="h-4 w-full" />
+              <div className={styles.cardSkeleton} key={index}>
+                <Skeleton className={styles.imageSkeleton} />
+                <div className={styles.cardBodySkeleton}>
+                  <Skeleton className={styles.dateSkeleton} />
+                  <Skeleton className={styles.cardTitleSkeleton} />
+                  <Skeleton className={styles.excerptSkeleton} />
                 </div>
               </div>
             ))}

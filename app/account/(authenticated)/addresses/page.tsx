@@ -5,6 +5,8 @@ import { AccountPageHeader } from "@/components/account/page-header";
 import { Skeleton } from "@/components/ui/skeleton";
 import { fetchCustomerAddresses } from "@/lib/shopify/operations/customer/server";
 
+import styles from "./page.module.css";
+
 export default function AddressesPage() {
   return (
     <>
@@ -23,10 +25,10 @@ async function AddressesContent() {
 
 function AddressesSkeleton() {
   return (
-    <div className="grid gap-3">
-      <Skeleton className="h-9 w-32 rounded-lg" />
-      <Skeleton className="h-28 w-full rounded-lg" />
-      <Skeleton className="h-28 w-full rounded-lg" />
+    <div className={styles.skeleton}>
+      <Skeleton className={styles.addButton} />
+      <Skeleton className={styles.card} />
+      <Skeleton className={styles.card} />
     </div>
   );
 }

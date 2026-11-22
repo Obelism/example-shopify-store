@@ -1,0 +1,23 @@
+.notice {
+  display: flex;
+  gap: 0.625rem;
+  align-items: flex-start;
+  padding: 0.625rem 0.75rem;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--leading);
+  color: var(--destructive-foreground);
+  background: var(--destructive);
+}
+
+.icon {
+  flex-shrink: 0;
+}
+
+.text {
+  display: grid;
+  gap: 0.125rem;
+}
+
+.title {
+  font-weight: 500;
+}

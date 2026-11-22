@@ -1,3 +1,4 @@
+import { cn } from "cn";
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Newsreader } from "next/font/google";
 
@@ -18,6 +19,8 @@ import { SiteSchema } from "@/components/schema/site-schema";
 import { seedCartData } from "@/lib/cart/server";
 import { shopConfig } from "@/lib/config";
 import { getIconUrl, iconConfig, SvgProvider } from "@/lib/icons";
+
+import styles from "./layout.module.css";
 
 export const ensureStatic = "prefetch";
 
@@ -55,12 +58,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <ImproveHead />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${newsreader.variable} flex min-h-dvh flex-col font-sans antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${newsreader.variable} ${styles.body}`}
       >
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-100 focus:rounded-md focus:bg-background focus:px-5 focus:py-2 focus:text-sm focus:font-medium focus:shadow-lg focus:ring-2 focus:ring-foreground focus:outline-none"
-        >
+        <a href="#main-content" className={cn(styles.skipLink, "sr-only")}>
           Skip to content
         </a>
         <SiteSchema />
@@ -73,7 +73,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           variants={{
             off: null,
             on: (
-              <p className="bg-foreground px-5 py-2 text-center text-xs text-background">
+              <p className={styles.shippingBanner}>
                 Free shipping on every framed print this month.
               </p>
             ),
@@ -82,7 +82,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <SvgProvider config={iconConfig}>
           <CartProviderWrapper cartData={cartData}>
             <Nav />
-            <main id="main-content" className="flex flex-1 flex-col min-w-0">
+            <main id="main-content" className={styles.main}>
               {children}
             </main>
             <Footer />

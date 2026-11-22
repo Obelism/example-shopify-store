@@ -1,0 +1,91 @@
+.page {
+  padding-top: 0.625rem;
+
+  @media (width >= 48rem) {
+    padding-top: 2.5rem;
+  }
+}
+
+.sections {
+  gap: 1.25rem;
+}
+
+.title {
+  font-size: var(--text-3xl);
+  line-height: var(--text-3xl--leading);
+  letter-spacing: var(--text-3xl--tracking);
+
+  @media (width >= 40rem) {
+    font-size: var(--text-4xl);
+    line-height: var(--text-4xl--leading);
+    letter-spacing: var(--text-4xl--tracking);
+  }
+
+  @media (width >= 48rem) {
+    font-size: var(--text-5xl);
+    line-height: var(--text-5xl--leading);
+    letter-spacing: var(--text-5xl--tracking);
+  }
+}
+
+.grid {
+  display: grid;
+  gap: 2.5rem;
+
+  @media (width >= 48rem) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (width >= 64rem) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.empty {
+  color: var(--muted-foreground);
+}
+
+.titleSkeleton {
+  width: 50%;
+  height: 2.25rem;
+
+  @media (width >= 40rem) {
+    height: 2.5rem;
+  }
+
+  @media (width >= 48rem) {
+    height: 3rem;
+  }
+}
+
+.cardSkeleton {
+  display: grid;
+  align-content: start;
+  gap: 1rem;
+}
+
+.imageSkeleton {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  border-radius: calc(var(--radius) + 4px);
+}
+
+.cardBodySkeleton {
+  display: grid;
+  gap: 0.625rem;
+}
+
+.dateSkeleton {
+  width: 6rem;
+  height: 1.25rem;
+}
+
+.cardTitleSkeleton {
+  width: 75%;
+  height: 1.75rem;
+}
+
+.excerptSkeleton {
+  width: 100%;
+  height: 1rem;
+}

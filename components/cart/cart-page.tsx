@@ -14,17 +14,16 @@ import { CartLineItems } from "./line-item";
 import { CartSummary } from "./summary";
 import { CartWarnings } from "./warnings";
 
+import styles from "./cart-page.module.css";
+
 export function CartPageContent() {
   const cart = useSuspenseCart((state) => state.data);
 
   if (cart.totalQuantity === 0) {
     return (
-      <div className="flex flex-col items-center justify-center gap-5 py-10 px-5">
-        <h2 className="text-2xl sm:text-3xl">Your cart is empty</h2>
-        <Link
-          href="/"
-          className="inline-flex cursor-pointer items-center justify-center h-12 px-8 rounded-lg text-sm font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
-        >
+      <div className={styles.empty}>
+        <h2 className={styles.emptyTitle}>Your cart is empty</h2>
+        <Link href="/" className={styles.continue}>
           Continue Shopping
         </Link>
       </div>
@@ -33,11 +32,7 @@ export function CartPageContent() {
 
   return (
     <CartPageLayout
-      count={
-        <span className="flex size-7 items-center justify-center rounded-full bg-foreground text-sm text-background">
-          {cart.totalQuantity}
-        </span>
-      }
+      count={<span className={styles.count}>{cart.totalQuantity}</span>}
       summary={<CartSummary cart={cart} />}
       warnings={<CartWarnings />}
     >
@@ -50,38 +45,38 @@ export function CartPageSkeleton() {
   return (
     <CartPageLayout
       aria-busy="true"
-      count={<Skeleton className="size-7 rounded-full" />}
+      count={<Skeleton className={styles.countSkeleton} />}
       summary={
-        <div className="grid gap-5">
-          <div className="grid gap-2.5">
-            <div className="flex gap-2.5">
-              <Skeleton className="h-9 flex-1" />
-              <Skeleton className="h-9 w-18 rounded-lg" />
+        <div className={styles.summary}>
+          <div className={styles.summaryTop}>
+            <div className={styles.discount}>
+              <Skeleton className={styles.discountInput} />
+              <Skeleton className={styles.discountButton} />
             </div>
-            <div className="grid gap-1">
-              <div className="flex h-7 items-center justify-between">
-                <Skeleton className="h-5 w-28" />
-                <Skeleton className="h-6 w-20" />
+            <div className={styles.total}>
+              <div className={styles.totalRow}>
+                <Skeleton className={styles.totalLabel} />
+                <Skeleton className={styles.totalValue} />
               </div>
-              <Skeleton className="h-4 w-48" />
+              <Skeleton className={styles.totalNote} />
             </div>
           </div>
-          <Skeleton className="h-12 rounded-lg" />
+          <Skeleton className={styles.checkout} />
         </div>
       }
     >
-      <ul className="grid gap-5">
+      <ul className={styles.lines}>
         {[0, 1, 2].map((index) => (
-          <li key={index} className="flex gap-2.5">
-            <Skeleton className="size-18 shrink-0 rounded-none" />
-            <div className="grid min-h-18 flex-1 gap-2.5 pt-0.5">
-              <div className="grid gap-1">
-                <Skeleton className="h-5 w-2/3" />
-                <Skeleton className="h-4 w-1/3" />
+          <li key={index} className={styles.line}>
+            <Skeleton className={styles.lineImage} />
+            <div className={styles.lineBody}>
+              <div className={styles.lineText}>
+                <Skeleton className={styles.lineTitle} />
+                <Skeleton className={styles.lineVariant} />
               </div>
-              <Skeleton className="h-6 w-20 self-end rounded-full" />
+              <Skeleton className={styles.lineQuantity} />
             </div>
-            <Skeleton className="h-5 w-16" />
+            <Skeleton className={styles.linePrice} />
           </li>
         ))}
       </ul>
@@ -100,15 +95,15 @@ function CartPageLayout({ children, count, summary, warnings, ...props }: CartPa
     <Page {...props}>
       <Container>
         <Sections>
-          <div className="flex items-center gap-2.5">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl">Cart</h1>
+          <div className={styles.header}>
+            <h1 className={styles.title}>Cart</h1>
             {count}
           </div>
           {warnings}
-          <div className="grid gap-5 lg:grid-cols-12">
-            <div className="lg:col-span-8 xl:col-span-9">{children}</div>
-            <aside className="lg:col-span-4 xl:col-span-3">
-              <div className="grid gap-5 lg:sticky lg:top-20">
+          <div className={styles.layout}>
+            <div className={styles.main}>{children}</div>
+            <aside className={styles.aside}>
+              <div className={styles.asideContent}>
                 <DemoStoreNotice />
                 {summary}
               </div>

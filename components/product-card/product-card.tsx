@@ -13,6 +13,8 @@ import {
 } from "./components";
 import { QuickShop } from "./quick-shop";
 
+import styles from "./product-card.module.css";
+
 export interface ProductCardProps {
   loading?: "eager" | "lazy";
   outOfStockText?: string;
@@ -47,7 +49,7 @@ export function ProductCard({ loading, outOfStockText, product, quickShopText }:
         </ProductCardImage>
         <ProductCardContent>
           <ProductCardTitle>
-            <Link href={href} className="after:absolute after:inset-0">
+            <Link href={href} className={styles.link}>
               {product.title}
             </Link>
           </ProductCardTitle>

@@ -7,6 +7,8 @@ import { Sections } from "@/components/ui/sections";
 import { getCollectionsListing } from "@/lib/collections/server";
 import { buildAlternates, buildOpenGraph } from "@/lib/seo";
 
+import styles from "./page.module.css";
+
 export async function generateMetadata(): Promise<Metadata> {
   const title = "Series";
   const description = "Six bodies of work, each available as archival prints.";
@@ -35,13 +37,13 @@ export default async function CollectionsPage() {
   const collections = await getCollectionsListing({});
   const viewCollectionLabel = "View this series";
   return (
-    <Page className="pt-5 md:pt-10">
+    <Page className={styles.page}>
       <Container>
-        <Sections className="gap-10">
-          <h1 className="font-serif text-4xl tracking-tight md:text-5xl">Series</h1>
+        <Sections>
+          <h1 className={styles.title}>Series</h1>
 
           {collections.length > 0 ? (
-            <div className="grid gap-x-8 gap-y-12 md:grid-cols-2">
+            <div className={styles.grid}>
               {collections.map((collection) => (
                 <CollectionCard
                   key={collection.handle}
@@ -51,7 +53,7 @@ export default async function CollectionsPage() {
               ))}
             </div>
           ) : (
-            <p className="text-muted-foreground">No series yet.</p>
+            <p className={styles.empty}>No series yet.</p>
           )}
         </Sections>
       </Container>

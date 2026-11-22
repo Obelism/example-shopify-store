@@ -1,0 +1,62 @@
+.summary {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.details {
+  display: grid;
+  gap: 0.625rem;
+}
+
+.total {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.totalRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-size: var(--text-base);
+  line-height: var(--text-base--leading);
+  color: var(--foreground);
+}
+
+.updating,
+.price {
+  font-size: var(--text-xl);
+  font-weight: 500;
+  line-height: var(--text-xl--leading);
+  letter-spacing: var(--text-xl--tracking);
+}
+
+.updating {
+  color: var(--muted-foreground);
+}
+
+.note {
+  font-size: var(--text-xs);
+  line-height: var(--text-xs--leading);
+  color: var(--muted-foreground);
+}
+
+.checkout {
+  display: grid;
+  gap: 0.625rem;
+}
+
+.checkoutButton {
+  justify-content: center;
+  width: 100%;
+  height: 3rem;
+}
+
+.spinner {
+  animation: var(--animate-spin);
+}
+
+.error {
+  font-size: var(--text-xs);
+  line-height: var(--text-xs--leading);
+  color: var(--destructive);
+}

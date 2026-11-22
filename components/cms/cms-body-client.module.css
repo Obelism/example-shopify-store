@@ -1,0 +1,202 @@
+/* Zero specificity so a caller's className always wins. */
+:where(.body) {
+  display: grid;
+  gap: 3rem;
+}
+
+.linkMark {
+  text-decoration-line: underline;
+  text-underline-offset: 4px;
+
+  @media (hover: hover) {
+    &:hover {
+      color: var(--foreground);
+    }
+  }
+}
+
+.prose {
+  display: grid;
+  gap: 1rem;
+  font-size: var(--text-sm);
+  line-height: 1.5rem;
+  color: var(--muted-foreground);
+
+  & strong {
+    font-weight: 500;
+    color: var(--foreground);
+  }
+
+  @media (width >= 48rem) {
+    font-size: var(--text-base);
+    line-height: 1.75rem;
+  }
+}
+
+.heading {
+  font-family: var(--font-serif);
+  font-size: var(--text-2xl);
+  line-height: var(--text-2xl--leading);
+  letter-spacing: -0.025em;
+}
+
+.intro {
+  display: grid;
+  align-content: start;
+  gap: 1.25rem;
+}
+
+.introHeading {
+  font-family: var(--font-serif);
+  font-size: var(--text-3xl);
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+}
+
+.introText {
+  font-size: var(--text-sm);
+  line-height: 1.5rem;
+
+  & p {
+    color: var(--muted-foreground);
+  }
+}
+
+.introLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--leading);
+}
+
+.introLink {
+  text-underline-offset: 4px;
+
+  @media (hover: hover) {
+    &:hover {
+      text-decoration-line: underline;
+    }
+  }
+}
+
+.text {
+  display: grid;
+  gap: 1rem;
+  max-width: 42rem;
+}
+
+.image {
+  display: grid;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.narrow {
+  max-width: 36rem;
+}
+
+.wide {
+  max-width: 56rem;
+}
+
+.media {
+  width: 100%;
+  height: auto;
+  background: var(--muted);
+}
+
+.caption {
+  font-size: var(--text-xs);
+  line-height: var(--text-xs--leading);
+  color: var(--muted-foreground);
+}
+
+.quote {
+  display: grid;
+  gap: 0.75rem;
+  max-width: 42rem;
+  padding-left: 1.5rem;
+  border-left-width: 1px;
+}
+
+.quoteText {
+  font-family: var(--font-serif);
+  font-size: var(--text-2xl);
+  font-style: italic;
+  line-height: 1.375;
+  letter-spacing: -0.025em;
+}
+
+.attribution {
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--leading);
+  color: var(--muted-foreground);
+}
+
+.featuredSeries {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.seriesGrid {
+  display: grid;
+  gap: 2.5rem 2rem;
+
+  @media (width >= 48rem) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.featuredPrint {
+  display: grid;
+  gap: 1.5rem;
+  align-items: center;
+
+  @media (width >= 48rem) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2.5rem;
+  }
+}
+
+.printDetails {
+  display: grid;
+  align-content: center;
+  gap: 0.75rem;
+}
+
+.printTitle {
+  font-family: var(--font-serif);
+  font-size: var(--text-3xl);
+  line-height: var(--text-3xl--leading);
+  letter-spacing: -0.025em;
+}
+
+.printText {
+  line-height: 1.75rem;
+  color: var(--muted-foreground);
+}
+
+.printPrice {
+  display: inline-flex;
+  gap: 0.25rem;
+  align-items: baseline;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--leading);
+  color: var(--muted-foreground);
+}
+
+.price {
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--leading);
+  letter-spacing: inherit;
+  color: var(--muted-foreground);
+}
+
+.printLink {
+  width: fit-content;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--leading);
+  text-decoration-line: underline;
+  text-underline-offset: 4px;
+}

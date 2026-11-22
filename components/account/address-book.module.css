@@ -1,0 +1,118 @@
+.root {
+  display: grid;
+  gap: 1rem;
+}
+
+.empty {
+  padding: 1.5rem;
+  text-align: center;
+  border-width: 1px;
+  border-radius: var(--radius);
+}
+
+.emptyText {
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--leading);
+  color: var(--muted-foreground);
+}
+
+.list {
+  display: grid;
+  gap: 0.75rem;
+
+  @media (width >= 40rem) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-width: 1px;
+  border-radius: var(--radius);
+}
+
+.cardHeader {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.address {
+  font-size: var(--text-sm);
+  font-style: normal;
+  line-height: var(--text-sm--leading);
+  color: var(--muted-foreground);
+}
+
+.addressLine {
+  display: block;
+}
+
+.cardActions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: auto;
+}
+
+.formPanel {
+  max-height: 90vh;
+  overflow-y: auto;
+
+  @media (width >= 40rem) {
+    max-width: 36rem;
+  }
+}
+
+.form {
+  display: grid;
+  gap: 1rem;
+}
+
+.fields {
+  display: grid;
+  gap: 1rem;
+
+  @media (width >= 40rem) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.field {
+  display: grid;
+  gap: 0.375rem;
+
+  &[data-span="true"] {
+    @media (width >= 40rem) {
+      grid-column: span 2 / span 2;
+    }
+  }
+}
+
+.fieldError {
+  font-size: var(--text-xs);
+  line-height: var(--text-xs--leading);
+  color: var(--destructive);
+}
+
+.defaultToggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem;
+  border-width: 1px;
+  border-radius: var(--radius);
+}
+
+.error {
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--leading);
+  color: var(--destructive);
+}
+
+.spinner {
+  animation: var(--animate-spin);
+}

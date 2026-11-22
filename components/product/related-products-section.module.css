@@ -1,0 +1,35 @@
+.root {
+  display: grid;
+  gap: 1rem;
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-size: var(--text-2xl);
+  line-height: var(--text-2xl--leading);
+  letter-spacing: -0.025em;
+
+  @media (width >= 40rem) {
+    font-size: var(--text-3xl);
+    line-height: var(--text-3xl--leading);
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  align-items: start;
+
+  @media (width >= 48rem) {
+    gap: 2rem;
+  }
+
+  @media (width >= 64rem) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.skeletonImage {
+  aspect-ratio: 3 / 2;
+}

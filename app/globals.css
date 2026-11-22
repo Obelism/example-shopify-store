@@ -1,48 +1,5 @@
 /* `ui` primitives sit above the reset and below unlayered component styles, so a consumer's className overrides them. */
-@layer theme, base, reset, ui, components, utilities;
-
-@import "tailwindcss";
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-shop: #5a31f4;
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-serif: var(--font-newsreader);
-  --text-xxs: 0.625rem;
-  --text-lg--letter-spacing: -0.01em;
-  --text-xl--letter-spacing: -0.015em;
-  --text-2xl--letter-spacing: -0.02em;
-  --text-3xl--letter-spacing: -0.025em;
-  --text-4xl--letter-spacing: -0.03em;
-  --text-5xl--letter-spacing: -0.035em;
-  --text-6xl--letter-spacing: -0.04em;
-  --text-7xl--letter-spacing: -0.045em;
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-positive: var(--positive);
-  --color-positive-foreground: var(--positive-foreground);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-}
+@layer reset, ui;
 
 :root {
   color-scheme: light;
@@ -71,12 +28,6 @@
   --shop: #5a31f4;
 
   --radius: 0.125rem;
-
-  --font-sans:
-    var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
-    "Segoe UI Emoji";
-  --font-serif: var(--font-newsreader), ui-serif, Georgia, Cambria, "Times New Roman", serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
   /* Each size sets its line height; headings track tighter as they grow (Geist behavior). */
   --text-xxs: 0.625rem;
@@ -122,6 +73,15 @@
   --animate-spin: spin 1s linear infinite;
 }
 
+/* next/font sets its variables on <body>, so the font stacks resolve there. */
+body {
+  --font-sans:
+    var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji";
+  --font-serif: var(--font-newsreader), ui-serif, Georgia, Cambria, "Times New Roman", serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
 @layer reset {
   *,
   ::after,
@@ -136,7 +96,6 @@
   }
 
   html {
-    font-family: var(--font-sans);
     line-height: 1.5;
     tab-size: 4;
     -webkit-font-smoothing: antialiased;
@@ -146,6 +105,7 @@
   }
 
   body {
+    font-family: var(--font-sans);
     color: var(--foreground);
     background: var(--background);
   }

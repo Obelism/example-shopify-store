@@ -29,6 +29,8 @@ import { buildAlternates, buildOpenGraph } from "@/lib/seo";
 import { fetchProductVariant } from "@/lib/shopify/operations/products/server";
 import { PLACEHOLDER_HANDLE } from "@/lib/static-params";
 
+import styles from "./page.module.css";
+
 async function buildProductMetadata(handle: string, canonicalPath: string): Promise<Metadata> {
   const product = await getProduct({
     handle,
@@ -85,8 +87,8 @@ export async function generateMetadata({
 
 export default function ProductPage({ params, searchParams }: PageProps<"/products/[handle]">) {
   return (
-    <Page className="pt-5 md:pt-10">
-      <Container className="bg-background">
+    <Page className={styles.page}>
+      <Container className={styles.container}>
         <Sections>
           <Suspense fallback={<ProductDetailSkeleton />}>
             <ProductPageContent params={params} searchParams={searchParams} />

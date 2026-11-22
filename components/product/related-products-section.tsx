@@ -3,13 +3,15 @@ import { Suspense } from "react";
 import { ProductCard, ProductCardSkeleton } from "@/components/product-card/product-card";
 import { getProductRecommendations } from "@/lib/product/server";
 
+import styles from "./related-products-section.module.css";
+
 function RelatedProductsSectionSkeleton({ limit }: { limit: number }) {
   return (
-    <div className="grid gap-4">
-      <h2 className="font-serif text-2xl tracking-tight sm:text-3xl">More prints</h2>
-      <div className="grid grid-cols-2 items-start gap-5 md:gap-8 lg:grid-cols-4">
+    <div className={styles.root}>
+      <h2 className={styles.title}>More prints</h2>
+      <div className={styles.grid}>
         {Array.from({ length: limit }, (_, index) => (
-          <ProductCardSkeleton key={index} imageClassName="aspect-3/2" />
+          <ProductCardSkeleton key={index} imageClassName={styles.skeletonImage} />
         ))}
       </div>
     </div>
@@ -20,9 +22,9 @@ async function Render({ handle, limit }: { handle: string; limit: number }) {
   const related = await getProductRecommendations({ handle, intent: "RELATED" });
   if (related.length === 0) return null;
   return (
-    <div className="grid gap-4">
-      <h2 className="font-serif text-2xl tracking-tight sm:text-3xl">More prints</h2>
-      <div className="grid grid-cols-2 items-start gap-5 md:gap-8 lg:grid-cols-4">
+    <div className={styles.root}>
+      <h2 className={styles.title}>More prints</h2>
+      <div className={styles.grid}>
         {related.slice(0, limit).map((product) => (
           <ProductCard key={product.id} product={product} outOfStockText="Out of Stock" />
         ))}

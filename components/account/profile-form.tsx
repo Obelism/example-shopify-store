@@ -9,6 +9,8 @@ import { Label } from "@/components/ui/label";
 import { updateProfileAction } from "@/lib/customer/action";
 import type { CustomerProfile } from "@/lib/customer/types";
 
+import styles from "./profile-form.module.css";
+
 interface ProfileFormLabels {
   email: string;
   firstName: string;
@@ -46,9 +48,9 @@ export function ProfileForm({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="grid max-w-md gap-4">
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div className="grid gap-1.5">
+    <form onSubmit={handleSubmit} className={styles.form}>
+      <div className={styles.names}>
+        <div className={styles.field}>
           <Label htmlFor="firstName">{labels.firstName}</Label>
           <Input
             id="firstName"
@@ -61,7 +63,7 @@ export function ProfileForm({
             autoComplete="given-name"
           />
         </div>
-        <div className="grid gap-1.5">
+        <div className={styles.field}>
           <Label htmlFor="lastName">{labels.lastName}</Label>
           <Input
             id="lastName"
@@ -76,24 +78,26 @@ export function ProfileForm({
         </div>
       </div>
 
-      <div className="grid gap-1.5">
+      <div className={styles.field}>
         <Label htmlFor="email">{labels.email}</Label>
         <Input id="email" type="email" value={profile.email} disabled autoComplete="email" />
       </div>
 
       {error ? (
-        <p role="alert" className="text-sm text-destructive">
+        <p role="alert" className={styles.error}>
           {error}
         </p>
       ) : null}
 
-      <div className="flex items-center gap-3">
+      <div className={styles.actions}>
         <Button type="submit" disabled={isPending}>
-          {isPending ? <Icon name="loader-circle" className="size-4 animate-spin" /> : labels.save}
+          {isPending ? (
+            <Icon name="loader-circle" size={16} className={styles.spinner} />
+          ) : (
+            labels.save
+          )}
         </Button>
-        {saved ? (
-          <span className="text-sm text-muted-foreground">{labels.profileUpdated}</span>
-        ) : null}
+        {saved ? <span className={styles.saved}>{labels.profileUpdated}</span> : null}
       </div>
     </form>
   );

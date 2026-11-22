@@ -7,13 +7,11 @@ import { Price } from "@/components/product/price";
 import { ImagePlaceholder } from "@/components/ui/image-placeholder";
 import { getDiscountPercent } from "@/lib/product";
 
+import styles from "./components.module.css";
+
 function ProductCard({ className, children, ...props }: ComponentProps<"article">) {
   return (
-    <article
-      data-slot="product-card"
-      className={cn("group/card relative flex flex-col h-full overflow-hidden", className)}
-      {...props}
-    >
+    <article className={cn(styles.card, className)} {...props}>
       {children}
     </article>
   );
@@ -21,11 +19,7 @@ function ProductCard({ className, children, ...props }: ComponentProps<"article"
 
 function ProductCardImageContainer({ className, children, ...props }: ComponentProps<"div">) {
   return (
-    <div
-      data-slot="product-card-image-container"
-      className={cn("flex flex-col", className)}
-      {...props}
-    >
+    <div className={cn(styles.imageContainer, className)} {...props}>
       {children}
     </div>
   );
@@ -56,8 +50,7 @@ function ProductCardImage({
 }: ProductCardImageProps) {
   return (
     <div
-      data-slot="product-card-image"
-      className={cn("relative aspect-square overflow-hidden bg-muted", className)}
+      className={cn(styles.image, className)}
       style={width && height ? { aspectRatio: `${width} / ${height}` } : undefined}
     >
       {src ? (
@@ -65,18 +58,16 @@ function ProductCardImage({
           src={src}
           alt={alt}
           {...(width && height ? { height, width } : { fill: true })}
-          className="absolute inset-0 size-full object-cover transition-opacity duration-300 group-hover/card:opacity-85"
+          className={styles.img}
           loading={loading}
           sizes="100vw"
         />
       ) : (
-        <ImagePlaceholder className="size-full" />
+        <ImagePlaceholder className={styles.placeholder} />
       )}
       {outOfStock && (
-        <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
-          <span className="text-destructive-foreground font-medium text-xs px-2 py-1 bg-destructive rounded">
-            {outOfStockText}
-          </span>
+        <div className={styles.outOfStock}>
+          <span className={styles.outOfStockLabel}>{outOfStockText}</span>
         </div>
       )}
       {children}
@@ -86,11 +77,7 @@ function ProductCardImage({
 
 function ProductCardContent({ className, children, ...props }: ComponentProps<"div">) {
   return (
-    <div
-      data-slot="product-card-content"
-      className={cn("flex flex-col flex-1 gap-0.5 pt-2.5", className)}
-      {...props}
-    >
+    <div className={cn(styles.content, className)} {...props}>
       {children}
     </div>
   );
@@ -98,11 +85,7 @@ function ProductCardContent({ className, children, ...props }: ComponentProps<"d
 
 function ProductCardTitle({ className, children, ...props }: ComponentProps<"h3">) {
   return (
-    <h3
-      data-slot="product-card-title"
-      className={cn("font-serif text-base leading-snug text-foreground line-clamp-1", className)}
-      {...props}
-    >
+    <h3 className={cn(styles.title, className)} {...props}>
       {children}
     </h3>
   );
@@ -129,22 +112,18 @@ function ProductCardPrice({
   // A range's per-variant discounts differ, so a single compare-at would be misleading.
   const discountPercent = isRange ? null : getDiscountPercent(amount, compareAtAmount);
   return (
-    <div data-slot="product-card-price" className={cn(className)}>
-      <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-        <span className="inline-flex items-baseline gap-x-1 text-xs text-muted-foreground">
+    <div className={className}>
+      <div className={styles.prices}>
+        <span className={styles.amount}>
           {isRange && <span>From</span>}
-          <Price
-            amount={amount}
-            currencyCode={currencyCode}
-            className="text-xs text-muted-foreground"
-          />
+          <Price amount={amount} currencyCode={currencyCode} className={styles.price} />
         </span>
         {discountPercent !== null && compareAtAmount && compareAtCurrencyCode ? (
           <>
             <Price
               amount={compareAtAmount}
               currencyCode={compareAtCurrencyCode}
-              className="text-xs text-muted-foreground line-through"
+              className={styles.compareAtPrice}
             />
             <DiscountBadge percent={discountPercent} />
           </>
@@ -161,14 +140,11 @@ interface ProductCardSkeletonProps {
 
 function ProductCardSkeleton({ className, imageClassName }: ProductCardSkeletonProps) {
   return (
-    <div
-      data-slot="product-card-skeleton"
-      className={cn("flex flex-col overflow-hidden", className)}
-    >
-      <ImagePlaceholder className={cn("aspect-square animate-pulse", imageClassName)} />
-      <div className="pt-2.5 h-11 box-content grid gap-2">
-        <div className="h-4 w-full bg-accent animate-pulse" />
-        <div className="h-4 w-12 bg-accent animate-pulse" />
+    <div className={cn(styles.skeleton, className)}>
+      <ImagePlaceholder className={cn(styles.skeletonImage, imageClassName)} />
+      <div className={styles.skeletonBody}>
+        <div className={styles.skeletonTitle} />
+        <div className={styles.skeletonPrice} />
       </div>
     </div>
   );

@@ -14,6 +14,8 @@ import {
 import type { BrowseState } from "@/lib/collections/types";
 import type { Facets } from "@/lib/filters/types";
 
+import styles from "./collection-browse-provider.module.css";
+
 interface CollectionBrowseProviderProps {
   children: ReactNode;
   handle: string;
@@ -85,11 +87,7 @@ function subscribeToNothing() {
 export function CollectionActiveFilterCountBadge() {
   const activeCount = useCollection((state) => state.filters.length);
   if (activeCount === 0) return null;
-  return (
-    <span className="flex size-5 items-center justify-center rounded-full bg-foreground text-xs text-background">
-      {activeCount}
-    </span>
-  );
+  return <span className={styles.badge}>{activeCount}</span>;
 }
 
 export function CollectionBrowseProvider({ state, ...props }: CollectionBrowseProviderProps) {

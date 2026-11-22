@@ -1,3 +1,4 @@
+import { cn } from "cn";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -5,6 +6,8 @@ import { Container } from "@/components/ui/container";
 import { Link } from "@/components/ui/link";
 import { Page } from "@/components/ui/page";
 import { shopConfig } from "@/lib/config";
+
+import styles from "./page.module.css";
 
 export const metadata: Metadata = {
   robots: { follow: false, index: false },
@@ -15,25 +18,19 @@ export default function SignInFailedPage() {
   if (!shopConfig.auth.isEnabled) notFound();
 
   return (
-    <Page className="flex flex-1 flex-col">
-      <Container className="flex flex-1 flex-col items-center justify-center text-center">
-        <div className="flex flex-col items-center gap-2.5 text-center">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl">Sign-in failed</h1>
-          <p className="max-w-xl text-sm text-muted-foreground md:text-base">
+    <Page className={styles.page}>
+      <Container className={styles.container}>
+        <div className={styles.content}>
+          <h1 className={styles.title}>Sign-in failed</h1>
+          <p className={styles.description}>
             Your sign-in didn’t finish. Try again, or keep shopping without an account.
           </p>
-          <div className="flex flex-wrap justify-center gap-2.5">
+          <div className={styles.actions}>
             {/* oxlint-disable-next-line next/no-html-link-for-pages -- Sign-in must be a full document navigation so the proxy can start OAuth. */}
-            <a
-              href="/account/login"
-              className="inline-flex h-12 cursor-pointer items-center justify-center rounded-lg bg-primary px-8 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-            >
+            <a href="/account/login" className={cn(styles.action, styles.retry)}>
               Try again
             </a>
-            <Link
-              href="/"
-              className="inline-flex h-12 cursor-pointer items-center justify-center rounded-lg border px-8 text-sm font-medium transition-colors hover:bg-muted"
-            >
+            <Link href="/" className={cn(styles.action, styles.continue)}>
               Continue shopping
             </Link>
           </div>

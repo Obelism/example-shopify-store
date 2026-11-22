@@ -1,0 +1,59 @@
+.page {
+  padding-top: 1.25rem;
+
+  @media (width >= 48rem) {
+    padding-top: 2.5rem;
+  }
+}
+
+.header {
+  display: grid;
+  gap: 0.75rem;
+  max-width: 42rem;
+}
+
+.eyebrow {
+  font-size: var(--text-xs);
+  line-height: var(--text-xs--leading);
+  letter-spacing: 0.1em;
+  color: var(--muted-foreground);
+  text-transform: uppercase;
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-size: var(--text-4xl);
+  line-height: var(--text-4xl--leading);
+  letter-spacing: -0.025em;
+
+  @media (width >= 48rem) {
+    font-size: var(--text-5xl);
+    line-height: var(--text-5xl--leading);
+  }
+}
+
+.description {
+  line-height: 1.75rem;
+  color: var(--muted-foreground);
+}
+
+.skeletonEyebrow {
+  width: 4rem;
+  height: 1rem;
+}
+
+.skeletonTitle {
+  width: 16rem;
+  height: 2.5rem;
+
+  @media (width >= 48rem) {
+    width: 20rem;
+    height: 3rem;
+  }
+}
+
+.skeletonDescription {
+  width: 100%;
+  max-width: 36rem;
+  height: 1rem;
+}

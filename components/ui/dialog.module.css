@@ -6,8 +6,8 @@
   }
 
   :global(html):has(.dialog[open]) {
+    padding-inline-end: var(--dialog-scrollbar-width, 0);
     overflow: hidden;
-    scrollbar-gutter: stable;
   }
 
   .dialog {

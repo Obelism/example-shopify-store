@@ -14,6 +14,8 @@ import {
 } from "@/lib/collections/server";
 import { PLACEHOLDER_HANDLE } from "@/lib/static-params";
 
+import styles from "./page.module.css";
+
 export async function generateMetadata({
   params,
 }: PageProps<"/collections/[handle]">): Promise<Metadata> {
@@ -41,7 +43,7 @@ async function DefaultCollectionResults({
   const results = getCollectionResults({ handle });
   const collection = await getCollection({ handle });
   return (
-    <div className="grid gap-12">
+    <div className={styles.root}>
       {collection?.id ? (
         <SeriesStory collection={{ handle, id: collection.id }} searchParams={searchParams} />
       ) : null}

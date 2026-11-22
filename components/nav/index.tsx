@@ -12,6 +12,8 @@ import { MobileMenu } from "./mobile-menu";
 import { QuickLinks } from "./quick-links";
 import { SearchModal } from "./search-modal";
 
+import styles from "./index.module.css";
+
 export function Nav() {
   const items: MenuItem[] = [
     { id: "nav-work", items: [], title: "Work", url: "/" },
@@ -19,22 +21,17 @@ export function Nav() {
     { id: "nav-index", items: [], title: "Index", url: "/works" },
   ];
   return (
-    <nav
-      className="sticky top-0 z-30 w-full bg-background pt-[env(safe-area-inset-top,0px)] transition-shadow duration-250"
-      id="nav-outer"
-    >
-      <Container className="flex h-16 items-center gap-2.5 md:gap-5">
+    <nav className={styles.nav} id="nav-outer">
+      <Container className={styles.bar}>
         <MobileMenu items={items} />
 
-        <Link className="flex items-center shrink-0 md:mr-5" href="/">
-          <span className="font-serif text-xl leading-4 tracking-tight">
-            {shopConfig.site.name}
-          </span>
+        <Link className={styles.home} href="/">
+          <span className={styles.siteName}>{shopConfig.site.name}</span>
         </Link>
 
         <QuickLinks items={items} />
 
-        <div className="flex items-center gap-5 ml-auto">
+        <div className={styles.actions}>
           {shopConfig.search.isEnabled && (
             <PredictiveSearchProvider
               debounceInMs={300}

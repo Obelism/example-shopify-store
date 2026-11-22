@@ -3,6 +3,8 @@ import { Page } from "@/components/ui/page";
 import { Prose } from "@/components/ui/prose";
 import { Skeleton } from "@/components/ui/skeleton";
 
+import styles from "./rich-text-page.module.css";
+
 interface RichTextPageProps {
   body: string;
   title: string;
@@ -11,7 +13,7 @@ interface RichTextPageProps {
 export function RichTextPage({ body, title }: RichTextPageProps) {
   return (
     <Page>
-      <Container className="max-w-2xl">
+      <Container className={styles.container}>
         <Prose>
           <h1>{title}</h1>
           <div
@@ -27,13 +29,13 @@ export function RichTextPage({ body, title }: RichTextPageProps) {
 export function RichTextPageSkeleton() {
   return (
     <Page aria-busy="true">
-      <Container className="max-w-2xl">
-        <div className="grid gap-5">
-          <Skeleton className="h-10 w-3/4" />
-          <div className="grid gap-2.5">
-            <Skeleton className="h-4 w-full" />
-            <Skeleton className="h-4 w-full" />
-            <Skeleton className="h-4 w-5/6" />
+      <Container className={styles.container}>
+        <div className={styles.skeleton}>
+          <Skeleton className={styles.skeletonTitle} />
+          <div className={styles.skeletonBody}>
+            <Skeleton className={styles.skeletonLine} />
+            <Skeleton className={styles.skeletonLine} />
+            <Skeleton className={styles.skeletonLastLine} />
           </div>
         </div>
       </Container>

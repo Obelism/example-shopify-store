@@ -1,0 +1,28 @@
+.container {
+  max-width: 42rem;
+}
+
+.skeleton {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.skeletonTitle {
+  width: 75%;
+  height: 2.5rem;
+}
+
+.skeletonBody {
+  display: grid;
+  gap: 0.625rem;
+}
+
+.skeletonLine,
+.skeletonLastLine {
+  width: 100%;
+  height: 1rem;
+}
+
+.skeletonLastLine {
+  width: 83.333333%;
+}

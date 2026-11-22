@@ -13,6 +13,8 @@ import { getAspectRatio } from "@/lib/media";
 import type { PageInfo } from "@/lib/pagination/types";
 import type { ProductCard as ProductCardType } from "@/lib/product/types";
 
+import styles from "./infinite-product-grid.module.css";
+
 interface InfiniteProductGridProps {
   children: ReactNode;
   initialPageInfo: PageInfo;
@@ -75,10 +77,7 @@ export function InfiniteProductGrid({
     return () => observer.disconnect();
   }, [endCursor, hasNextPage]);
   return (
-    <div
-      className="transition-opacity duration-200 data-[pending=true]:pointer-events-none data-[pending=true]:opacity-50"
-      data-pending={isPending}
-    >
+    <div className={styles.root} data-pending={isPending}>
       <JustifiedGrid>
         {children}
         {additionalProducts.map((product) => (
@@ -89,10 +88,8 @@ export function InfiniteProductGrid({
       </JustifiedGrid>
 
       {pageInfo.hasNextPage && (
-        <div ref={sentinelRef} className="flex justify-center py-10">
-          {isLoading && (
-            <Icon name="loader-circle" className="size-6 animate-spin text-muted-foreground" />
-          )}
+        <div ref={sentinelRef} className={styles.sentinel}>
+          {isLoading && <Icon name="loader-circle" className={styles.spinner} size={24} />}
         </div>
       )}
     </div>

@@ -43,6 +43,8 @@ import {
 import { type SelectedOptions } from "@/lib/product/types";
 import type { ProductDetails, ProductVariant } from "@/lib/product/types";
 
+import styles from "./product-detail-section.module.css";
+
 export function ProductDetailSection({
   product,
   selectedOptionsPromise,
@@ -89,7 +91,7 @@ export function ProductDetailSection({
           { name: product.title, path: `/products/${product.handle}` },
         ]}
       />
-      <div className="grid gap-10 lg:grid-cols-10 lg:items-start lg:gap-5">
+      <div className={styles.layout}>
         <ProductMediaArea product={product} selectedOptionsPromise={selectedOptionsPromise} />
         <ProductInfoArea product={product} variantPromise={variantPromise} />
       </div>
@@ -110,7 +112,7 @@ function ProductMediaArea({
         otherImages={product.images}
         videos={product.videos}
         title={product.title}
-        className="lg:col-span-6"
+        className={styles.media}
       />
     );
   }
@@ -120,10 +122,10 @@ function ProductMediaArea({
       otherImages={getSharedImages(product.images, product.options)}
       videos={product.videos}
       title={product.title}
-      className="lg:col-span-6"
+      className={styles.media}
       desktopSlot={
         // Color image is the LCP slot; a pulsing skeleton flashes harder than an empty image canvas.
-        <Suspense fallback={<div className="aspect-square w-full" />}>
+        <Suspense fallback={<div className={styles.colorImageFallback} />}>
           <ResolvedColorImageGrid
             product={product}
             selectedOptionsPromise={selectedOptionsPromise}
@@ -131,11 +133,7 @@ function ProductMediaArea({
         </Suspense>
       }
       mobileSlot={
-        <Suspense
-          fallback={
-            <div className="relative shrink-0 w-full snap-start snap-always overflow-hidden aspect-square" />
-          }
-        >
+        <Suspense fallback={<div className={styles.colorSlideFallback} />}>
           <ResolvedColorImageCarousel
             product={product}
             selectedOptionsPromise={selectedOptionsPromise}
@@ -184,25 +182,17 @@ function ProductInfoArea({
   const allInStock = product.defaultVariant?.availableForSale ?? product.availableForSale;
   const hasOptions = options.some((option) => option.values.length > 1);
   return (
-    <div className="grid gap-10 lg:sticky lg:top-26 lg:col-span-4">
-      <div
-        className="grid data-[uniform-price=true]:gap-10"
-        data-uniform-price={product.hasUniformPricing}
-      >
-        <div data-slot="product-info-header" className="grid gap-2">
+    <div className={styles.info}>
+      <div className={styles.summary} data-uniform-price={product.hasUniformPricing}>
+        <div className={styles.header}>
           {product.collection ? (
-            <Link
-              href={`/collections/${product.collection.handle}`}
-              className="w-fit font-serif text-base italic text-muted-foreground hover:text-foreground"
-            >
+            <Link href={`/collections/${product.collection.handle}`} className={styles.collection}>
               {product.collection.title}
             </Link>
           ) : null}
-          <h1 className="font-serif text-4xl tracking-tight text-foreground">{product.title}</h1>
+          <h1 className={styles.title}>{product.title}</h1>
           {product.vendor ? (
-            <p className="text-sm text-muted-foreground">
-              {product.vendor} · Archival pigment print, signed
-            </p>
+            <p className={styles.vendor}>{product.vendor} · Archival pigment print, signed</p>
           ) : null}
           {product.hasUniformPricing ? (
             <ProductPrice
@@ -217,7 +207,7 @@ function ProductInfoArea({
           <ProductInfoContent
             priceSlot={
               !product.hasUniformPricing ? (
-                <Suspense fallback={<div className="h-7" aria-hidden />}>
+                <Suspense fallback={<div className={styles.priceFallback} aria-hidden />}>
                   <ResolvedProductPrice variantPromise={variantPromise} />
                 </Suspense>
               ) : undefined
@@ -295,11 +285,9 @@ function ProductInfoContent({
 
   return (
     <ProductForm product={formProduct}>
-      <div className="grid gap-10">
+      <div className={styles.content}>
         {!product.hasUniformPricing ? (
-          <div data-slot="product-info-price">
-            {priceSlot ?? <ProductFormPrice fallbackVariant={fallbackVariant} />}
-          </div>
+          <div>{priceSlot ?? <ProductFormPrice fallbackVariant={fallbackVariant} />}</div>
         ) : null}
         {hasOptions ? <ProductFormOptions handle={product.handle} /> : null}
         <ImproveVariants
@@ -309,7 +297,7 @@ function ProductInfoContent({
           variants={{
             control: null,
             details: (
-              <p className="text-sm text-muted-foreground">
+              <p className={styles.details}>
                 Printed to order · Signed on the back · Ships in 2 weeks
               </p>
             ),
@@ -342,8 +330,8 @@ function ProductInfoFallback({
   showLabel: boolean;
 }) {
   return (
-    <div className="grid gap-10">
-      {!product.hasUniformPricing ? <div className="h-7" aria-hidden /> : null}
+    <div className={styles.content}>
+      {!product.hasUniformPricing ? <div className={styles.priceFallback} aria-hidden /> : null}
       {hasOptions ? (
         <ProductInfoOptions options={toStaticOptionGroups(product)} hideImages />
       ) : null}
@@ -365,7 +353,7 @@ function BundleRelationships({ variant }: { variant: ProductVariant | undefined 
   if (!variant) return null;
   if (variant.components.length === 0 && variant.bundleParents.length === 0) return null;
   return (
-    <div className="grid gap-5">
+    <div className={styles.bundles}>
       <BundleComponents components={variant.components} title="Bundle Includes" />
       <BundleParents variants={variant.bundleParents} title="Available in Bundles" />
     </div>
@@ -375,48 +363,41 @@ function BundleRelationships({ variant }: { variant: ProductVariant | undefined 
 function GiftCardPurchaseFormFallback() {
   // Match the resolved form's geometry to avoid layout shift.
   return (
-    <div className="grid gap-5">
-      <div className="grid gap-2.5">
-        <div className="grid gap-2.5">
+    <div className={styles.giftCard}>
+      <div className={styles.fields}>
+        <div className={styles.field}>
           <Label>Recipient email</Label>
           <Input type="email" disabled placeholder="friend@example.com" />
         </div>
-        <div className="grid gap-2.5">
+        <div className={styles.field}>
           <Label>Recipient name</Label>
           <Input type="text" disabled placeholder="Friend's name (optional)" />
         </div>
-        <div className="grid gap-2.5">
+        <div className={styles.field}>
           <Label>Message</Label>
           <Textarea rows={3} disabled placeholder="Write a personal note (optional)" />
         </div>
-        <div className="grid gap-3 rounded-lg border p-3">
-          <div className="flex items-center justify-between gap-2.5">
+        <div className={styles.schedule}>
+          <div className={styles.scheduleRow}>
             <Label>Schedule for later</Label>
-            <span className="inline-flex h-[1.15rem] w-8 items-center rounded-full bg-input opacity-50" />
+            <span className={styles.switch} />
           </div>
         </div>
       </div>
-      <div className="flex h-12 w-full cursor-not-allowed items-center justify-center rounded-lg bg-primary text-sm font-medium text-primary-foreground opacity-50">
-        Add to Cart
-      </div>
+      <div className={styles.giftCardSubmit}>Add to Cart</div>
     </div>
   );
 }
 
 function QuantityPickerFallback() {
   return (
-    <div
-      aria-hidden="true"
-      className="grid h-12 w-32 shrink-0 grid-cols-[3rem_2rem_3rem] rounded-lg bg-background ring-1 ring-border ring-inset"
-    >
-      <span className="flex size-12 items-center justify-center opacity-50">
-        <Icon name="minus" className="size-4 shrink-0" />
+    <div aria-hidden="true" className={styles.quantity}>
+      <span className={styles.step} data-disabled="true">
+        <Icon name="minus" size={16} className={styles.stepIcon} />
       </span>
-      <span className="flex h-12 w-8 items-center justify-center text-sm font-medium tabular-nums">
-        1
-      </span>
-      <span className="flex size-12 items-center justify-center">
-        <Icon name="plus" className="size-4 shrink-0" />
+      <span className={styles.count}>1</span>
+      <span className={styles.step}>
+        <Icon name="plus" size={16} className={styles.stepIcon} />
       </span>
     </div>
   );
@@ -433,7 +414,7 @@ function BuyButtonsFallback({
 }) {
   const { plans, selectedPlan } = getProductPurchaseOptions(variant);
   return (
-    <div className="grid gap-2.5">
+    <div className={styles.buy}>
       {variant ? (
         <PurchaseOptions
           disabled
@@ -443,20 +424,15 @@ function BuyButtonsFallback({
           selectedPlan={selectedPlan}
         />
       ) : null}
-      <div className="flex flex-wrap gap-2.5">
+      <div className={styles.buyRow}>
         {shopConfig.pdp.quantityPicker.isEnabled ? <QuantityPickerFallback /> : null}
-        <div className="flex h-12 min-w-40 flex-1 items-center justify-center rounded-lg bg-primary text-sm font-medium text-primary-foreground">
+        <div className={styles.addToCart}>
           {showLabel ? (allInStock ? "Add to Cart" : "Out of Stock") : null}
         </div>
       </div>
       {shopConfig.pdp.buyWithShop.isEnabled && !selectedPlan && !variant?.requiresSellingPlan ? (
-        <div
-          className={cn(
-            "flex h-12 items-center justify-center rounded-lg bg-shop px-4 text-white",
-            !allInStock && "invisible",
-          )}
-        >
-          <BuyWithShopLogo aria-hidden="true" className="h-auto w-24.5" />
+        <div className={styles.shopPay} data-available={allInStock}>
+          <BuyWithShopLogo aria-hidden="true" className={styles.shopLogo} />
         </div>
       ) : null}
     </div>
@@ -465,51 +441,59 @@ function BuyButtonsFallback({
 
 export function ProductDetailSkeleton() {
   return (
-    <div aria-busy="true" className="grid gap-10 lg:grid-cols-10 lg:items-start lg:gap-5">
-      <div className="lg:col-span-6">
+    <div aria-busy="true" className={styles.layout}>
+      <div className={styles.media}>
         {/* Media blocks stay static; a pulsing skeleton in the LCP slot flashes harder than an empty image canvas. */}
         {/* Prints have one landscape image; most are 3:2. */}
-        <div className="grid gap-5 lg:hidden">
-          <div className="-mx-5 aspect-3/2 w-[calc(100%+2.5rem)] bg-accent" />
-          <div aria-hidden="true" className="h-1.5" />
+        <div className={styles.skeletonMobile}>
+          <div className={styles.skeletonCarousel} />
+          <div aria-hidden="true" className={styles.skeletonDots} />
         </div>
-        <div className="hidden lg:block">
-          <div className="aspect-3/2 w-full bg-accent" />
+        <div className={styles.skeletonDesktop}>
+          <div className={styles.skeletonImage} />
         </div>
       </div>
-      <div className="grid gap-10 lg:sticky lg:top-26 lg:col-span-4">
-        <div className="grid gap-10">
-          <div className="grid gap-2">
-            <Skeleton className="h-6 w-32" />
-            <Skeleton className="h-10 w-3/4" />
-            <Skeleton className="h-5 w-64" />
-            <Skeleton className="h-7 w-24" />
+      <div className={styles.info}>
+        <div className={styles.content}>
+          <div className={styles.header}>
+            <Skeleton className={styles.skeletonCollection} />
+            <Skeleton className={styles.skeletonTitle} />
+            <Skeleton className={styles.skeletonVendor} />
+            <Skeleton className={styles.skeletonPrice} />
           </div>
-          <div className="grid gap-10">
-            <div className="grid gap-5">
-              <Skeleton className="h-5 w-32" />
-              <div className="grid gap-2.5">
-                <Skeleton className="h-5 w-16" />
-                <div className="flex flex-wrap gap-2">
-                  {["w-15", "w-16", "w-16", "w-15", "w-15"].map((width, index) => (
-                    <Skeleton key={index} className={cn("h-9.5 rounded-lg", width)} />
+          <div className={styles.content}>
+            <div className={styles.skeletonOptions}>
+              <Skeleton className={styles.skeletonOptionGroup} />
+              <div className={styles.field}>
+                <Skeleton className={styles.skeletonOptionName} />
+                <div className={styles.skeletonValues}>
+                  {[
+                    styles.skeletonValueNarrow,
+                    styles.skeletonValueWide,
+                    styles.skeletonValueWide,
+                    styles.skeletonValueNarrow,
+                    styles.skeletonValueNarrow,
+                  ].map((width, index) => (
+                    <Skeleton key={index} className={cn(styles.skeletonValue, width)} />
                   ))}
                 </div>
               </div>
             </div>
-            <div className="grid gap-2.5">
-              <div className="flex flex-wrap gap-2.5">
+            <div className={styles.buy}>
+              <div className={styles.buyRow}>
                 {shopConfig.pdp.quantityPicker.isEnabled ? <QuantityPickerFallback /> : null}
-                <Skeleton className="h-12 min-w-40 flex-1" />
+                <Skeleton className={styles.skeletonAddToCart} />
               </div>
-              {shopConfig.pdp.buyWithShop.isEnabled ? <Skeleton className="h-12 w-full" /> : null}
+              {shopConfig.pdp.buyWithShop.isEnabled ? (
+                <Skeleton className={styles.skeletonShopPay} />
+              ) : null}
             </div>
           </div>
         </div>
-        <div className="grid gap-4">
-          <Skeleton className="h-6 w-40" />
-          <Skeleton className="h-4 w-full" />
-          <Skeleton className="h-4 w-5/6" />
+        <div className={styles.skeletonDescription}>
+          <Skeleton className={styles.skeletonDescriptionTitle} />
+          <Skeleton className={styles.skeletonLine} />
+          <Skeleton className={styles.skeletonLineShort} />
         </div>
       </div>
     </div>

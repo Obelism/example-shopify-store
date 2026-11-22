@@ -8,22 +8,24 @@ import { getShopPolicies } from "@/lib/policies/server";
 import { SocialLinks } from "./social-links";
 import type { SocialLink } from "./social-links";
 
+import styles from "./index.module.css";
+
 export async function Footer() {
   const socialLinks: SocialLink[] = [];
   const items: MenuItem[] = [];
   const policies = await getShopPolicies({}).catch(() => []);
   return (
     <footer>
-      <Container className="pt-20 pb-10">
-        <Sections className="gap-10">
+      <Container className={styles.container}>
+        <Sections>
           {items.length > 0 && <FooterMenu items={items} />}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-5">
-            <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 sm:justify-start">
+          <div className={styles.bottom}>
+            <div className={styles.policies}>
               {policies.map((policy) => (
                 <Link
                   key={policy.handle}
                   href={`/policies/${policy.handle}`}
-                  className="cursor-pointer text-sm text-muted-foreground transition-colors hover:text-foreground"
+                  className={styles.policy}
                 >
                   {policy.title}
                 </Link>
@@ -41,27 +43,21 @@ function FooterMenu({ items }: { items: MenuItem[] }) {
   const columns = items.slice(0, 5);
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-10">
+    <div className={styles.menu}>
       {columns.map((column) => (
-        <div key={column.id} className="space-y-3">
+        <div key={column.id} className={styles.column}>
           {column.url ? (
-            <MenuLink
-              url={column.url}
-              className="block text-sm font-semibold hover:opacity-70 transition-opacity"
-            >
+            <MenuLink url={column.url} className={styles.columnLink}>
               {column.title}
             </MenuLink>
           ) : (
-            <h3 className="text-sm font-semibold">{column.title}</h3>
+            <h3 className={styles.columnTitle}>{column.title}</h3>
           )}
           {column.items.length > 0 && (
-            <ul className="space-y-2">
+            <ul className={styles.links}>
               {column.items.map((leaf) => (
                 <li key={leaf.id}>
-                  <MenuLink
-                    url={leaf.url}
-                    className="block text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
+                  <MenuLink url={leaf.url} className={styles.link}>
                     {leaf.title}
                   </MenuLink>
                 </li>

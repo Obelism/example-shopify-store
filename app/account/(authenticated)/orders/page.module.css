@@ -1,0 +1,83 @@
+.empty {
+  padding: 1.5rem;
+  text-align: center;
+  border-width: 1px;
+  border-radius: var(--radius);
+}
+
+.emptyText {
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--leading);
+  color: var(--muted-foreground);
+}
+
+.root {
+  display: grid;
+  gap: 1rem;
+}
+
+.list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.order {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-width: 1px;
+  border-radius: var(--radius);
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  @media (hover: hover) {
+    &:hover {
+      background: var(--accent);
+    }
+  }
+}
+
+.orderInfo {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.orderName {
+  font-weight: 500;
+}
+
+.orderDate {
+  font-size: var(--text-xs);
+  line-height: var(--text-xs--leading);
+  color: var(--muted-foreground);
+}
+
+.orderMeta {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.orderTotal {
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+  line-height: var(--text-sm--leading);
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.skeleton {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.orderSkeleton {
+  width: 100%;
+  height: 4.5rem;
+  border-radius: var(--radius);
+}

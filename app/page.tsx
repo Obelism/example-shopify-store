@@ -10,6 +10,8 @@ import { getCmsPage, pageQuery } from "@/lib/cms/server";
 import { shopConfig } from "@/lib/config";
 import { buildAlternates, buildOpenGraph } from "@/lib/seo";
 
+import styles from "./page.module.css";
+
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getCmsPage(HOME_PATH);
   const title = page?.fields.title ?? "Work";
@@ -30,9 +32,9 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function HomePage({ searchParams }: PageProps<"/">) {
   const published = await getCmsPage(HOME_PATH);
   return (
-    <Page className="pt-5 md:pt-10">
-      <Container className="grid gap-10 lg:grid-cols-[18rem_1fr] lg:gap-16">
-        <header className="lg:sticky lg:top-26 lg:self-start">
+    <Page className={styles.page}>
+      <Container className={styles.container}>
+        <header className={styles.header}>
           <CmsEntry published={published} query={pageQuery(HOME_PATH)} searchParams={searchParams}>
             {(entry) => <CmsBody entry={entry} introHeading="h1" />}
           </CmsEntry>

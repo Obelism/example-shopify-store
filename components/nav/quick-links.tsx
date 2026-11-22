@@ -1,15 +1,15 @@
-import { cn } from "cn";
-
 import { Icon } from "@/components/ui/icon";
 import type { MenuItem } from "@/lib/menu/types";
 
 import { MenuLink } from "./menu-link";
 
+import styles from "./quick-links.module.css";
+
 const MAX_COLUMNS = 5;
 
 export function QuickLinks({ items }: { items: MenuItem[] }) {
   return (
-    <ul className="hidden md:flex items-center gap-5">
+    <ul className={styles.root}>
       {items.map((item) => (
         <NavItem key={item.id} item={item} />
       ))}
@@ -17,13 +17,11 @@ export function QuickLinks({ items }: { items: MenuItem[] }) {
   );
 }
 
-const TRIGGER_CLASS = "flex items-center gap-1 text-sm hover:opacity-70 transition-opacity";
-
 function NavItem({ item }: { item: MenuItem }) {
   if (item.items.length === 0) {
     return (
-      <li className="flex items-center h-16" data-numbers-id={`nav_${item.title.toLowerCase()}`}>
-        <MenuLink url={item.url} className={TRIGGER_CLASS}>
+      <li className={styles.item} data-numbers-id={`nav_${item.title.toLowerCase()}`}>
+        <MenuLink url={item.url} className={styles.trigger}>
           {item.title}
         </MenuLink>
       </li>
@@ -33,44 +31,28 @@ function NavItem({ item }: { item: MenuItem }) {
   const columns = item.items.slice(0, MAX_COLUMNS);
 
   return (
-    <li className="group flex items-center h-16">
-      <MenuLink url={item.url} className={TRIGGER_CLASS}>
+    <li className={styles.item}>
+      <MenuLink url={item.url} className={styles.trigger}>
         {item.title}
-        <Icon name="chevron-down" className="size-3" />
+        <Icon name="chevron-down" size={12} />
       </MenuLink>
-      <div
-        className={cn(
-          "absolute inset-x-0 top-full z-40",
-          "invisible opacity-0",
-          "group-hover:visible group-hover:opacity-100",
-          // :focus-visible (not :focus-within) so post-click mouse focus doesn't pin the menu open.
-          "group-has-[:focus-visible]:visible group-has-[:focus-visible]:opacity-100",
-          "transition-opacity duration-150",
-          "bg-background border-b shadow-md",
-        )}
-      >
-        <div className="px-5 lg:px-10 pb-5">
-          <div className="grid grid-cols-5 gap-5">
+      <div className={styles.dropdown}>
+        <div className={styles.dropdownInner}>
+          <div className={styles.columns}>
             {columns.map((column) => (
               <div key={column.id}>
                 {column.url ? (
-                  <MenuLink
-                    url={column.url}
-                    className="block text-sm font-semibold mb-3 hover:opacity-70 transition-opacity"
-                  >
+                  <MenuLink url={column.url} className={styles.columnLink}>
                     {column.title}
                   </MenuLink>
                 ) : (
-                  <h3 className="text-sm font-semibold mb-3">{column.title}</h3>
+                  <h3 className={styles.columnTitle}>{column.title}</h3>
                 )}
                 {column.items.length > 0 && (
-                  <ul className="space-y-2">
+                  <ul className={styles.leaves}>
                     {column.items.map((leaf) => (
                       <li key={leaf.id}>
-                        <MenuLink
-                          url={leaf.url}
-                          className="block text-sm text-muted-foreground hover:text-foreground transition-colors"
-                        >
+                        <MenuLink url={leaf.url} className={styles.leafLink}>
                           {leaf.title}
                         </MenuLink>
                       </li>

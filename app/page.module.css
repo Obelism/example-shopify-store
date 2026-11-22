@@ -1,0 +1,25 @@
+.page {
+  padding-top: 1.25rem;
+
+  @media (width >= 48rem) {
+    padding-top: 2.5rem;
+  }
+}
+
+.container {
+  display: grid;
+  gap: 2.5rem;
+
+  @media (width >= 64rem) {
+    grid-template-columns: 18rem 1fr;
+    gap: 4rem;
+  }
+}
+
+.header {
+  @media (width >= 64rem) {
+    position: sticky;
+    top: 6.5rem;
+    align-self: start;
+  }
+}

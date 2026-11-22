@@ -12,6 +12,8 @@ import { Sections } from "@/components/ui/sections";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { Collection } from "@/lib/collections/types";
 
+import styles from "./collection-page.module.css";
+
 interface CollectionLayoutProps {
   children: ReactNode;
   collection: Collection;
@@ -25,9 +27,9 @@ export function CollectionLayout({ children, collection, handle }: CollectionLay
       {collection.id ? (
         <CollectionViewedTracker collection={{ handle: collection.handle, id: collection.id }} />
       ) : null}
-      <Page className="pt-5 md:pt-10">
+      <Page className={styles.page}>
         <Container>
-          <Sections className="gap-10">
+          <Sections>
             <CollectionHeader collection={collection} handle={handle} homeLabel="Home" />
             <CollectionBrowseFrame handle={handle} path={`/collections/${handle}`}>
               {children}
@@ -64,13 +66,13 @@ async function SearchParamsRead({ searchParams }: { searchParams: Promise<unknow
 
 export function CollectionDetailSkeleton() {
   return (
-    <Page aria-busy="true" className="pt-5 md:pt-10">
+    <Page aria-busy="true" className={styles.page}>
       <Container>
-        <Sections className="gap-10">
-          <div className="grid max-w-2xl gap-3">
-            <Skeleton className="h-4 w-16" />
-            <Skeleton className="h-10 w-64 md:h-12 md:w-80" />
-            <Skeleton className="h-4 w-full max-w-xl" />
+        <Sections>
+          <div className={styles.header}>
+            <Skeleton className={styles.skeletonEyebrow} />
+            <Skeleton className={styles.skeletonTitle} />
+            <Skeleton className={styles.skeletonDescription} />
           </div>
           <BrowseResultsFallback />
         </Sections>
@@ -99,12 +101,12 @@ function CollectionHeader({
     <>
       <BreadcrumbSchema items={breadcrumbItems} />
       <CollectionSchema collection={{ handle, title, description, updatedAt }} />
-      <div className="grid max-w-2xl gap-3">
-        <p className="text-xs uppercase tracking-widest text-muted-foreground">Series</p>
-        <h1 className="font-serif text-4xl tracking-tight md:text-5xl">
+      <div className={styles.header}>
+        <p className={styles.eyebrow}>Series</p>
+        <h1 className={styles.title}>
           <Link href={`/collections/${handle}`}>{title}</Link>
         </h1>
-        {description && <p className="leading-7 text-muted-foreground">{description}</p>}
+        {description && <p className={styles.description}>{description}</p>}
       </div>
     </>
   );

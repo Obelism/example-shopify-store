@@ -12,6 +12,8 @@ import { CollectionFilters } from "./filters";
 import { InfiniteProductGrid } from "./infinite-product-grid";
 import { BrowseToolbar } from "./toolbar";
 
+import styles from "./browse.module.css";
+
 interface BrowseProps {
   path: string;
   resultCount?: ReactNode;
@@ -68,9 +70,9 @@ function BrowseResultsGrid({ results }: BrowseResultsGridProps) {
   if (products.length === 0) {
     const query = source.type === "search" ? source.query : undefined;
     return (
-      <div className="py-10 text-center">
-        <h2 className="mb-2 text-2xl">No products found</h2>
-        <p className="text-muted-foreground">
+      <div className={styles.empty}>
+        <h2 className={styles.emptyTitle}>No products found</h2>
+        <p className={styles.emptyText}>
           {query ? `We couldn't find any products matching "${query}"` : "No products available"}
         </p>
       </div>

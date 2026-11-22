@@ -1,0 +1,35 @@
+.root {
+  display: grid;
+  gap: 0.625rem;
+}
+
+.label {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  line-height: var(--text-sm--leading);
+  color: color-mix(in oklab, var(--foreground) 70%, transparent);
+}
+
+.selected {
+  color: var(--foreground);
+}
+
+.values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+}
+
+.value {
+  display: block;
+  cursor: pointer;
+
+  &:disabled,
+  &[data-available="false"] {
+    opacity: 0.4;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}

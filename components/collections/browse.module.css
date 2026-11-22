@@ -1,0 +1,15 @@
+.empty {
+  padding-block: 2.5rem;
+  text-align: center;
+}
+
+.emptyTitle {
+  margin-bottom: 0.5rem;
+  font-size: var(--text-2xl);
+  line-height: var(--text-2xl--leading);
+  letter-spacing: var(--text-2xl--tracking);
+}
+
+.emptyText {
+  color: var(--muted-foreground);
+}

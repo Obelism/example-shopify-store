@@ -1,0 +1,23 @@
+.options {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.compact {
+  gap: 0.625rem;
+}
+
+.label {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  line-height: var(--text-sm--leading);
+  color: color-mix(in oklab, var(--foreground) 70%, transparent);
+}
+
+.value {
+  color: var(--foreground);
+}
+
+.description {
+  color: color-mix(in oklab, var(--foreground) 80%, transparent);
+}

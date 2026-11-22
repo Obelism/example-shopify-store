@@ -9,14 +9,16 @@ import { useCart, useCheckout } from "@/lib/cart/client";
 
 import { DiscountForm } from "./discount-form";
 
+import styles from "./summary.module.css";
+
 interface CartSummaryProps {
   cart: CartData;
 }
 
 export function CartSummary({ cart }: CartSummaryProps) {
   return (
-    <div className="grid gap-5">
-      <div className="grid gap-2.5">
+    <div className={styles.summary}>
+      <div className={styles.details}>
         <DiscountForm cart={cart} />
         <CartTotal cart={cart} />
       </div>
@@ -38,18 +40,18 @@ export function CartTotal({ cart }: CartTotalProps) {
     <div
       aria-busy={isCostPending || undefined}
       aria-label="Estimated total"
-      className="grid gap-1"
+      className={styles.total}
       role="group"
     >
-      <div className="flex items-baseline justify-between text-base text-foreground">
+      <div className={styles.totalRow}>
         <span>Estimated total</span>
         {isCostPending || !currencyCode ? (
-          <span className="font-medium text-muted-foreground text-xl">Updating…</span>
+          <span className={styles.updating}>Updating…</span>
         ) : (
-          <Price amount={amount} className="font-medium text-xl" currencyCode={currencyCode} />
+          <Price amount={amount} className={styles.price} currencyCode={currencyCode} />
         )}
       </div>
-      <p className="text-muted-foreground text-xs">Taxes and shipping calculated at checkout.</p>
+      <p className={styles.note}>Taxes and shipping calculated at checkout.</p>
     </div>
   );
 }
@@ -68,23 +70,23 @@ export function CartCheckout({ label = "Checkout" }: CartCheckoutProps) {
     isUpdatingCart,
   } = useCheckout();
   return (
-    <div className="grid gap-2.5">
+    <div className={styles.checkout}>
       <Button
         aria-busy={isCheckingOut || isUpdatingCart || undefined}
         aria-describedby={checkoutError ? checkoutErrorId : undefined}
-        className="h-12 w-full justify-center"
+        className={styles.checkoutButton}
         data-numbers-id="cart_checkout"
         disabled={isCheckoutDisabled}
         onClick={handleCheckout}
         type="button"
       >
         {isCheckingOut || isUpdatingCart ? (
-          <Icon name="loader-circle" className="size-4 animate-spin" />
+          <Icon name="loader-circle" className={styles.spinner} size={16} />
         ) : null}
         {isCheckingOut ? "Redirecting..." : isUpdatingCart ? "Updating cart..." : label}
       </Button>
       {checkoutError ? (
-        <p className="text-xs text-destructive" id={checkoutErrorId} role="alert">
+        <p className={styles.error} id={checkoutErrorId} role="alert">
           {checkoutError}
         </p>
       ) : null}

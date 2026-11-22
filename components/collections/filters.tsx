@@ -5,6 +5,8 @@ import type { Facets } from "@/lib/filters/types";
 
 import { CollectionFilterSidebar } from "./filters-client";
 
+import styles from "./filters.module.css";
+
 interface CollectionFiltersProps {
   facets: Facets | Promise<Facets>;
 }
@@ -31,12 +33,12 @@ async function ResolvedCollectionFilters({ facets }: ResolvedCollectionFiltersPr
 
 export function CollectionFiltersSkeleton() {
   return (
-    <div aria-busy="true" className="flex flex-col gap-5">
+    <div aria-busy="true" className={styles.root}>
       {[0, 1, 2].map((section) => (
-        <div key={section} className="grid gap-2.5">
-          <Skeleton className="h-5 w-24" />
+        <div key={section} className={styles.section}>
+          <Skeleton className={styles.title} />
           {[0, 1, 2, 3].map((option) => (
-            <Skeleton key={option} className="h-4 w-full" />
+            <Skeleton key={option} className={styles.option} />
           ))}
         </div>
       ))}

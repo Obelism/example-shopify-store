@@ -16,6 +16,8 @@ import { formatPrice } from "@/lib/money";
 import type { Money } from "@/lib/money/types";
 import { fetchCustomerOrder } from "@/lib/shopify/operations/customer/server";
 
+import styles from "./page.module.css";
+
 export default function OrderDetailPage({ params }: { params: Promise<{ id: string }> }) {
   return (
     <Suspense fallback={<OrderDetailSkeleton />}>
@@ -33,35 +35,35 @@ async function OrderDetailContent({ params }: { params: Promise<{ id: string }> 
     <>
       <AccountPageHeader title={order.name} description={formatOrderDate(order.processedAt)} />
 
-      <div className="flex flex-wrap items-center gap-2">
+      <div className={styles.badges}>
         <OrderStatusBadge status={order.fulfillmentStatus} />
         {order.financialStatus ? (
           <Badge variant="outline">{humanizeStatus(order.financialStatus)}</Badge>
         ) : null}
       </div>
 
-      <ul className="grid divide-y rounded-lg border">
+      <ul className={styles.lineItems}>
         {order.lineItems.map((item, index) => (
           <OrderLineItemRow key={index} item={item} />
         ))}
       </ul>
 
-      <dl className="grid gap-2 rounded-lg border p-4 text-sm">
+      <dl className={styles.summary}>
         <SummaryRow label="Subtotal" money={order.subtotal} />
         <SummaryRow label="Shipping" money={order.totalShipping} />
         <SummaryRow label="Tax" money={order.totalTax} />
-        <div className="flex items-center justify-between border-t pt-2 font-medium">
+        <div className={styles.totalRow}>
           <dt>Total</dt>
-          <dd className="font-mono tabular-nums">{formatPrice(order.totalPrice)}</dd>
+          <dd className={styles.amount}>{formatPrice(order.totalPrice)}</dd>
         </div>
       </dl>
 
       {order.shippingAddress && order.shippingAddress.formatted.length > 0 ? (
-        <div className="grid gap-2 rounded-lg border p-4">
-          <h2 className="text-sm font-medium">Shipping address</h2>
-          <address className="text-sm text-muted-foreground not-italic">
+        <div className={styles.shipping}>
+          <h2 className={styles.shippingTitle}>Shipping address</h2>
+          <address className={styles.address}>
             {order.shippingAddress.formatted.map((line, index) => (
-              <span key={index} className="block">
+              <span key={index} className={styles.addressLine}>
                 {line}
               </span>
             ))}
@@ -69,7 +71,7 @@ async function OrderDetailContent({ params }: { params: Promise<{ id: string }> 
         </div>
       ) : null}
 
-      <div className="flex gap-2">
+      <div className={styles.actions}>
         <a
           className={buttonClassName({ size: "sm", variant: "outline" })}
           href={order.statusPageUrl}
@@ -85,27 +87,25 @@ async function OrderDetailContent({ params }: { params: Promise<{ id: string }> 
 
 function OrderLineItemRow({ item }: { item: OrderLineItem }) {
   return (
-    <li className="flex items-center gap-3 p-3">
-      <div className="relative size-14 shrink-0 overflow-hidden rounded-md bg-muted">
+    <li className={styles.lineItem}>
+      <div className={styles.thumbnail}>
         {item.image ? (
           <Image
             src={item.image.url}
             alt={item.image.altText}
             fill
-            className="object-cover"
+            className={styles.image}
             sizes="100vw"
           />
         ) : null}
       </div>
-      <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-medium">{item.title}</p>
-        {item.variantTitle ? (
-          <p className="truncate text-xs text-muted-foreground">{item.variantTitle}</p>
-        ) : null}
-        <p className="text-xs text-muted-foreground">× {item.quantity}</p>
+      <div className={styles.details}>
+        <p className={styles.title}>{item.title}</p>
+        {item.variantTitle ? <p className={styles.variant}>{item.variantTitle}</p> : null}
+        <p className={styles.quantity}>× {item.quantity}</p>
       </div>
       {item.totalPrice ? (
-        <span className="font-mono text-sm tabular-nums">{formatPrice(item.totalPrice)}</span>
+        <span className={styles.linePrice}>{formatPrice(item.totalPrice)}</span>
       ) : null}
     </li>
   );
@@ -114,19 +114,19 @@ function OrderLineItemRow({ item }: { item: OrderLineItem }) {
 function SummaryRow({ label, money }: { label: string; money: Money | null }) {
   if (!money) return null;
   return (
-    <div className="flex items-center justify-between">
-      <dt className="text-muted-foreground">{label}</dt>
-      <dd className="font-mono tabular-nums">{formatPrice(money)}</dd>
+    <div className={styles.summaryRow}>
+      <dt className={styles.summaryLabel}>{label}</dt>
+      <dd className={styles.amount}>{formatPrice(money)}</dd>
     </div>
   );
 }
 
 function OrderDetailSkeleton() {
   return (
-    <div aria-busy="true" className="grid gap-4">
-      <Skeleton className="h-8 w-40" />
-      <Skeleton className="h-24 w-full rounded-lg" />
-      <Skeleton className="h-32 w-full rounded-lg" />
+    <div aria-busy="true" className={styles.skeleton}>
+      <Skeleton className={styles.titleSkeleton} />
+      <Skeleton className={styles.blockSkeleton} />
+      <Skeleton className={styles.tallBlockSkeleton} />
     </div>
   );
 }
