@@ -1,0 +1,3 @@
+minimumReleaseAgeExclude:
+  - "@obelism/content-react@0.4.12"
+  - "@obelism/content@0.32.1"
