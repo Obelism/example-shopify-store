@@ -17,6 +17,10 @@
     box-shadow: var(--shadow-lg);
     transition: translate var(--dialog-duration) ease-in-out;
 
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+
     &[data-side="left"],
     &[data-side="right"] {
       inset-block: 0;

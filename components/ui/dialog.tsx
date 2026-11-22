@@ -91,12 +91,13 @@ function Dialog({
 
   const hide = useEffectEvent((dialog: HTMLDialogElement) => {
     if (!mounted) return;
+    openCount.current += 1;
     const closing = openCount.current;
     delete dialog.dataset.open;
-    // Stays modal until the exit transitions end; the browser may already have closed it, e.g. on a repeated Escape.
     const transitions = dialog.getAnimations({ subtree: true }).map(({ finished }) => finished);
     void Promise.allSettled(transitions).then(() => {
       if (openCount.current !== closing) return;
+      // Modal until the exit ends; the browser may have closed it already, e.g. on a repeated Escape.
       if (dialog.open) dialog.close();
       setMounted(false);
       onCloseComplete?.();
