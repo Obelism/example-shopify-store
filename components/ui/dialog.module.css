@@ -6,8 +6,8 @@
   }
 
   :global(html):has(.dialog[open]) {
+    padding-inline-end: var(--dialog-scrollbar-width, 0);
     overflow: hidden;
-    scrollbar-gutter: stable;
   }
 
   .dialog {
@@ -69,9 +69,7 @@
     background: var(--background);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    box-shadow:
-      0 10px 15px -3px rgb(0 0 0 / 0.1),
-      0 4px 6px -4px rgb(0 0 0 / 0.1);
+    box-shadow: var(--shadow-lg);
     transition:
       opacity var(--dialog-duration),
       scale var(--dialog-duration);
@@ -98,24 +96,20 @@
     top: 1rem;
     right: 1rem;
     display: flex;
-    border-radius: 0.125rem;
+    border-radius: var(--radius);
     opacity: 0.7;
     transition: opacity 150ms;
 
-    &:hover {
-      opacity: 1;
+    @media (hover: hover) {
+      &:hover {
+        opacity: 1;
+      }
     }
 
     &:focus-visible {
       outline: 2px solid var(--ring);
       outline-offset: 2px;
     }
-  }
-
-  .closeIcon {
-    width: 1rem;
-    height: 1rem;
-    flex-shrink: 0;
   }
 
   .header {

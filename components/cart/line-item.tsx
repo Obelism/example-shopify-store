@@ -13,6 +13,8 @@ import { formatPrice } from "@/lib/money";
 import { CartLineForm } from "./line-form";
 import { CartWarnings } from "./warnings";
 
+import styles from "./line-item.module.css";
+
 interface CartLineItemsProps {
   lines: CartLine[];
 }
@@ -20,7 +22,7 @@ interface CartLineItemsProps {
 export function CartLineItems({ lines }: CartLineItemsProps) {
   const keys = getLineRowKeys(lines);
   return (
-    <ul className="grid gap-5" aria-label="Cart items">
+    <ul className={styles.lines} aria-label="Cart items">
       {lines.map((line, index) => (
         <CartLineItem key={keys[index]} item={line} />
       ))}
@@ -85,53 +87,47 @@ function CartLineItem({ item }: CartLineItemProps) {
       src={image.url}
       alt={image.altText || title}
       fill
-      className="object-cover"
+      className={styles.image}
       sizes="100vw"
     />
   ) : (
-    <ImagePlaceholder className="size-full" />
+    <ImagePlaceholder className={styles.placeholder} />
   );
   const price = (amount: number) => formatPrice({ amount: String(amount), currencyCode });
 
   return (
-    <li className="flex gap-2.5" aria-busy={isPending || undefined} aria-label={title}>
+    <li className={styles.line} aria-busy={isPending || undefined} aria-label={title}>
       {href ? (
-        <Link
-          href={href}
-          className="relative size-18 shrink-0 cursor-pointer self-start overflow-hidden transition-opacity hover:opacity-80"
-        >
+        <Link href={href} className={styles.mediaLink}>
           {imageContent}
         </Link>
       ) : (
-        <div className="relative size-18 shrink-0 self-start overflow-hidden">{imageContent}</div>
+        <div className={styles.media}>{imageContent}</div>
       )}
-      <div className="grid min-h-18 min-w-0 flex-1 gap-2.5 pt-0.5">
-        <div className="grid gap-2.5">
-          <div className="grid gap-1">
+      <div className={styles.body}>
+        <div className={styles.details}>
+          <div className={styles.heading}>
             {href ? (
-              <Link href={href} className="cursor-pointer transition-opacity hover:opacity-70">
-                <h3 className="line-clamp-1 text-sm font-medium text-foreground">{title}</h3>
+              <Link href={href} className={styles.titleLink}>
+                <h3 className={styles.title}>{title}</h3>
               </Link>
             ) : (
-              <h3 className="line-clamp-1 text-sm font-medium text-foreground">{title}</h3>
+              <h3 className={styles.title}>{title}</h3>
             )}
-            {variantLabel ? <p className="text-xs text-muted-foreground">{variantLabel}</p> : null}
+            {variantLabel ? <p className={styles.meta}>{variantLabel}</p> : null}
             {item.sellingPlanAllocation ? (
-              <p className="text-xs text-muted-foreground">
+              <p className={styles.meta}>
                 {item.sellingPlanAllocation.sellingPlan.name || "Subscription"}
               </p>
             ) : null}
           </div>
           {components.length ? (
-            <div className="grid gap-1">
-              <p className="text-xs font-medium text-muted-foreground">Bundle Includes</p>
-              <ul className="grid gap-0.5">
+            <div className={styles.bundle}>
+              <p className={styles.bundleTitle}>Bundle Includes</p>
+              <ul className={styles.bundleItems}>
                 {components.map((component) => (
-                  <li
-                    key={component.id}
-                    className="flex items-center gap-1.5 text-xs text-muted-foreground"
-                  >
-                    <span className="truncate">
+                  <li key={component.id} className={styles.bundleItem}>
+                    <span className={styles.bundleName}>
                       {component.merchandise?.product.title || "Bundle item"}
                     </span>
                     {component.quantity > 1 ? <span>×{component.quantity}</span> : null}
@@ -141,32 +137,24 @@ function CartLineItem({ item }: CartLineItemProps) {
             </div>
           ) : null}
         </div>
-        <CartLineForm
-          className="flex items-center gap-1.5 self-end"
-          lineId={item.id}
-          minQuantity={canRemove ? 0 : 1}
-        >
+        <CartLineForm className={styles.form} lineId={item.id} minQuantity={canRemove ? 0 : 1}>
           {(register) => (
             <>
-              <div
-                aria-label="Item quantity"
-                className="grid h-6 grid-cols-[1.75rem_1.5rem_1.75rem] rounded-full ring-1 ring-border ring-inset"
-                role="group"
-              >
+              <div aria-label="Item quantity" className={styles.quantity} role="group">
                 <button
                   {...register("decrease")}
                   type="submit"
                   aria-label={`Decrease quantity: ${lineName}`}
-                  className="flex h-6 cursor-pointer items-center justify-center p-0 disabled:cursor-not-allowed disabled:opacity-50"
+                  className={styles.step}
                   disabled={isOptimistic || !canUpdateQuantity || quantity <= 1}
                 >
-                  <Icon name="minus" className="size-3 shrink-0" />
+                  <Icon name="minus" className={styles.stepIcon} size={12} />
                 </button>
                 <input
                   key={quantity}
                   {...register("quantity", { interactive: true, value: quantity })}
                   aria-label={`Quantity: ${lineName}`}
-                  className="h-6 w-6 rounded-full bg-transparent text-center text-xs font-medium tabular-nums outline-none focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed"
+                  className={styles.quantityInput}
                   disabled={isOptimistic || !canUpdateQuantity}
                   max={99}
                   min={canRemove ? 0 : 1}
@@ -175,37 +163,32 @@ function CartLineItem({ item }: CartLineItemProps) {
                   {...register("increase")}
                   type="submit"
                   aria-label={`Increase quantity: ${lineName}`}
-                  className="flex h-6 cursor-pointer items-center justify-center p-0 disabled:cursor-not-allowed disabled:opacity-50"
+                  className={styles.step}
                   disabled={isOptimistic || !canUpdateQuantity || quantity >= 99}
                 >
-                  <Icon name="plus" className="size-3 shrink-0" />
+                  <Icon name="plus" className={styles.stepIcon} size={12} />
                 </button>
               </div>
               <button
                 {...register("remove")}
                 type="submit"
-                className="flex cursor-pointer items-center justify-center text-muted-foreground transition-colors hover:text-foreground disabled:cursor-not-allowed disabled:opacity-40"
+                className={styles.remove}
                 disabled={isOptimistic || !canRemove}
                 aria-label={`Remove item: ${lineName}`}
               >
-                <Icon name="trash-2" className="size-4" />
+                <Icon name="trash-2" size={16} />
               </button>
             </>
           )}
         </CartLineForm>
         <CartWarnings lineId={item.id} />
       </div>
-      <div className="grid gap-0.5 self-start py-0.5 text-right font-mono text-sm tabular-nums tracking-tight">
-        <span
-          className="font-medium text-foreground data-[pending=true]:text-muted-foreground"
-          data-pending={isCostPending || !currencyCode}
-        >
+      <div className={styles.prices}>
+        <span className={styles.price} data-pending={isCostPending || !currencyCode}>
           {isCostPending || !currencyCode ? "Updating…" : price(finalUnitPrice)}
         </span>
         {!isCostPending && currencyCode && originalUnitPrice > finalUnitPrice ? (
-          <span className="text-xs text-muted-foreground line-through">
-            {price(originalUnitPrice)}
-          </span>
+          <span className={styles.compareAtPrice}>{price(originalUnitPrice)}</span>
         ) : null}
       </div>
     </li>

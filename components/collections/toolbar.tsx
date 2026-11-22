@@ -9,6 +9,8 @@ import { CollectionActiveFilterCountBadge } from "./collection-browse-provider";
 import { FilterSheet } from "./filters-client";
 import { CollectionsSortSelect } from "./sort-select";
 
+import styles from "./toolbar.module.css";
+
 interface BrowseToolbarProps {
   filters: ReactNode;
   resultCount?: ReactNode;
@@ -23,12 +25,12 @@ export function BrowseToolbar({ filters, resultCount, sortExclude }: BrowseToolb
           label="Filters"
           trigger={
             <>
-              <Icon name="sliders-horizontal" className="size-4" />
+              <Icon name="sliders-horizontal" size={16} />
               <span>Filters</span>
               <CollectionActiveFilterCountBadge />
             </>
           }
-          triggerClassName="flex cursor-pointer items-center gap-2 text-sm font-medium"
+          triggerClassName={styles.filtersTrigger}
         >
           {filters}
         </FilterSheet>
@@ -48,26 +50,20 @@ export function BrowseFallback({ resultCount }: BrowseFallbackProps) {
     <>
       <ToolbarLayout
         filterSheet={
-          <button
-            type="button"
-            className="flex cursor-pointer items-center gap-2 text-sm font-medium"
-          >
-            <Icon name="sliders-horizontal" className="size-4" />
+          <button type="button" className={styles.filtersTrigger}>
+            <Icon name="sliders-horizontal" size={16} />
             <span>Filters</span>
           </button>
         }
         resultCount={resultCount}
         sortSelect={
-          <div className="flex h-9 w-fit items-center justify-between gap-2 rounded-md bg-transparent px-0 py-2 text-sm whitespace-nowrap">
+          <div className={styles.sortFallback}>
             <span>Sort</span>
-            <Icon name="chevron-down" className="size-4 text-muted-foreground opacity-50" />
+            <Icon name="chevron-down" className={styles.sortIcon} size={16} />
           </div>
         }
       />
-      <ProductsGridSkeleton
-        count={PRODUCTS_PER_PAGE}
-        className="sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
-      />
+      <ProductsGridSkeleton count={PRODUCTS_PER_PAGE} />
     </>
   );
 }
@@ -80,14 +76,10 @@ interface ToolbarLayoutProps {
 
 function ToolbarLayout({ filterSheet, resultCount, sortSelect }: ToolbarLayoutProps) {
   return (
-    <div className="flex items-center gap-5">
+    <div className={styles.toolbar}>
       {filterSheet}
-      <div className="ml-auto flex items-center gap-5">
-        {resultCount !== undefined && (
-          <div className="hidden items-center text-sm text-muted-foreground sm:flex">
-            {resultCount}
-          </div>
-        )}
+      <div className={styles.end}>
+        {resultCount !== undefined && <div className={styles.resultCount}>{resultCount}</div>}
         {sortSelect}
       </div>
     </div>

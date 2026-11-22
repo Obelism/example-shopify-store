@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { Icon } from "@/components/ui/icon";
 import { useCart } from "@/lib/cart/client";
 
+import styles from "./notifications.module.css";
+
 const DISMISS_AFTER_MS = 5000;
 
 export function CartNotifications() {
@@ -22,18 +24,15 @@ export function CartNotifications() {
   if (errorAt === null || dismissedAt === errorAt) return null;
 
   return (
-    <div
-      className="fixed right-5 bottom-20 z-50 flex max-w-sm items-center gap-2.5 rounded-lg border border-destructive/20 bg-background px-4 py-2.5 text-sm text-destructive shadow-lg"
-      role="alert"
-    >
+    <div className={styles.notification} role="alert">
       <span>We couldn&apos;t update your cart. Please try again.</span>
       <button
         aria-label="Dismiss"
-        className="flex cursor-pointer items-center text-muted-foreground transition-colors hover:text-foreground"
+        className={styles.dismiss}
         onClick={() => setDismissedAt(errorAt)}
         type="button"
       >
-        <Icon name="x" className="size-4" />
+        <Icon name="x" size={16} />
       </button>
     </div>
   );

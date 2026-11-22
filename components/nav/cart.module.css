@@ -1,0 +1,7 @@
+.fallback {
+  display: flex;
+  gap: 0.375rem;
+  align-items: center;
+  justify-content: center;
+  color: var(--foreground);
+}

@@ -1,0 +1,28 @@
+.links {
+  display: flex;
+  gap: 1.25rem;
+  align-items: center;
+  line-height: 1.25rem;
+}
+
+.link {
+  color: var(--muted-foreground);
+  transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  @media (hover: hover) {
+    &:hover {
+      color: var(--foreground);
+    }
+  }
+}
+
+.icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.label {
+  font-size: var(--text-xs);
+  font-weight: 500;
+  line-height: var(--text-xs--leading);
+}

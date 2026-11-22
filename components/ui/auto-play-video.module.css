@@ -1,0 +1,36 @@
+@layer ui {
+  .preview {
+    object-fit: cover;
+  }
+
+  .video[data-ready="false"] {
+    opacity: 0;
+  }
+
+  .toggle {
+    position: absolute;
+    right: 0.625rem;
+    bottom: 0.625rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    color: var(--foreground);
+    background: color-mix(in oklab, var(--background) 80%, transparent);
+    border-radius: 9999px;
+    outline: none;
+    backdrop-filter: blur(8px);
+    transition: background-color 150ms;
+
+    @media (hover: hover) {
+      &:hover {
+        background: var(--background);
+      }
+    }
+
+    &:focus-visible {
+      box-shadow: var(--focus-ring);
+    }
+  }
+}

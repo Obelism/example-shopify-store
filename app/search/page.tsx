@@ -16,6 +16,8 @@ import { formatCount } from "@/lib/content";
 import { fetchSearchResults } from "@/lib/search/server";
 import { buildAlternates, buildOpenGraph } from "@/lib/seo";
 
+import styles from "./page.module.css";
+
 type SearchParams = Record<string, string | string[] | undefined>;
 
 function getParam(searchParams: SearchParams, key: string): string | undefined {
@@ -64,21 +66,25 @@ export default function SearchPage({ searchParams }: PageProps<"/search">) {
     fetchSearchResults({ query: getParam(resolved, "q"), statePromise }),
   );
   return (
-    <Page className="pt-2.5 md:pt-10">
+    <Page className={styles.page}>
       <Container>
-        <Sections className="gap-5">
+        <Sections className={styles.sections}>
           <Suspense fallback={null}>
             <SearchAnalyticsTracker searchParamsPromise={searchParams} />
           </Suspense>
           <div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl">
+            <h1 className={styles.title}>
               <Link href="/search">Search</Link>
               <Suspense fallback={null}>
                 <SearchQueryLabel searchParamsPromise={searchParams} />
               </Suspense>
             </h1>
           </div>
-          <Suspense fallback={<BrowseFallback resultCount={<Skeleton className="h-4 w-20" />} />}>
+          <Suspense
+            fallback={
+              <BrowseFallback resultCount={<Skeleton className={styles.countSkeleton} />} />
+            }
+          >
             <SearchBrowse
               resultsPromise={resultsPromise}
               searchParamsPromise={searchParams}
@@ -107,7 +113,7 @@ async function SearchBrowse({
     <Browse
       path="/search"
       resultCount={
-        <Suspense fallback={<Skeleton className="h-4 w-20" />}>
+        <Suspense fallback={<Skeleton className={styles.countSkeleton} />}>
           <SearchResultCount resultsPromise={resultsPromise} />
         </Suspense>
       }

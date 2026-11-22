@@ -1,9 +1,10 @@
 "use client";
 
-import { cn } from "cn";
 import { usePathname } from "next/navigation";
 
 import { Link } from "@/components/ui/link";
+
+import styles from "./mobile-tabs-client.module.css";
 
 interface AccountTab {
   href: string;
@@ -14,17 +15,13 @@ export function MobileTabsClient({ tabs }: { tabs: AccountTab[] }) {
   const pathname = usePathname();
 
   return (
-    <div className="flex gap-1 border-b md:hidden">
+    <div className={styles.tabs}>
       {tabs.map((tab) => (
         <Link
           key={tab.href}
           href={tab.href}
-          className={cn(
-            "flex-1 px-3 py-2.5 text-center text-sm transition-colors",
-            pathname.startsWith(tab.href)
-              ? "border-b-2 border-foreground font-medium text-foreground"
-              : "text-muted-foreground hover:text-foreground",
-          )}
+          className={styles.tab}
+          data-active={pathname.startsWith(tab.href)}
         >
           {tab.label}
         </Link>

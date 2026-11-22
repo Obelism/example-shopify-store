@@ -1,0 +1,53 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1.25rem;
+  text-align: center;
+}
+
+.iconWrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.iconCircle {
+  padding: 1.25rem;
+  background: var(--muted);
+  border-radius: 9999px;
+}
+
+.icon {
+  color: var(--muted-foreground);
+}
+
+.title {
+  margin-bottom: 0.5rem;
+  font-size: var(--text-2xl);
+  line-height: var(--text-2xl--leading);
+  letter-spacing: var(--text-2xl--tracking);
+
+  @media (width >= 64rem) {
+    font-size: var(--text-3xl);
+    line-height: var(--text-3xl--leading);
+    letter-spacing: var(--text-3xl--tracking);
+  }
+}
+
+.description {
+  max-width: 28rem;
+  margin-bottom: 2rem;
+  color: var(--muted-foreground);
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+
+  @media (width >= 40rem) {
+    flex-direction: row;
+  }
+}

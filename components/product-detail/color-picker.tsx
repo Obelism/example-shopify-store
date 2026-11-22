@@ -5,6 +5,8 @@ import { Link } from "@/components/ui/link";
 import { Swatch } from "@/components/ui/swatch";
 import type { OptionGroupState } from "@/lib/product/types";
 
+import styles from "./color-picker.module.css";
+
 interface ColorPickerProps extends ComponentProps<"div"> {
   hideImages?: boolean;
   onSelectValue?: (optionName: string, value: string) => void;
@@ -20,11 +22,11 @@ export function ColorPicker({
 }: ColorPickerProps) {
   const selectedValue = option.values.find((value) => value.selected)?.name ?? "";
   return (
-    <div className={cn("grid gap-2.5", className)} {...props}>
-      <p className="text-sm font-medium text-foreground/70">
-        {option.name}: <span className="text-foreground">{selectedValue}</span>
+    <div className={cn(styles.root, className)} {...props}>
+      <p className={styles.label}>
+        {option.name}: <span className={styles.selected}>{selectedValue}</span>
       </p>
-      <div className="flex flex-wrap gap-2.5">
+      <div className={styles.values}>
         {option.values.map((value) => {
           const imageUrl = hideImages
             ? undefined
@@ -42,7 +44,7 @@ export function ColorPicker({
               <button
                 key={value.name}
                 aria-label={`${option.name}: ${value.name} (unavailable)`}
-                className="block cursor-not-allowed opacity-40"
+                className={styles.value}
                 disabled
                 type="button"
               >
@@ -55,7 +57,8 @@ export function ColorPicker({
               key={value.name}
               href={value.href}
               scroll={false}
-              className={cn("block cursor-pointer", !value.available && "opacity-40")}
+              className={styles.value}
+              data-available={value.available}
               aria-label={`Select ${option.name}: ${value.name}${value.available ? "" : " (sold out)"}`}
               aria-current={value.selected ? "true" : undefined}
               onClick={

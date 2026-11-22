@@ -1,0 +1,197 @@
+.sheet {
+  gap: 0;
+  padding-inline: 1.25rem;
+  padding-bottom: 1.25rem;
+  overflow-y: auto;
+}
+
+.sheetHeader {
+  display: flex;
+  flex-shrink: 0;
+  gap: 0.5rem;
+  align-items: center;
+  height: 4rem;
+}
+
+.sheetTitle {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  line-height: var(--text-lg--leading);
+  letter-spacing: var(--text-lg--tracking);
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.badge {
+  display: inline-flex;
+  gap: 0.25rem;
+  align-items: center;
+  padding: 0.25rem 0.625rem;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  line-height: var(--text-xs--leading);
+  color: var(--primary);
+  cursor: pointer;
+  background: color-mix(in oklab, var(--primary) 15%, transparent);
+  border-radius: 9999px;
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  @media (hover: hover) {
+    &:hover {
+      background: color-mix(in oklab, var(--primary) 25%, transparent);
+    }
+  }
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.sectionTitle {
+  font-size: var(--text-base);
+  font-weight: 600;
+  line-height: var(--text-base--leading);
+  color: var(--muted-foreground);
+}
+
+.priceRow {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.priceSeparator {
+  color: var(--muted-foreground);
+}
+
+.priceField {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  height: 2rem;
+  padding-inline: 0.625rem;
+  background: var(--input);
+  border-radius: var(--radius);
+}
+
+.currency {
+  font-size: var(--text-base);
+  line-height: var(--text-base--leading);
+  color: var(--muted-foreground);
+
+  @media (width >= 48rem) {
+    font-size: var(--text-sm);
+    line-height: var(--text-sm--leading);
+  }
+}
+
+.priceInput {
+  height: auto;
+  padding-inline: 0.25rem;
+  background: transparent;
+  border-width: 0;
+  outline-style: none;
+  box-shadow: none;
+  appearance: textfield;
+
+  &:focus-visible {
+    box-shadow: none;
+  }
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    appearance: none;
+  }
+}
+
+.applyPrice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  color: var(--primary-foreground);
+  cursor: pointer;
+  background: var(--primary);
+  border-radius: var(--radius);
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  @media (hover: hover) {
+    &:hover {
+      background: color-mix(in oklab, var(--primary) 90%, transparent);
+    }
+  }
+}
+
+.swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+}
+
+.swatchLink {
+  display: block;
+  cursor: pointer;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--leading);
+  color: var(--muted-foreground);
+  text-align: left;
+  transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  @media (hover: hover) {
+    &:hover {
+      color: var(--foreground);
+    }
+  }
+
+  &[data-selected="true"] {
+    font-weight: 500;
+  }
+}
+
+.optionCount {
+  color: var(--muted-foreground);
+}
+
+.optionIcon {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 0.875rem;
+  height: 0.875rem;
+  overflow: hidden;
+}
+
+.optionSpinner {
+  color: var(--muted-foreground);
+  animation: var(--animate-spin);
+}
+
+.optionCheck {
+  color: var(--muted-foreground);
+}

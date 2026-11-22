@@ -1,0 +1,53 @@
+.toolbar {
+  display: flex;
+  gap: 1.25rem;
+  align-items: center;
+}
+
+.filtersTrigger {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  line-height: var(--text-sm--leading);
+  cursor: pointer;
+}
+
+.end {
+  display: flex;
+  gap: 1.25rem;
+  align-items: center;
+  margin-left: auto;
+}
+
+.resultCount {
+  display: none;
+  align-items: center;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--leading);
+  color: var(--muted-foreground);
+
+  @media (width >= 40rem) {
+    display: flex;
+  }
+}
+
+.sortFallback {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: space-between;
+  width: fit-content;
+  height: 2.25rem;
+  padding-block: 0.5rem;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--leading);
+  white-space: nowrap;
+  background: transparent;
+}
+
+.sortIcon {
+  color: var(--muted-foreground);
+  opacity: 0.5;
+}

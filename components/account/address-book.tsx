@@ -23,6 +23,8 @@ import {
 } from "@/lib/customer/action";
 import type { CustomerAddress, CustomerAddressInput } from "@/lib/customer/types";
 
+import styles from "./address-book.module.css";
+
 type FormState = { address: CustomerAddress; mode: "edit" } | { mode: "create" } | null;
 
 const TEXT_FIELDS = [
@@ -49,7 +51,7 @@ export function AddressBook({ addresses }: { addresses: CustomerAddress[] }) {
   const [formState, setFormState] = useState<FormState>(null);
   const [deleteTarget, setDeleteTarget] = useState<CustomerAddress | null>(null);
   return (
-    <div className="grid gap-4">
+    <div className={styles.root}>
       <div>
         <Button size="sm" onClick={() => setFormState({ mode: "create" })}>
           <Icon name="plus" />
@@ -58,24 +60,24 @@ export function AddressBook({ addresses }: { addresses: CustomerAddress[] }) {
       </div>
 
       {addresses.length === 0 ? (
-        <div className="rounded-lg border p-6 text-center">
-          <p className="text-sm text-muted-foreground">You have no saved addresses yet.</p>
+        <div className={styles.empty}>
+          <p className={styles.emptyText}>You have no saved addresses yet.</p>
         </div>
       ) : (
-        <ul className="grid gap-3 sm:grid-cols-2">
+        <ul className={styles.list}>
           {addresses.map((address) => (
-            <li key={address.id} className="flex flex-col gap-3 rounded-lg border p-4">
-              <div className="flex items-start justify-between gap-2">
-                <address className="text-sm text-muted-foreground not-italic">
+            <li key={address.id} className={styles.card}>
+              <div className={styles.cardHeader}>
+                <address className={styles.address}>
                   {address.formatted.map((line, index) => (
-                    <span key={index} className="block">
+                    <span key={index} className={styles.addressLine}>
                       {line}
                     </span>
                   ))}
                 </address>
                 {address.isDefault ? <Badge variant="secondary">Default</Badge> : null}
               </div>
-              <div className="mt-auto flex gap-2">
+              <div className={styles.cardActions}>
                 <Button
                   size="sm"
                   variant="outline"
@@ -95,7 +97,7 @@ export function AddressBook({ addresses }: { addresses: CustomerAddress[] }) {
       )}
 
       <Dialog open={formState !== null} onOpenChange={(open) => !open && setFormState(null)}>
-        <DialogPanel className="max-h-[90vh] overflow-y-auto sm:max-w-xl">
+        <DialogPanel className={styles.formPanel}>
           <DialogHeader>
             <DialogTitle>{formState?.mode === "edit" ? "Edit address" : "Add address"}</DialogTitle>
           </DialogHeader>
@@ -140,15 +142,12 @@ function AddressForm({ address, onSuccess }: { address?: CustomerAddress; onSucc
     });
   };
   return (
-    <form onSubmit={handleSubmit} className="grid gap-4">
-      <div className="grid gap-4 sm:grid-cols-2">
+    <form onSubmit={handleSubmit} className={styles.form}>
+      <div className={styles.fields}>
         {TEXT_FIELDS.map((field) => {
           const fieldError = fieldErrors[field.key];
           return (
-            <div
-              key={field.key}
-              className={field.span ? "grid gap-1.5 sm:col-span-2" : "grid gap-1.5"}
-            >
+            <div key={field.key} className={styles.field} data-span={field.span}>
               <Label htmlFor={field.key}>
                 {field.label}
                 {REQUIRED_FIELDS.has(field.key) ? <span aria-hidden="true"> *</span> : null}
@@ -172,7 +171,7 @@ function AddressForm({ address, onSuccess }: { address?: CustomerAddress; onSucc
                 }
               />
               {fieldError ? (
-                <p role="alert" className="text-xs text-destructive">
+                <p role="alert" className={styles.fieldError}>
                   {fieldError}
                 </p>
               ) : null}
@@ -181,7 +180,7 @@ function AddressForm({ address, onSuccess }: { address?: CustomerAddress; onSucc
         })}
       </div>
 
-      <div className="flex items-center justify-between rounded-lg border p-3">
+      <div className={styles.defaultToggle}>
         <Label htmlFor="isDefault">Set as default address</Label>
         <Switch
           id="isDefault"
@@ -192,14 +191,14 @@ function AddressForm({ address, onSuccess }: { address?: CustomerAddress; onSucc
       </div>
 
       {error ? (
-        <p role="alert" className="text-sm text-destructive">
+        <p role="alert" className={styles.error}>
           {error}
         </p>
       ) : null}
 
       <DialogFooter>
         <Button type="submit" disabled={isPending}>
-          {isPending ? <Icon name="loader-circle" className="size-4 animate-spin" /> : "Save"}
+          {isPending ? <Icon name="loader-circle" size={16} className={styles.spinner} /> : "Save"}
         </Button>
       </DialogFooter>
     </form>
@@ -237,7 +236,7 @@ function DeleteDialog({
           </DialogDescription>
         </DialogHeader>
         {error ? (
-          <p role="alert" className="text-sm text-destructive">
+          <p role="alert" className={styles.error}>
             {error}
           </p>
         ) : null}
@@ -246,7 +245,11 @@ function DeleteDialog({
             Cancel
           </Button>
           <Button variant="destructive" onClick={handleDelete} disabled={isPending}>
-            {isPending ? <Icon name="loader-circle" className="size-4 animate-spin" /> : "Delete"}
+            {isPending ? (
+              <Icon name="loader-circle" size={16} className={styles.spinner} />
+            ) : (
+              "Delete"
+            )}
           </Button>
         </DialogFooter>
       </DialogPanel>

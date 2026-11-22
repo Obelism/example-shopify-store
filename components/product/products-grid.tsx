@@ -6,6 +6,8 @@ import { Link } from "@/components/ui/link";
 import { getAspectRatio } from "@/lib/media";
 import { getSearchIndexProducts } from "@/lib/product/server";
 
+import styles from "./products-grid.module.css";
+
 interface ProductsGridSkeletonProps {
   count: number;
   className?: string;
@@ -16,7 +18,9 @@ export function ProductsGridSkeleton({ count, className }: ProductsGridSkeletonP
     <JustifiedGrid className={className}>
       {Array.from({ length: count }, (_, index) => (
         <JustifiedGridItem key={index} aspectRatio={index % 3 === 1 ? 3 / 4 : 3 / 2}>
-          <ProductCardSkeleton imageClassName={index % 3 === 1 ? "aspect-3/4" : "aspect-3/2"} />
+          <ProductCardSkeleton
+            imageClassName={index % 3 === 1 ? styles.portrait : styles.landscape}
+          />
         </JustifiedGridItem>
       ))}
     </JustifiedGrid>
@@ -32,15 +36,12 @@ interface ProductsGridProps {
 
 export function ProductsGrid({ collectionUrl, eagerCount = 0, limit, title }: ProductsGridProps) {
   return (
-    <div className="grid gap-4">
+    <div className={styles.root}>
       {title && (
-        <div className="flex items-center justify-between">
-          <h2 className="font-serif text-2xl sm:text-3xl">{title}</h2>
+        <div className={styles.header}>
+          <h2 className={styles.title}>{title}</h2>
           {collectionUrl && (
-            <Link
-              href={collectionUrl}
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-            >
+            <Link href={collectionUrl} className={styles.viewAll}>
               View All
             </Link>
           )}

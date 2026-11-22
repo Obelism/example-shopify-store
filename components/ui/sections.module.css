@@ -1,0 +1,6 @@
+@layer ui {
+  .sections {
+    display: grid;
+    gap: 2.5rem;
+  }
+}

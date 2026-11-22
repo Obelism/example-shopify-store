@@ -1,6 +1,5 @@
 "use client";
 
-import { cn } from "cn";
 import { useState } from "react";
 
 import { useCartDrawer } from "@/components/cart/context";
@@ -10,6 +9,8 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { useProductForm } from "@/lib/product/client";
+
+import styles from "./gift-card-purchase-form.module.css";
 
 export function GiftCardPurchaseForm() {
   const { formProps, pending, register, selectedVariant } = useProductForm();
@@ -30,7 +31,7 @@ export function GiftCardPurchaseForm() {
           openOverlay();
         },
       })}
-      className="group grid gap-5"
+      className={styles.form}
       onReset={(event) => {
         if (pending) {
           event.preventDefault();
@@ -54,11 +55,11 @@ export function GiftCardPurchaseForm() {
         disabled={!sendOnEnabled}
         {...register("attributeValue", { key: "__shopify_offset", value: timezoneOffset })}
       />
-      <fieldset disabled={pending} data-slot="gift-card-fields" className="grid gap-2.5">
-        <div className="grid gap-2.5">
-          <div className="flex items-center justify-between gap-2.5">
+      <fieldset disabled={pending} className={styles.fields}>
+        <div className={styles.field}>
+          <div className={styles.row}>
             <Label htmlFor="gift-card-email">Recipient email</Label>
-            <Button className="h-auto p-0 text-xs" disabled={pending} type="reset" variant="link">
+            <Button className={styles.clear} disabled={pending} type="reset" variant="link">
               Clear recipient details
             </Button>
           </div>
@@ -72,7 +73,7 @@ export function GiftCardPurchaseForm() {
           />
         </div>
 
-        <div className="grid gap-2.5">
+        <div className={styles.field}>
           <Label htmlFor="gift-card-name">Recipient name</Label>
           <Input
             id="gift-card-name"
@@ -83,7 +84,7 @@ export function GiftCardPurchaseForm() {
           />
         </div>
 
-        <div className="grid gap-2.5">
+        <div className={styles.field}>
           <Label htmlFor="gift-card-message">Message</Label>
           <Textarea
             id="gift-card-message"
@@ -93,8 +94,8 @@ export function GiftCardPurchaseForm() {
           />
         </div>
 
-        <div className="grid gap-3 rounded-lg border p-3">
-          <div className="flex items-center justify-between gap-2.5">
+        <div className={styles.schedule}>
+          <div className={styles.row}>
             <Label htmlFor="gift-card-send-later">Schedule for later</Label>
             <Switch
               id="gift-card-send-later"
@@ -116,7 +117,7 @@ export function GiftCardPurchaseForm() {
             />
           </div>
           {sendOnEnabled ? (
-            <div className="grid gap-2.5">
+            <div className={styles.field}>
               <Label htmlFor="gift-card-send-on">Delivery date</Label>
               <Input
                 id="gift-card-send-on"
@@ -134,10 +135,7 @@ export function GiftCardPurchaseForm() {
         {...register("addToCart", {})}
         data-selection-unresolved={!selectedVariant && !pending}
         disabled={pending || isUnavailable}
-        className={cn(
-          "h-12 w-full justify-center group-valid:data-[selection-unresolved=true]:disabled:opacity-100",
-          "group-invalid:cursor-not-allowed group-invalid:opacity-50",
-        )}
+        className={styles.submit}
       >
         <span>{pending ? "Adding…" : "Add to Cart"}</span>
       </Button>

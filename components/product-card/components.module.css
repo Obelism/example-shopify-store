@@ -1,0 +1,139 @@
+/* Parts take a caller's className; zero specificity lets it win. */
+:where(.card) {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+:where(.imageContainer) {
+  display: flex;
+  flex-direction: column;
+}
+
+:where(.image) {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: var(--muted);
+}
+
+.img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (hover: hover) {
+  .card:hover .img {
+    opacity: 0.85;
+  }
+}
+
+.placeholder {
+  width: 100%;
+  height: 100%;
+}
+
+.outOfStock {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(0 0 0 / 0.6);
+}
+
+.outOfStockLabel {
+  padding: 0.25rem 0.5rem;
+  font-size: var(--text-xs);
+  font-weight: 500;
+  line-height: var(--text-xs--leading);
+  color: var(--destructive-foreground);
+  background: var(--destructive);
+}
+
+:where(.content) {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.125rem;
+  padding-top: 0.625rem;
+}
+
+:where(.title) {
+  display: -webkit-box;
+  overflow: hidden;
+  font-family: var(--font-serif);
+  font-size: var(--text-base);
+  line-height: 1.375;
+  color: var(--foreground);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.prices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.5rem;
+  align-items: center;
+}
+
+.amount {
+  display: inline-flex;
+  column-gap: 0.25rem;
+  align-items: baseline;
+  font-size: var(--text-xs);
+  line-height: var(--text-xs--leading);
+  color: var(--muted-foreground);
+}
+
+.price,
+.compareAtPrice {
+  font-size: var(--text-xs);
+  line-height: var(--text-xs--leading);
+  letter-spacing: inherit;
+  color: var(--muted-foreground);
+}
+
+.compareAtPrice {
+  text-decoration-line: line-through;
+}
+
+:where(.skeleton) {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+:where(.skeletonImage) {
+  aspect-ratio: 1 / 1;
+  animation: var(--animate-pulse);
+}
+
+.skeletonBody {
+  box-sizing: content-box;
+  display: grid;
+  gap: 0.5rem;
+  height: 2.75rem;
+  padding-top: 0.625rem;
+}
+
+.skeletonTitle,
+.skeletonPrice {
+  height: 1rem;
+  background: var(--accent);
+  animation: var(--animate-pulse);
+}
+
+.skeletonTitle {
+  width: 100%;
+}
+
+.skeletonPrice {
+  width: 3rem;
+}

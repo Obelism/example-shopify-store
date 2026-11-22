@@ -24,6 +24,8 @@ import type { CollectionWithThumbnail } from "@/lib/collections/types";
 import { recordExposure } from "@/lib/improve/client";
 import type { ProductCard } from "@/lib/product/types";
 
+import styles from "./cms-body-client.module.css";
+
 interface CmsBodyClientProps {
   className?: string;
   collections: CollectionWithThumbnail[];
@@ -41,7 +43,7 @@ export function CmsBodyClient({
 }: CmsBodyClientProps) {
   const live = useLiveEntry(entry);
   return (
-    <div {...editable(live)} className={cn("grid gap-12", className)}>
+    <div {...editable(live)} className={cn(styles.body, className)}>
       {(live.fields.body ?? []).map((block) =>
         isImproveBlock(block) ? (
           <ImproveBlockView
@@ -163,7 +165,7 @@ function LinkMark({ children, mark }: RichTextMarkProps) {
   const target = safeHref(typeof mark.attrs?.href === "string" ? mark.attrs.href : null);
   if (!target) return <>{children}</>;
   return (
-    <Link href={target} className="underline underline-offset-4 hover:text-foreground">
+    <Link href={target} className={styles.linkMark}>
       {children}
     </Link>
   );
@@ -177,7 +179,7 @@ interface ProseProps {
 
 function Prose({ document }: ProseProps) {
   return (
-    <div className="grid gap-4 text-sm leading-6 text-muted-foreground md:text-base md:leading-7 [&_strong]:font-medium [&_strong]:text-foreground">
+    <div className={styles.prose}>
       <RichText document={document} marks={RICH_TEXT_MARKS} />
     </div>
   );
@@ -190,27 +192,20 @@ interface IntroBlockProps {
 
 function IntroBlock({ block, heading: Heading }: IntroBlockProps) {
   return (
-    <section {...trackedBlock(block)} className="grid content-start gap-5">
-      {block.heading ? (
-        <Heading className="font-serif text-3xl leading-tight tracking-tight">
-          {block.heading}
-        </Heading>
-      ) : null}
-      <div className="text-sm leading-6 [&_p]:text-muted-foreground">
+    <section {...trackedBlock(block)} className={styles.intro}>
+      {block.heading ? <Heading className={styles.introHeading}>{block.heading}</Heading> : null}
+      <div className={styles.introText}>
         <Prose document={block.text} />
       </div>
       {resolveBlocks(block.links).length > 0 ? (
-        <nav
-          aria-label={block.heading ?? "Links"}
-          className="flex flex-wrap gap-x-5 gap-y-2 text-sm"
-        >
+        <nav aria-label={block.heading ?? "Links"} className={styles.introLinks}>
           {resolveBlocks(block.links).map((item) => {
             const target = href(item.link);
             return target ? (
               <Link
                 key={item._uid}
                 {...trackedBlock(item)}
-                className="underline-offset-4 hover:underline"
+                className={styles.introLink}
                 href={target}
               >
                 {item.label}
@@ -229,10 +224,8 @@ interface TextBlockProps {
 
 function TextBlock({ block }: TextBlockProps) {
   return (
-    <section {...trackedBlock(block)} className="grid max-w-2xl gap-4">
-      {block.heading ? (
-        <h2 className="font-serif text-2xl tracking-tight">{block.heading}</h2>
-      ) : null}
+    <section {...trackedBlock(block)} className={styles.text}>
+      {block.heading ? <h2 className={styles.heading}>{block.heading}</h2> : null}
       <Prose document={block.text} />
     </section>
   );
@@ -242,7 +235,7 @@ function TextBlock({ block }: TextBlockProps) {
 const contentImageLoader: ImageLoader = ({ quality, src, width }) =>
   imageUrl(src, { format: "auto", q: quality ?? 75, w: width });
 
-const IMAGE_WIDTHS = { full: "w-full", narrow: "max-w-xl", wide: "max-w-4xl" } as const;
+const IMAGE_WIDTHS = { full: null, narrow: styles.narrow, wide: styles.wide } as const;
 
 interface ImageBlockViewProps {
   block: ImageBlock;
@@ -255,20 +248,18 @@ function ImageBlockView({ block }: ImageBlockViewProps) {
   return (
     <figure
       {...trackedBlock(block)}
-      className={cn("grid w-full gap-2", IMAGE_WIDTHS[block.width ?? "wide"])}
+      className={cn(styles.image, IMAGE_WIDTHS[block.width ?? "wide"])}
     >
       <Image
         alt={alt}
-        className="h-auto w-full bg-muted"
+        className={styles.media}
         height={image.height}
         loader={contentImageLoader}
         sizes="100vw"
         src={image.url}
         width={image.width}
       />
-      {block.caption ? (
-        <figcaption className="text-xs text-muted-foreground">{block.caption}</figcaption>
-      ) : null}
+      {block.caption ? <figcaption className={styles.caption}>{block.caption}</figcaption> : null}
     </figure>
   );
 }
@@ -279,12 +270,10 @@ interface QuoteBlockProps {
 
 function QuoteBlock({ block }: QuoteBlockProps) {
   return (
-    <figure {...trackedBlock(block)} className="grid max-w-2xl gap-3 border-l pl-6">
-      <blockquote className="font-serif text-2xl leading-snug italic tracking-tight">
-        {block.quote}
-      </blockquote>
+    <figure {...trackedBlock(block)} className={styles.quote}>
+      <blockquote className={styles.quoteText}>{block.quote}</blockquote>
       {block.attribution ? (
-        <figcaption className="text-sm text-muted-foreground">{block.attribution}</figcaption>
+        <figcaption className={styles.attribution}>{block.attribution}</figcaption>
       ) : null}
     </figure>
   );
@@ -301,11 +290,9 @@ function FeaturedSeriesBlock({ block, collections }: FeaturedSeriesBlockProps) {
   );
   if (picked.length === 0) return null;
   return (
-    <section {...trackedBlock(block)} className="grid gap-5">
-      {block.heading ? (
-        <h2 className="font-serif text-2xl tracking-tight">{block.heading}</h2>
-      ) : null}
-      <div className="grid gap-x-8 gap-y-10 md:grid-cols-2">
+    <section {...trackedBlock(block)} className={styles.featuredSeries}>
+      {block.heading ? <h2 className={styles.heading}>{block.heading}</h2> : null}
+      <div className={styles.seriesGrid}>
         {picked.map((collection) => (
           <CollectionCard
             key={collection.handle}
@@ -328,32 +315,29 @@ function FeaturedPrintBlock({ block, products }: FeaturedPrintBlockProps) {
   if (!product) return null;
   const image = product.featuredImage;
   return (
-    <section {...trackedBlock(block)} className="grid items-center gap-6 md:grid-cols-2 md:gap-10">
+    <section {...trackedBlock(block)} className={styles.featuredPrint}>
       {image ? (
         <Image
           alt={image.altText || product.title}
-          className="h-auto w-full bg-muted"
+          className={styles.media}
           height={image.height}
           sizes="100vw"
           src={image.url}
           width={image.width}
         />
       ) : null}
-      <div className="grid content-center gap-3">
-        <h2 className="font-serif text-3xl tracking-tight">{product.title}</h2>
-        {block.text ? <p className="leading-7 text-muted-foreground">{block.text}</p> : null}
-        <p className="inline-flex items-baseline gap-1 text-sm text-muted-foreground">
+      <div className={styles.printDetails}>
+        <h2 className={styles.printTitle}>{product.title}</h2>
+        {block.text ? <p className={styles.printText}>{block.text}</p> : null}
+        <p className={styles.printPrice}>
           From
           <Price
             amount={product.price.amount}
             currencyCode={product.price.currencyCode}
-            className="text-sm text-muted-foreground"
+            className={styles.price}
           />
         </p>
-        <Link
-          className="w-fit text-sm underline underline-offset-4"
-          href={`/products/${product.handle}`}
-        >
+        <Link className={styles.printLink} href={`/products/${product.handle}`}>
           View the print
         </Link>
       </div>

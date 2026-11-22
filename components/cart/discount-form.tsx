@@ -1,13 +1,14 @@
 "use client";
 
 import type { CartData } from "@shopify/hydrogen";
-import { cn } from "cn";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
 import { Input } from "@/components/ui/input";
 import { useCart, useCartForm } from "@/lib/cart/client";
+
+import styles from "./discount-form.module.css";
 
 interface DiscountFormProps {
   cart: CartData;
@@ -28,7 +29,7 @@ export function DiscountForm({ cart }: DiscountFormProps) {
     ])[0]?.message ??
     null;
   return (
-    <div className="grid gap-2.5">
+    <div className={styles.root}>
       <form
         {...formProps({
           afterSubmit: () => setCode(""),
@@ -48,7 +49,7 @@ export function DiscountForm({ cart }: DiscountFormProps) {
             setLocalError(null);
           },
         })}
-        className="flex gap-2.5"
+        className={styles.form}
       >
         <Input
           type="text"
@@ -64,7 +65,7 @@ export function DiscountForm({ cart }: DiscountFormProps) {
           disabled={isPending}
           autoComplete="off"
           spellCheck={false}
-          className="flex-1"
+          className={styles.input}
         />
         <Button
           {...register("discount-apply")}
@@ -73,7 +74,7 @@ export function DiscountForm({ cart }: DiscountFormProps) {
         >
           {isPending ? (
             <>
-              <Icon name="loader-circle" className="size-4 animate-spin" />
+              <Icon name="loader-circle" className={styles.spinner} size={16} />
               <span className="sr-only">Apply</span>
             </>
           ) : (
@@ -83,13 +84,13 @@ export function DiscountForm({ cart }: DiscountFormProps) {
       </form>
 
       {error ? (
-        <p role="alert" className="text-xs text-destructive">
+        <p role="alert" className={styles.error}>
           {error}
         </p>
       ) : null}
 
       {cart.discountCodes.length > 0 ? (
-        <ul className="flex flex-wrap gap-1.5" aria-label="Discount">
+        <ul className={styles.codes} aria-label="Discount">
           {cart.discountCodes.map((discount) => {
             const isCodePending = pendingDiscountCodes.has(discount.code);
             const isInvalid = !discount.applicable && !isCodePending;
@@ -102,31 +103,20 @@ export function DiscountForm({ cart }: DiscountFormProps) {
                       setLocalError(null);
                     },
                   })}
-                  className={cn(
-                    "inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs",
-                    discount.applicable || isCodePending
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-muted text-muted-foreground border border-input",
-                  )}
+                  className={styles.code}
+                  data-invalid={isInvalid}
                 >
                   <input type="hidden" {...register("discountCode", { value: discount.code })} />
-                  <span className={cn(isInvalid && "line-through")}>{discount.code}</span>
-                  {isInvalid ? (
-                    <span className="text-xs uppercase tracking-wide">Not applicable</span>
-                  ) : null}
+                  <span className={styles.codeName}>{discount.code}</span>
+                  {isInvalid ? <span className={styles.notApplicable}>Not applicable</span> : null}
                   <button
                     {...register("discount-remove")}
                     type="submit"
                     aria-label={`${"Remove discount"}: ${discount.code}`}
                     disabled={isPending}
-                    className={cn(
-                      "ml-0.5 inline-flex size-4 items-center justify-center rounded-sm cursor-pointer disabled:cursor-not-allowed",
-                      discount.applicable || isCodePending
-                        ? "hover:bg-primary-foreground/15"
-                        : "hover:bg-foreground/10",
-                    )}
+                    className={styles.remove}
                   >
-                    <Icon name="x" className="size-3" />
+                    <Icon name="x" size={12} />
                   </button>
                 </form>
               </li>

@@ -26,19 +26,19 @@
       display: none;
     }
 
-    &:hover {
-      text-decoration: underline;
+    @media (hover: hover) {
+      &:hover {
+        text-decoration: underline;
+      }
     }
 
     &:focus-visible {
-      box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 50%, transparent);
+      box-shadow: var(--focus-ring);
     }
   }
 
   .icon {
     flex-shrink: 0;
-    width: 1rem;
-    height: 1rem;
     color: var(--muted-foreground);
     pointer-events: none;
     translate: 0 0.125rem;

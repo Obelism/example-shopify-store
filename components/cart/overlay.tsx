@@ -14,14 +14,12 @@ import { CartLineItems } from "./line-item";
 import { CartSummary } from "./summary";
 import { CartWarnings } from "./warnings";
 
+import styles from "./overlay.module.css";
+
 function CartCountBadge() {
   const count = useCart((state) => state.data.totalQuantity);
   if (count === 0) return null;
-  return (
-    <span className="flex size-5 items-center justify-center rounded-full bg-foreground text-xs text-background">
-      {count}
-    </span>
-  );
+  return <span className={styles.count}>{count}</span>;
 }
 
 interface CartOverlayProps {
@@ -34,23 +32,20 @@ export function CartOverlay({ description, title }: CartOverlayProps) {
 
   return (
     <Sheet
-      className="gap-0 p-0"
+      className={styles.sheet}
       closeButton={false}
       onOpenChange={setOverlayOpen}
       open={isOverlayOpen}
       overlay={false}
       side="right"
     >
-      <div className="flex h-16 shrink-0 items-center justify-between gap-2 px-2.5">
-        <div className="flex items-center gap-1.5">
-          <DialogTitle className="font-normal text-xl leading-4">{title}</DialogTitle>
+      <div className={styles.header}>
+        <div className={styles.heading}>
+          <DialogTitle className={styles.title}>{title}</DialogTitle>
           <CartCountBadge />
         </div>
-        <DialogClose
-          aria-label="Close cart"
-          className="flex cursor-pointer items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
-        >
-          <Icon name="x" className="size-5" />
+        <DialogClose aria-label="Close cart" className={styles.close}>
+          <Icon name="x" size={20} />
         </DialogClose>
       </div>
       <DialogDescription className="sr-only">{description}</DialogDescription>
@@ -66,24 +61,24 @@ function OverlayContent() {
   const { setOverlayOpen } = useCartDrawer();
   if (isLoading && cart.lines.nodes.length === 0) {
     return (
-      <div className="flex h-full items-center justify-center gap-2.5" role="status">
-        <Icon name="loader-circle" className="size-4 animate-spin" />
+      <div className={styles.loading} role="status">
+        <Icon name="loader-circle" className={styles.spinner} size={16} />
         Loading cart…
       </div>
     );
   }
   if (cart.lines.nodes.length === 0) {
     return (
-      <div className="flex h-full flex-col gap-5 px-2.5">
+      <div className={styles.empty}>
         <CartWarnings />
-        <div className="flex flex-1 flex-col items-center justify-center text-center">
-          <h3 className="mb-6 text-2xl">Your cart is empty</h3>
+        <div className={styles.emptyContent}>
+          <h3 className={styles.emptyTitle}>Your cart is empty</h3>
           <Button
             onClick={() => {
               setOverlayOpen(false);
               router.push("/");
             }}
-            className="h-12 px-8"
+            className={styles.continue}
           >
             Continue Shopping
           </Button>
@@ -92,12 +87,12 @@ function OverlayContent() {
     );
   }
   return (
-    <div className="flex h-full flex-col">
-      <div className="grid flex-1 content-start gap-5 overflow-y-auto px-2.5 py-5">
+    <div className={styles.content}>
+      <div className={styles.lines}>
         <CartWarnings />
         <CartLineItems lines={cart.lines.nodes} />
       </div>
-      <footer className="grid gap-5 px-2.5 pt-5 pb-2.5">
+      <footer className={styles.footer}>
         <DemoStoreNotice />
         <CartSummary cart={cart} />
       </footer>

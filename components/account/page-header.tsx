@@ -1,8 +1,10 @@
+import styles from "./page-header.module.css";
+
 export function AccountPageHeader({ title, description }: { title: string; description?: string }) {
   return (
     <div>
-      <h1 className="text-3xl sm:text-4xl md:text-5xl">{title}</h1>
-      {description && <p className="mt-1 text-sm leading-6 text-muted-foreground">{description}</p>}
+      <h1 className={styles.title}>{title}</h1>
+      {description && <p className={styles.description}>{description}</p>}
     </div>
   );
 }

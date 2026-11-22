@@ -4,19 +4,19 @@ import { Button, buttonClassName } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
 import { Link } from "@/components/ui/link";
 
+import styles from "./error-boundary-content.module.css";
+
 export function ErrorBoundaryContent({ retry }: { retry: () => void }) {
   return (
-    <div className="flex flex-col items-center justify-center px-5 py-10 text-center lg:py-10">
-      <div className="mb-6 flex justify-center">
-        <div className="rounded-full bg-muted p-5">
-          <Icon name="circle-alert" className="h-12 w-12 text-muted-foreground" />
+    <div className={styles.root}>
+      <div className={styles.iconWrapper}>
+        <div className={styles.iconCircle}>
+          <Icon name="circle-alert" className={styles.icon} size={48} />
         </div>
       </div>
-      <h1 className="mb-2 text-2xl lg:text-3xl">Something went wrong</h1>
-      <p className="mb-8 max-w-md text-muted-foreground">
-        An unexpected error occurred. Please try again.
-      </p>
-      <div className="flex flex-col gap-2.5 sm:flex-row">
+      <h1 className={styles.title}>Something went wrong</h1>
+      <p className={styles.description}>An unexpected error occurred. Please try again.</p>
+      <div className={styles.actions}>
         <Button onClick={() => retry()}>Try again</Button>
         <Link className={buttonClassName({ variant: "outline" })} href="/">
           Go back to the home page

@@ -1,0 +1,257 @@
+.trigger {
+  position: absolute;
+  right: 0.625rem;
+  bottom: 0.625rem;
+  z-index: 10;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  color: var(--foreground);
+  cursor: pointer;
+  background: color-mix(in oklab, var(--background) 90%, transparent);
+  border-radius: 9999px;
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(8px);
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  @media (hover: hover) {
+    &:hover {
+      background: var(--background);
+    }
+  }
+
+  @media (width >= 64rem) {
+    display: flex;
+  }
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: calc(100% - 2.5rem);
+  max-width: 48rem;
+  max-height: calc(100dvh - 2.5rem);
+  padding: 0;
+  overflow: clip;
+
+  @media (width >= 40rem) {
+    max-width: min(48rem, calc(200dvh - 5rem - 2px));
+  }
+}
+
+.scroller {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+
+  @media (width >= 40rem) {
+    overflow: visible;
+  }
+}
+
+.priceSkeleton {
+  width: 6rem;
+  height: 1.75rem;
+}
+
+.loadError {
+  display: grid;
+  gap: 1rem;
+}
+
+.status {
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--leading);
+  color: var(--muted-foreground);
+}
+
+.retry {
+  width: 100%;
+  height: 3rem;
+}
+
+.close {
+  position: absolute;
+  top: 1.625rem;
+  right: 1.25rem;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--foreground);
+  cursor: pointer;
+  transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  @media (hover: hover) {
+    &:hover {
+      color: color-mix(in oklab, var(--foreground) 80%, transparent);
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid;
+    outline-offset: 2px;
+  }
+}
+
+.price[data-unconfirmed="true"] {
+  opacity: 0.5;
+}
+
+.selectionStatus {
+  display: grid;
+  gap: 0.625rem;
+}
+
+.buy {
+  min-width: 0;
+}
+
+.layout {
+  display: grid;
+  min-height: 0;
+
+  @media (width >= 40rem) {
+    grid-template-rows: auto minmax(0, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    aspect-ratio: 2 / 1;
+  }
+}
+
+.media {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+
+  @media (width >= 40rem) {
+    grid-row: span 2 / span 2;
+  }
+}
+
+.image {
+  object-fit: cover;
+}
+
+.placeholder {
+  width: 100%;
+  height: 100%;
+}
+
+.purchase {
+  display: contents;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 1.25rem;
+  order: -9999;
+  gap: 0.625rem;
+  min-width: 0;
+  padding: 1.25rem 1.25rem 0.625rem;
+  background: var(--background);
+
+  @media (width >= 40rem) {
+    position: static;
+    order: 0;
+  }
+}
+
+.heading {
+  min-width: 0;
+}
+
+.title {
+  font-size: var(--text-2xl);
+  font-weight: 400;
+  line-height: 1.375;
+  letter-spacing: var(--text-2xl--tracking);
+  overflow-wrap: break-word;
+}
+
+.options {
+  display: grid;
+  align-content: start;
+  gap: 1rem;
+  min-width: 0;
+  min-height: 0;
+  padding: 0 1.25rem 1.25rem;
+
+  @media (width >= 40rem) {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+}
+
+.detailsLink {
+  width: fit-content;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--leading);
+  color: var(--muted-foreground);
+  text-decoration-line: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+  transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  @media (hover: hover) {
+    &:hover {
+      color: var(--foreground);
+    }
+  }
+}
+
+.skeleton {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.skeletonGroup {
+  display: grid;
+  gap: 0.625rem;
+}
+
+.skeletonRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+}
+
+.optionNameSkeleton {
+  width: 6rem;
+  height: 1.25rem;
+}
+
+.optionLabelSkeleton {
+  width: 3rem;
+  height: 1.25rem;
+}
+
+.optionValueSkeleton {
+  width: 3.75rem;
+  height: 2.375rem;
+  border-radius: var(--radius);
+}
+
+.quantitySkeleton {
+  flex-shrink: 0;
+  width: 8rem;
+  height: 3rem;
+}
+
+.addToCartSkeleton {
+  flex: 1;
+  min-width: 10rem;
+  height: 3rem;
+}
+
+.buyNowSkeleton {
+  width: 100%;
+  height: 3rem;
+}

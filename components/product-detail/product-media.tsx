@@ -11,6 +11,8 @@ import type { Image as ImageType, Video } from "@/lib/media/types";
 
 import { Lightbox, LightboxTrigger } from "./lightbox";
 
+import styles from "./product-media.module.css";
+
 type MediaItem =
   | { type: "image"; image: ImageType }
   | { type: "placeholder" }
@@ -34,7 +36,7 @@ const LCP_IMAGE_PROPS = { fetchPriority: "high", loading: "eager", preload: true
 
 const LAZY_IMAGE_PROPS = { loading: "lazy" } as const;
 
-// Tailwind `lg`, where the 2x2 grid replaces the carousel.
+// The 64rem breakpoint, where the 2x2 grid replaces the carousel.
 const DESKTOP_MEDIA = "(min-width: 1024px)";
 // The 2x2 grid is above the fold, so desktop preloads every tile while the lazy <img> keeps mobile from fetching them.
 const DESKTOP_GRID_PRELOAD_COUNT = 4;
@@ -74,7 +76,7 @@ function MediaImage({
       alt={item.image.altText || `${title} image ${idx + 1}`}
       height={item.image.height}
       width={item.image.width}
-      className={cn("absolute inset-0 size-full object-cover", className)}
+      className={cn(styles.image, className)}
       sizes="100vw"
       {...(priority ? LCP_IMAGE_PROPS : LAZY_IMAGE_PROPS)}
       draggable={false}
@@ -104,7 +106,7 @@ function MediaVideo({
       }
       previewImageFetchPriority={priority ? "high" : "auto"}
       previewImageLoading={priority ? "eager" : "lazy"}
-      className={cn("h-full w-full scale-[1.04] object-cover", className)}
+      className={cn(styles.video, className)}
     />
   );
 }
@@ -160,10 +162,10 @@ function Carousel({
     };
   }, [container]);
   return (
-    <div className="grid gap-5">
+    <div className={styles.carousel}>
       <div
         ref={setContainer}
-        className="relative overflow-x-auto flex snap-x snap-mandatory overscroll-x-contain scrollbar-hide -mx-5 w-[calc(100%+2.5rem)]"
+        className={styles.track}
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         {children}
@@ -172,13 +174,13 @@ function Carousel({
           return (
             <div
               key={mediaKey(item)}
-              className="relative shrink-0 w-full snap-start snap-always overflow-hidden aspect-square"
+              className={styles.slide}
               style={loneImageAspect(mediaItems, hasColorSlot)}
             >
               {item.type === "video" ? (
                 <MediaVideo item={item} priority={priority} />
               ) : item.type === "placeholder" ? (
-                <ImagePlaceholder className="size-full" />
+                <ImagePlaceholder className={styles.placeholder} />
               ) : (
                 <MediaImage item={item} title={title} idx={idx} priority={priority} />
               )}
@@ -188,18 +190,14 @@ function Carousel({
       </div>
 
       {/* Dot indicators – reserve space but hide when there's only one image */}
-      <div className={cn("flex justify-center gap-2", itemCount <= 1 && "invisible")}>
+      <div className={styles.dots} data-single={itemCount <= 1}>
         {Array.from({ length: itemCount }, (_, idx) => (
           <button
             type="button"
             key={idx}
             onClick={() => scrollToImage(idx)}
-            className={cn(
-              "h-1.5 rounded-full transition-all",
-              idx === selectedIndex
-                ? "bg-foreground w-8"
-                : "bg-muted-foreground/30 w-1.5 hover:bg-muted-foreground/50",
-            )}
+            className={styles.dot}
+            data-active={idx === selectedIndex}
             aria-label={`Go to image ${idx + 1}`}
           />
         ))}
@@ -222,11 +220,11 @@ function GridItem({
   style?: { aspectRatio: string };
 }) {
   return (
-    <div className="relative w-full overflow-hidden aspect-square" style={style}>
+    <div className={styles.tile} style={style}>
       {item.type === "video" ? (
         <MediaVideo item={item} priority={priority} />
       ) : item.type === "placeholder" ? (
-        <ImagePlaceholder className="size-full" />
+        <ImagePlaceholder className={styles.placeholder} />
       ) : (
         <LightboxTrigger image={item.image}>
           <MediaImage item={item} title={title} idx={idx} priority={priority} />
@@ -260,7 +258,7 @@ function Grid({
 
   const loneAspect = loneImageAspect(mediaItems, hasColorSlot);
   const grid = (
-    <div className={cn("grid gap-2.5", loneAspect ? "grid-cols-1" : "grid-cols-2")}>
+    <div className={styles.grid} data-lone={Boolean(loneAspect)}>
       {children}
       {mediaItems.map((item, idx) => (
         <GridItem
@@ -292,16 +290,13 @@ export function ColorImageGrid({ images, title }: { images: ImageType[]; title: 
 
 export function ColorImageCarouselItems({ images, title }: { images: ImageType[]; title: string }) {
   return images.map((image, idx) => (
-    <div
-      key={image.url}
-      className="relative shrink-0 w-full snap-start snap-always overflow-hidden aspect-square"
-    >
+    <div key={image.url} className={styles.slide}>
       <Image
         src={image.url}
         alt={image.altText || `${title} image ${idx + 1}`}
         height={image.height}
         width={image.width}
-        className="absolute inset-0 size-full object-cover"
+        className={styles.image}
         sizes="100vw"
         {...(idx === 0 ? LCP_IMAGE_PROPS : LAZY_IMAGE_PROPS)}
         draggable={false}
@@ -336,7 +331,7 @@ export function ProductMedia({
 
   return (
     <div className={className}>
-      <div className="lg:hidden">
+      <div className={styles.mobile}>
         <Carousel
           key={mediaItems.map(mediaKey).join(",")}
           mediaItems={mediaItems}
@@ -346,7 +341,7 @@ export function ProductMedia({
           {mobileSlot}
         </Carousel>
       </div>
-      <div className="hidden lg:block">
+      <div className={styles.desktop}>
         <Grid
           mediaItems={mediaItems}
           title={title}

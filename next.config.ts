@@ -39,14 +39,6 @@ const nextConfig: NextConfig = {
     // Content's canvas opens the home entry at its path.
     return [{ destination: "/", permanent: false, source: `/${HOME_PATH}` }];
   },
-  turbopack: {
-    rules: {
-      "globals.css": {
-        as: "*.css",
-        loaders: ["@tailwindcss/turbopack"],
-      },
-    },
-  },
 };
 
 export default withShopConfig(nextConfig);

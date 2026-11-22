@@ -1,0 +1,11 @@
+.page {
+  padding-top: 1.25rem;
+
+  @media (width >= 48rem) {
+    padding-top: 2.5rem;
+  }
+}
+
+.container {
+  background: var(--background);
+}

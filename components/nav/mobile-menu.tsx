@@ -10,6 +10,8 @@ import type { MenuItem } from "@/lib/menu/types";
 
 import { MenuLink } from "./menu-link";
 
+import styles from "./mobile-menu.module.css";
+
 export function MobileMenu({ items }: { items: MenuItem[] }) {
   const [open, setOpen] = useState(false);
   const close = () => setOpen(false);
@@ -19,17 +21,17 @@ export function MobileMenu({ items }: { items: MenuItem[] }) {
         aria-expanded={open}
         aria-haspopup="dialog"
         aria-label="Menu"
-        className="md:hidden -ml-2 p-2"
+        className={styles.trigger}
         onClick={() => setOpen(true)}
         type="button"
       >
-        <Icon name="menu" className="size-5" />
+        <Icon name="menu" size={20} />
       </button>
-      <Sheet className="gap-0" onOpenChange={setOpen} open={open} side="left">
-        <div className="flex h-16 items-center px-5">
-          <DialogTitle className="text-lg font-semibold">Menu</DialogTitle>
+      <Sheet className={styles.sheet} onOpenChange={setOpen} open={open} side="left">
+        <div className={styles.header}>
+          <DialogTitle className={styles.title}>Menu</DialogTitle>
         </div>
-        <nav className="min-h-0 flex-1 overflow-y-auto px-5 pb-5">
+        <nav className={styles.body}>
           <MobileMenuList items={items} onLinkClick={close} />
         </nav>
       </Sheet>
@@ -42,14 +44,10 @@ function MobileMenuList({ items, onLinkClick }: { items: MenuItem[]; onLinkClick
 
   if (!hasAnyChildren) {
     return (
-      <ul className="flex flex-col gap-2.5">
+      <ul className={styles.list}>
         {items.map((item) => (
           <li key={item.id}>
-            <MenuLink
-              url={item.url}
-              onClick={onLinkClick}
-              className="text-base transition-colors hover:text-muted-foreground"
-            >
+            <MenuLink url={item.url} onClick={onLinkClick} className={styles.link}>
               {item.title}
             </MenuLink>
           </li>
@@ -59,31 +57,23 @@ function MobileMenuList({ items, onLinkClick }: { items: MenuItem[]; onLinkClick
   }
 
   return (
-    <div className="w-full">
+    <div className={styles.accordion}>
       {items.map((item) =>
         item.items.length > 0 ? (
           <AccordionItem key={item.id}>
-            <AccordionTrigger className="py-3 text-base">{item.title}</AccordionTrigger>
+            <AccordionTrigger className={styles.accordionTrigger}>{item.title}</AccordionTrigger>
             <AccordionContent>
               <NestedItems items={item.items} onLinkClick={onLinkClick} />
               {item.url ? (
-                <MenuLink
-                  url={item.url}
-                  onClick={onLinkClick}
-                  className="mt-3 block text-xs font-medium uppercase tracking-wide text-muted-foreground hover:text-foreground transition-colors"
-                >
+                <MenuLink url={item.url} onClick={onLinkClick} className={styles.showAll}>
                   {`Show all ${item.title}`}
                 </MenuLink>
               ) : null}
             </AccordionContent>
           </AccordionItem>
         ) : (
-          <div key={item.id} className="border-b last:border-b-0">
-            <MenuLink
-              url={item.url}
-              onClick={onLinkClick}
-              className="flex py-3 text-base transition-colors hover:text-muted-foreground"
-            >
+          <div key={item.id} className={styles.row}>
+            <MenuLink url={item.url} onClick={onLinkClick} className={styles.rowLink}>
               {item.title}
             </MenuLink>
           </div>
@@ -95,25 +85,17 @@ function MobileMenuList({ items, onLinkClick }: { items: MenuItem[]; onLinkClick
 
 function NestedItems({ items, onLinkClick }: { items: MenuItem[]; onLinkClick: () => void }) {
   return (
-    <ul className="flex flex-col gap-3 pl-3">
+    <ul className={styles.nested}>
       {items.map((item) => (
-        <li key={item.id} className="space-y-2">
-          <MenuLink
-            url={item.url}
-            onClick={onLinkClick}
-            className="block text-sm font-medium hover:opacity-70 transition-opacity"
-          >
+        <li key={item.id} className={styles.nestedItem}>
+          <MenuLink url={item.url} onClick={onLinkClick} className={styles.nestedLink}>
             {item.title}
           </MenuLink>
           {item.items.length > 0 && (
-            <ul className="flex flex-col gap-2 pl-3">
+            <ul className={styles.leaves}>
               {item.items.map((leaf) => (
                 <li key={leaf.id}>
-                  <MenuLink
-                    url={leaf.url}
-                    onClick={onLinkClick}
-                    className="block text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
+                  <MenuLink url={leaf.url} onClick={onLinkClick} className={styles.leafLink}>
                     {leaf.title}
                   </MenuLink>
                 </li>

@@ -1,0 +1,50 @@
+.warnings {
+  padding: 0.625rem 0.75rem;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--leading);
+  color: var(--warning-foreground);
+  background: var(--warning);
+  border: 1px solid var(--warning-border);
+}
+
+.content {
+  display: flex;
+  gap: 0.625rem;
+  align-items: flex-start;
+}
+
+.icon {
+  flex-shrink: 0;
+}
+
+.text {
+  display: grid;
+  flex: 1;
+  gap: 0.25rem;
+}
+
+.title {
+  font-weight: 500;
+}
+
+.messages {
+  display: grid;
+  gap: 0.125rem;
+  color: var(--warning-muted-foreground);
+}
+
+.dismiss {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  cursor: pointer;
+
+  @media (hover: hover) {
+    &:hover {
+      background: var(--warning-hover);
+    }
+  }
+}

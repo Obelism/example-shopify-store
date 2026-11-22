@@ -12,6 +12,8 @@ import { getCmsPage, getCmsPagePaths, pageQuery } from "@/lib/cms/server";
 import { buildAlternates, buildOpenGraph } from "@/lib/seo";
 import { PLACEHOLDER_HANDLE } from "@/lib/static-params";
 
+import styles from "./page.module.css";
+
 export async function generateStaticParams() {
   const paths = await getCmsPagePaths().catch(() => []);
   const slugs = paths.filter((path) => !path.includes("/"));
@@ -34,7 +36,7 @@ export async function generateMetadata({ params }: PageProps<"/[slug]">): Promis
 
 export default function ContentPage({ params, searchParams }: PageProps<"/[slug]">) {
   return (
-    <Page className="pt-5 md:pt-10">
+    <Page className={styles.page}>
       <Container>
         <Suspense fallback={<ContentPageSkeleton />}>
           <ContentPageContent params={params} searchParams={searchParams} />
@@ -51,8 +53,8 @@ async function ContentPageContent({ params, searchParams }: PageProps<"/[slug]">
   return (
     <CmsEntry published={published} query={pageQuery(slug)} required searchParams={searchParams}>
       {(entry) => (
-        <article className="grid gap-10">
-          <h1 className="font-serif text-4xl tracking-tight md:text-5xl">{entry.fields.title}</h1>
+        <article className={styles.article}>
+          <h1 className={styles.title}>{entry.fields.title}</h1>
           <CmsBody entry={entry} />
         </article>
       )}
@@ -62,12 +64,12 @@ async function ContentPageContent({ params, searchParams }: PageProps<"/[slug]">
 
 function ContentPageSkeleton() {
   return (
-    <div aria-busy="true" className="grid gap-10">
-      <Skeleton className="h-10 w-64 md:h-12" />
-      <div className="grid max-w-2xl gap-3">
-        <Skeleton className="h-4 w-full" />
-        <Skeleton className="h-4 w-5/6" />
-        <Skeleton className="h-4 w-2/3" />
+    <div aria-busy="true" className={styles.skeleton}>
+      <Skeleton className={styles.titleSkeleton} />
+      <div className={styles.lines}>
+        <Skeleton className={styles.line} />
+        <Skeleton className={styles.lineMedium} />
+        <Skeleton className={styles.lineShort} />
       </div>
     </div>
   );

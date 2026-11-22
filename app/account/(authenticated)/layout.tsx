@@ -13,6 +13,8 @@ import { getCustomerAccessToken, requireCustomerSession } from "@/lib/auth/serve
 import { shopConfig } from "@/lib/config";
 import { getCustomerProfile } from "@/lib/shopify/operations/customer/server";
 
+import styles from "./layout.module.css";
+
 export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "Account",
@@ -22,10 +24,10 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default function AccountLayout({ children }: { children: ReactNode }) {
   return (
-    <Page className="flex flex-1 flex-col">
-      <Container className="flex flex-1 flex-col gap-6 md:flex-row md:gap-10">
-        <aside className="hidden w-52 shrink-0 md:block">
-          <div className="sticky top-24 flex flex-col gap-6">
+    <Page className={styles.page}>
+      <Container className={styles.container}>
+        <aside className={styles.aside}>
+          <div className={styles.asideInner}>
             <Suspense fallback={<AccountLabelSkeleton />}>
               <AccountLabel />
             </Suspense>
@@ -36,8 +38,8 @@ export default function AccountLayout({ children }: { children: ReactNode }) {
           </div>
         </aside>
 
-        <div className="flex flex-1 flex-col min-w-0">
-          <div className="mb-4 flex items-center justify-between md:hidden">
+        <div className={styles.main}>
+          <div className={styles.mobileHeader}>
             <Suspense fallback={<AccountLabelSkeleton />}>
               <AccountLabel />
             </Suspense>
@@ -46,7 +48,7 @@ export default function AccountLayout({ children }: { children: ReactNode }) {
           <Suspense>
             <AccountMobileTabs />
           </Suspense>
-          <Sections className="gap-5 pt-6 md:pt-0">
+          <Sections className={styles.sections}>
             <Suspense>
               <AccountGate>{children}</AccountGate>
             </Suspense>
@@ -68,34 +70,34 @@ async function AccountLabel() {
   await requireCustomerSession();
   const accessToken = await getCustomerAccessToken();
   if (!accessToken) {
-    return <p className="text-sm font-medium">Account</p>;
+    return <p className={styles.name}>Account</p>;
   }
   const profile = await getCustomerProfile();
   if (!profile) return null;
   const name = [profile.firstName, profile.lastName].filter(Boolean).join(" ");
   return (
     <div>
-      <p className="text-sm font-medium">{name || profile.email}</p>
-      <p className="text-xs text-muted-foreground">{profile.email}</p>
+      <p className={styles.name}>{name || profile.email}</p>
+      <p className={styles.email}>{profile.email}</p>
     </div>
   );
 }
 
 function AccountLabelSkeleton() {
   return (
-    <div className="grid gap-1.5">
-      <Skeleton className="h-4 w-24" />
-      <Skeleton className="h-3 w-32" />
+    <div className={styles.labelSkeleton}>
+      <Skeleton className={styles.nameSkeleton} />
+      <Skeleton className={styles.emailSkeleton} />
     </div>
   );
 }
 
 function SidebarSkeleton() {
   return (
-    <div className="flex flex-col gap-1">
-      <Skeleton className="h-9 w-full rounded-lg" />
-      <Skeleton className="h-9 w-full rounded-lg" />
-      <Skeleton className="h-9 w-full rounded-lg" />
+    <div className={styles.sidebarSkeleton}>
+      <Skeleton className={styles.linkSkeleton} />
+      <Skeleton className={styles.linkSkeleton} />
+      <Skeleton className={styles.linkSkeleton} />
     </div>
   );
 }

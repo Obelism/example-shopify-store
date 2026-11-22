@@ -1,0 +1,84 @@
+.root {
+  display: grid;
+  gap: 0.625rem;
+}
+
+.form {
+  display: flex;
+  gap: 0.625rem;
+}
+
+.input {
+  flex: 1;
+}
+
+.spinner {
+  animation: var(--animate-spin);
+}
+
+.error {
+  font-size: var(--text-xs);
+  line-height: var(--text-xs--leading);
+  color: var(--destructive);
+}
+
+.codes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.code {
+  display: inline-flex;
+  gap: 0.25rem;
+  align-items: center;
+  padding: 0.125rem 0.625rem;
+  font-size: var(--text-xs);
+  line-height: var(--text-xs--leading);
+  color: var(--primary-foreground);
+  background: var(--primary);
+  border-radius: 9999px;
+
+  &[data-invalid="true"] {
+    color: var(--muted-foreground);
+    background: var(--muted);
+    border: 1px solid var(--input);
+  }
+}
+
+.codeName {
+  .code[data-invalid="true"] & {
+    text-decoration-line: line-through;
+  }
+}
+
+.notApplicable {
+  font-size: var(--text-xs);
+  line-height: var(--text-xs--leading);
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  margin-left: 0.125rem;
+  cursor: pointer;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      background: color-mix(in oklab, var(--primary-foreground) 15%, transparent);
+    }
+
+    .code[data-invalid="true"] &:hover {
+      background: color-mix(in oklab, var(--foreground) 10%, transparent);
+    }
+  }
+}

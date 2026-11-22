@@ -5,6 +5,8 @@ import { Link } from "@/components/ui/link";
 import type { BlogArticle } from "@/lib/blog/types";
 import { shopConfig } from "@/lib/config";
 
+import styles from "./article-card.module.css";
+
 export interface ArticleCardProps {
   article: BlogArticle;
 }
@@ -15,32 +17,30 @@ export function ArticleCard({ article }: ArticleCardProps) {
     dateStyle: "long",
   }).format(new Date(article.publishedAt));
   return (
-    <article className="grid content-start gap-4">
-      <Link className="relative aspect-3/2 overflow-hidden rounded-xl" href={href}>
+    <article className={styles.card}>
+      <Link className={styles.media} href={href}>
         {article.image ? (
           <Image
             alt={article.image.altText}
-            className="object-cover transition-transform duration-300 hover:scale-105"
+            className={styles.image}
             fill
             sizes="100vw"
             src={article.image.url}
           />
         ) : (
-          <ImagePlaceholder className="size-full bg-muted" />
+          <ImagePlaceholder className={styles.placeholder} />
         )}
       </Link>
-      <div className="grid gap-2.5">
-        <time className="text-muted-foreground text-sm" dateTime={article.publishedAt}>
+      <div className={styles.body}>
+        <time className={styles.date} dateTime={article.publishedAt}>
           {publishedAt}
         </time>
-        <h2 className="font-medium text-xl tracking-tight">
-          <Link className="hover:underline" href={href}>
+        <h2 className={styles.title}>
+          <Link className={styles.titleLink} href={href}>
             {article.title}
           </Link>
         </h2>
-        {article.excerpt && (
-          <p className="text-muted-foreground text-sm leading-6 line-clamp-3">{article.excerpt}</p>
-        )}
+        {article.excerpt && <p className={styles.excerpt}>{article.excerpt}</p>}
       </div>
     </article>
   );

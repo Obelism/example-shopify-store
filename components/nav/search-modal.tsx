@@ -1,7 +1,6 @@
 "use client";
 
 import { getSearchResultUrl } from "@shopify/hydrogen";
-import { cn } from "cn";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
@@ -21,6 +20,8 @@ import { useRecentlyViewedProducts } from "@/lib/product/client";
 import { SEARCH_TERM_MAX_LENGTH } from "@/lib/search";
 import { usePredictiveSearch } from "@/lib/search/client";
 import type { PredictiveSearchProduct, SearchSuggestion } from "@/lib/search/types";
+
+import styles from "./search-modal.module.css";
 
 export function SearchModal() {
   const [open, setOpen] = useState(false);
@@ -43,10 +44,10 @@ export function SearchModal() {
         aria-expanded={open}
         aria-haspopup="dialog"
         type="button"
-        className="flex items-center justify-center text-foreground hover:text-foreground/80 transition-colors"
+        className={styles.trigger}
         onClick={() => setOpen(true)}
       >
-        <Icon name="search" className="size-5" />
+        <Icon name="search" size={20} />
         <span className="sr-only">Search</span>
       </button>
       <Dialog backdrop="blur" initialFocus={inputRef} open={open} onOpenChange={setOpen}>
@@ -119,11 +120,11 @@ function SearchDialogContent({ inputRef, onClose, open }: SearchDialogContentPro
   }
   const show = hasQuery ? results !== null || isLoading : products.length > 0;
   return (
-    <div className="mx-auto mt-[15vh] h-fit w-[calc(100%-2rem)] max-w-xl">
+    <div className={styles.root}>
       <DialogTitle className="sr-only">Search</DialogTitle>
-      <div className="bg-background rounded-xl shadow-lg overflow-hidden duration-200">
-        <form onSubmit={handleSubmit} className="flex items-center gap-3 px-4 py-3">
-          <Icon name="search" className="size-4 shrink-0 text-foreground/40" />
+      <div className={styles.panel}>
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <Icon name="search" className={styles.searchIcon} size={16} />
           <input
             ref={inputRef}
             type="text"
@@ -139,7 +140,7 @@ function SearchDialogContent({ inputRef, onClose, open }: SearchDialogContentPro
               activeIndex >= 0 ? `search-modal-item-${activeIndex}` : undefined
             }
             autoComplete="off"
-            className="flex-1 min-w-0 bg-transparent text-base text-foreground placeholder:text-foreground/40 focus:outline-none"
+            className={styles.input}
           />
           {query.trim() && (
             <button
@@ -151,29 +152,25 @@ function SearchDialogContent({ inputRef, onClose, open }: SearchDialogContentPro
                   inputRef.current.focus();
                 }
               }}
-              className="shrink-0 text-sm text-foreground/60 hover:text-foreground transition-colors"
+              className={styles.clear}
             >
               Clear
             </button>
           )}
-          <DialogClose className="shrink-0 flex items-center justify-center rounded-full text-foreground/40 hover:text-foreground transition-colors">
-            <Icon name="x" className="size-4" />
+          <DialogClose className={styles.close}>
+            <Icon name="x" size={16} />
             <span className="sr-only">Close</span>
           </DialogClose>
         </form>
 
         {show && (
-          <div
-            id="search-modal-results"
-            role="listbox"
-            className="border-t border-border/30 max-h-[60vh] overflow-y-auto overscroll-contain"
-          >
+          <div id="search-modal-results" role="listbox" className={styles.results}>
             {hasQuery && isLoading && !results && <LoadingSkeleton />}
 
             {(!hasQuery || results) && (
               <>
                 {suggestions.length > 0 && (
-                  <div className="px-4 pt-3 pb-2 flex flex-wrap gap-2">
+                  <div className={styles.suggestions}>
                     {suggestions.map((suggestion, i) => (
                       <SuggestionChip
                         key={suggestion.text}
@@ -190,7 +187,7 @@ function SearchDialogContent({ inputRef, onClose, open }: SearchDialogContentPro
 
                 {products.length > 0 && (
                   <div>
-                    <div className="px-4 pt-3 pb-1.5 text-xs font-medium text-foreground/50 uppercase tracking-wider">
+                    <div className={styles.groupLabel}>
                       {hasQuery ? "Products" : "Recently viewed"}
                     </div>
                     {products.map((product, i) => (
@@ -205,19 +202,17 @@ function SearchDialogContent({ inputRef, onClose, open }: SearchDialogContentPro
                 )}
 
                 {hasQuery && visibleItems === 0 && (
-                  <div className="px-4 py-6 text-center text-sm text-foreground/50">
-                    {`No results for "${query}"`}
-                  </div>
+                  <div className={styles.noResults}>{`No results for "${query}"`}</div>
                 )}
 
                 {hasQuery && visibleItems > 0 && (
-                  <div className="px-4 py-3 flex justify-center">
+                  <div className={styles.viewAllRow}>
                     <button
                       type="button"
                       onClick={() =>
                         navigate(getSearchResultUrl({ baseUrl: "/search", term: query.trim() }))
                       }
-                      className="inline-flex items-center justify-center rounded-lg bg-primary text-primary-foreground text-sm font-medium h-9 px-5 hover:bg-primary/90 transition-colors"
+                      className={styles.viewAll}
                     >
                       View All
                     </button>
@@ -248,12 +243,7 @@ function SuggestionChip({
       aria-selected={active}
       data-active={active}
       onClick={onClick}
-      className={cn(
-        "inline-flex items-center rounded-full border px-3 py-1 text-sm transition-colors cursor-pointer",
-        active
-          ? "bg-foreground text-background border-foreground"
-          : "bg-transparent text-foreground border-border hover:bg-accent",
-      )}
+      className={styles.chip}
     >
       {suggestion.text}
     </button>
@@ -276,7 +266,7 @@ function ProductResult({
       aria-selected={active}
       data-active={active}
       onClick={() => onNavigate(`/products/${product.handle}`)}
-      className="flex w-full items-center gap-3 px-4 py-2.5 hover:bg-accent/50 data-[active=true]:bg-accent/50 transition-colors text-left cursor-pointer"
+      className={styles.product}
     >
       {product.featuredImage ? (
         <Image
@@ -285,17 +275,17 @@ function ProductResult({
           width={56}
           height={56}
           sizes="100vw"
-          className="size-14 object-cover bg-muted shrink-0"
+          className={styles.productImage}
         />
       ) : (
-        <div className="size-14 bg-muted shrink-0" />
+        <div className={styles.productImage} />
       )}
-      <div className="flex-1 min-w-0">
-        <div className="text-sm text-foreground truncate">{product.title}</div>
+      <div className={styles.productBody}>
+        <div className={styles.productTitle}>{product.title}</div>
         <Price
           amount={product.price.amount}
           currencyCode={product.price.currencyCode}
-          className="text-sm text-foreground/70"
+          className={styles.productPrice}
         />
       </div>
     </button>
@@ -304,20 +294,20 @@ function ProductResult({
 
 function LoadingSkeleton() {
   return (
-    <div className="px-4 py-3 space-y-3">
-      <div className="pt-1.5 pb-2 h-6 w-40 rounded bg-accent/40 animate-pulse" />
-      <div className="h-3 w-24 rounded bg-accent/40 animate-pulse" />
+    <div className={styles.skeleton}>
+      <div className={styles.skeletonChips} />
+      <div className={styles.skeletonLabel} />
       {["skeleton-1", "skeleton-2", "skeleton-3"].map((key) => (
-        <div key={key} className="flex items-center gap-3 py-2.5">
-          <div className="size-14 bg-accent animate-pulse shrink-0" />
-          <div className="flex-1 space-y-1.5">
-            <div className="h-3.5 w-3/4 rounded bg-accent animate-pulse" />
-            <div className="h-3 w-1/3 rounded bg-accent animate-pulse" />
+        <div key={key} className={styles.skeletonRow}>
+          <div className={styles.skeletonImage} />
+          <div className={styles.skeletonText}>
+            <div className={styles.skeletonTitle} />
+            <div className={styles.skeletonPrice} />
           </div>
         </div>
       ))}
-      <div className="pt-2 pb-1 flex justify-center">
-        <div className="h-9 w-32 rounded-lg bg-accent/40 animate-pulse" />
+      <div className={styles.skeletonFooter}>
+        <div className={styles.skeletonButton} />
       </div>
     </div>
   );

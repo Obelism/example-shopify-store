@@ -1,0 +1,47 @@
+@layer ui {
+  .input {
+    width: 100%;
+    min-width: 0;
+    height: 2.25rem;
+    padding: 0.25rem 0.625rem;
+    font-size: var(--text-base);
+    line-height: var(--text-base--leading);
+    background: transparent;
+    border: 1px solid var(--input);
+    outline: none;
+    box-shadow: var(--shadow-xs);
+    transition:
+      color 150ms,
+      box-shadow 150ms;
+
+    &::placeholder {
+      color: var(--muted-foreground);
+    }
+
+    &::selection {
+      color: var(--primary-foreground);
+      background: var(--primary);
+    }
+
+    &:focus-visible {
+      border-color: var(--ring);
+      box-shadow: var(--focus-ring);
+    }
+
+    &[aria-invalid="true"] {
+      border-color: var(--destructive);
+      box-shadow: 0 0 0 3px color-mix(in oklab, var(--destructive) 20%, transparent);
+    }
+
+    &:disabled {
+      pointer-events: none;
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
+    @media (width >= 48rem) {
+      font-size: var(--text-sm);
+      line-height: var(--text-sm--leading);
+    }
+  }
+}

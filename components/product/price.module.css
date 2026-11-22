@@ -1,0 +1,8 @@
+/* Zero specificity so a caller's className always wins. */
+:where(.price) {
+  font-size: var(--text-xl);
+  font-variant-numeric: tabular-nums;
+  line-height: var(--text-xl--leading);
+  letter-spacing: var(--text-xl--tracking);
+  color: var(--foreground);
+}

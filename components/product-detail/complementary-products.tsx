@@ -6,6 +6,8 @@ import { Link } from "@/components/ui/link";
 import { getProductRecommendations } from "@/lib/product/server";
 import type { ProductCard } from "@/lib/product/types";
 
+import styles from "./complementary-products.module.css";
+
 export async function ComplementaryProducts({
   handle,
   limit,
@@ -18,15 +20,12 @@ export async function ComplementaryProducts({
   const complementary = await getProductRecommendations({ handle, intent: "COMPLEMENTARY" });
   if (complementary.length === 0) return null;
   return (
-    <div className="grid gap-2.5" data-slot="complementary-products">
-      <h2 className="font-medium text-foreground/70 text-sm">{title}</h2>
-      <ul className="grid gap-2.5">
+    <div className={styles.root}>
+      <h2 className={styles.title}>{title}</h2>
+      <ul className={styles.list}>
         {complementary.slice(0, limit).map((product: ProductCard) => (
           <li key={product.id}>
-            <Link
-              href={`/products/${product.handle}`}
-              className="flex cursor-pointer items-center gap-2.5 rounded-lg border border-border p-2.5 transition-colors hover:border-foreground/30"
-            >
+            <Link href={`/products/${product.handle}`} className={styles.item}>
               {product.featuredImage ? (
                 <Image
                   src={product.featuredImage.url}
@@ -34,15 +33,15 @@ export async function ComplementaryProducts({
                   width={48}
                   height={48}
                   sizes="100vw"
-                  className="size-12 rounded-md object-cover"
+                  className={styles.image}
                 />
               ) : (
-                <ImagePlaceholder className="size-12 shrink-0 rounded-md" />
+                <ImagePlaceholder className={styles.placeholder} />
               )}
-              <span className="min-w-0 flex-1 truncate font-medium text-sm">{product.title}</span>
+              <span className={styles.name}>{product.title}</span>
               <Price
                 amount={product.price.amount}
-                className="shrink-0 text-sm"
+                className={styles.price}
                 currencyCode={product.price.currencyCode}
               />
             </Link>

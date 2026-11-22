@@ -66,6 +66,14 @@ function Dialog({
 
   const show = useEffectEvent((dialog: HTMLDialogElement) => {
     openCount.current += 1;
+    const root = document.documentElement;
+    // The scroll lock hides the scrollbar; padding by its width keeps the page from shifting.
+    if (!root.querySelector("dialog[open]")) {
+      root.style.setProperty(
+        "--dialog-scrollbar-width",
+        `${window.innerWidth - root.clientWidth}px`,
+      );
+    }
     if (!dialog.open) dialog.showModal();
     initialFocus?.current?.focus();
   });
@@ -153,7 +161,7 @@ function DialogPanel({ children, className, showCloseButton = true, ...props }: 
       {children}
       {showCloseButton ? (
         <DialogClose className={styles.close}>
-          <Icon name="x" className={styles.closeIcon} />
+          <Icon name="x" size={16} />
           <span className="sr-only">Close</span>
         </DialogClose>
       ) : null}

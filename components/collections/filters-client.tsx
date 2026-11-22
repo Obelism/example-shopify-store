@@ -24,6 +24,8 @@ import { formatCurrencySymbol, formatPrice } from "@/lib/money";
 
 import { usePublishedFacets } from "./collection-browse-provider";
 
+import styles from "./filters-client.module.css";
+
 interface FilterSheetProps {
   children: ReactNode;
   label: string;
@@ -44,14 +46,9 @@ export function FilterSheet({ children, label, trigger, triggerClassName }: Filt
       >
         {trigger}
       </button>
-      <Sheet
-        className="gap-0 overflow-y-auto px-5 pb-5"
-        onOpenChange={setOpen}
-        open={open}
-        side="left"
-      >
-        <div className="flex h-16 shrink-0 items-center gap-2">
-          <DialogTitle className="text-lg font-semibold">{label}</DialogTitle>
+      <Sheet className={styles.sheet} onOpenChange={setOpen} open={open} side="left">
+        <div className={styles.sheetHeader}>
+          <DialogTitle className={styles.sheetTitle}>{label}</DialogTitle>
         </div>
         {children}
       </Sheet>
@@ -113,9 +110,9 @@ export function CollectionFilterSidebar({ filters, priceRange }: CollectionFilte
     actions.setFilters(next);
   };
   return (
-    <div className="flex flex-col gap-5">
+    <div className={styles.sidebar}>
       {activeBadges.length > 0 || priceFilter ? (
-        <div className="flex flex-wrap gap-1.5">
+        <div className={styles.badges}>
           {activeBadges.map((badge) => {
             const filter = parseFilterInput(
               findFilterInput(filters, badge.paramKey, badge.value) ?? "",
@@ -141,7 +138,7 @@ export function CollectionFilterSidebar({ filters, priceRange }: CollectionFilte
 
       {priceRange ? (
         <FilterSection title="Price">
-          <div className="flex items-center gap-2">
+          <div className={styles.priceRow}>
             <PriceInput
               currencyCode={priceRange.currencyCode}
               label="Minimum price"
@@ -149,7 +146,7 @@ export function CollectionFilterSidebar({ filters, priceRange }: CollectionFilte
               placeholder="From"
               value={minInput}
             />
-            <span className="text-muted-foreground">–</span>
+            <span className={styles.priceSeparator}>–</span>
             <PriceInput
               currencyCode={priceRange.currencyCode}
               label="Maximum price"
@@ -159,11 +156,11 @@ export function CollectionFilterSidebar({ filters, priceRange }: CollectionFilte
             />
             <button
               aria-label="Apply price"
-              className="flex size-8 cursor-pointer items-center justify-center rounded-lg bg-primary text-primary-foreground transition-colors hover:bg-primary/90"
+              className={styles.applyPrice}
               onClick={() => applyPrice(parsePriceValue(minInput), parsePriceValue(maxInput))}
               type="button"
             >
-              <Icon name="check" className="size-4" />
+              <Icon name="check" size={16} />
             </button>
           </div>
         </FilterSection>
@@ -173,7 +170,7 @@ export function CollectionFilterSidebar({ filters, priceRange }: CollectionFilte
         filter.values.length === 0 ? null : (
           <FilterSection key={filter.id} title={filter.label}>
             {filter.presentation === "swatch" ? (
-              <div className="flex flex-wrap gap-2.5">
+              <div className={styles.swatches}>
                 {filter.values.map((value) => {
                   const isSelected = isFilterInputActive(state.filters, value.input);
                   return (
@@ -181,7 +178,7 @@ export function CollectionFilterSidebar({ filters, priceRange }: CollectionFilte
                       key={value.id}
                       aria-label={`Filter by ${filter.label}: ${value.label}`}
                       aria-pressed={isSelected}
-                      className="block cursor-pointer"
+                      className={styles.swatchLink}
                       href={buildToggleHref(state, value.input)}
                       onKeyDown={pressOnSpace}
                       role="button"
@@ -202,7 +199,7 @@ export function CollectionFilterSidebar({ filters, priceRange }: CollectionFilte
                 })}
               </div>
             ) : (
-              <div className="flex flex-col gap-2.5">
+              <div className={styles.options}>
                 {filter.values.map((value) => {
                   const isSelected = isFilterInputActive(state.filters, value.input);
                   return (
@@ -236,8 +233,8 @@ interface FilterSectionProps {
 
 function FilterSection({ children, title }: FilterSectionProps) {
   return (
-    <div className="flex flex-col gap-2.5">
-      <span className="text-base font-semibold text-muted-foreground">{title}</span>
+    <div className={styles.section}>
+      <span className={styles.sectionTitle}>{title}</span>
       {children}
     </div>
   );
@@ -250,18 +247,16 @@ interface FilterBadgeProps {
 }
 
 function FilterBadge({ href, label, onRemove }: FilterBadgeProps) {
-  const className =
-    "inline-flex cursor-pointer items-center gap-1 rounded-full bg-primary/15 px-2.5 py-1 text-xs font-semibold text-primary transition-colors hover:bg-primary/25";
   const content = (
     <>
       {label}
-      <Icon name="x" className="size-3" />
+      <Icon name="x" size={12} />
     </>
   );
   const removeLabel = `Remove filter: ${label}`;
   if (!href) {
     return (
-      <button aria-label={removeLabel} className={className} onClick={onRemove} type="button">
+      <button aria-label={removeLabel} className={styles.badge} onClick={onRemove} type="button">
         {content}
       </button>
     );
@@ -269,7 +264,7 @@ function FilterBadge({ href, label, onRemove }: FilterBadgeProps) {
   return (
     <Link
       aria-label={removeLabel}
-      className={className}
+      className={styles.badge}
       href={href}
       scroll={false}
       onClick={(event) => {
@@ -299,19 +294,19 @@ function FilterOption({ count, href, label, onClick, pending, selected }: Filter
       onKeyDown={pressOnSpace}
       role="button"
       data-selected={selected}
-      className="flex items-center justify-between text-left text-sm text-muted-foreground transition-colors hover:text-foreground data-[selected=true]:font-medium"
+      className={styles.option}
       onClick={onClick}
     >
       <span>
         {label}
-        {count !== undefined && <span className="text-muted-foreground"> ({count})</span>}
+        {count !== undefined && <span className={styles.optionCount}> ({count})</span>}
       </span>
       {pending || selected ? (
-        <span className="flex size-3.5 shrink-0 items-center justify-center overflow-hidden">
+        <span className={styles.optionIcon}>
           {pending ? (
-            <Icon name="loader-circle" className="size-3.5 animate-spin text-muted-foreground" />
+            <Icon name="loader-circle" className={styles.optionSpinner} size={14} />
           ) : (
-            <Icon name="check" className="size-3.5 text-muted-foreground" />
+            <Icon name="check" className={styles.optionCheck} size={14} />
           )}
         </span>
       ) : null}
@@ -329,8 +324,8 @@ interface PriceInputProps {
 
 function PriceInput({ currencyCode, label, onChange, placeholder, value }: PriceInputProps) {
   return (
-    <div className="flex h-8 flex-1 items-center rounded-lg bg-input px-2.5">
-      <span className="text-base text-muted-foreground md:text-sm">
+    <div className={styles.priceField}>
+      <span className={styles.currency}>
         {currencyCode ? formatCurrencySymbol(currencyCode) : null}
       </span>
       <Input
@@ -341,7 +336,7 @@ function PriceInput({ currencyCode, label, onChange, placeholder, value }: Price
         placeholder={placeholder}
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="h-auto border-0 bg-transparent px-1 shadow-none outline-none focus-visible:ring-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+        className={styles.priceInput}
       />
     </div>
   );

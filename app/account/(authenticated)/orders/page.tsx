@@ -8,6 +8,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { formatPrice } from "@/lib/money";
 import { fetchCustomerOrders } from "@/lib/shopify/operations/customer/server";
 
+import styles from "./page.module.css";
+
 export default function OrdersPage({
   searchParams,
 }: {
@@ -35,29 +37,24 @@ async function OrdersContent({
   });
   if (orders.length === 0) {
     return (
-      <div className="rounded-lg border p-6 text-center">
-        <p className="text-sm text-muted-foreground">You have no orders yet.</p>
+      <div className={styles.empty}>
+        <p className={styles.emptyText}>You have no orders yet.</p>
       </div>
     );
   }
   return (
-    <div className="grid gap-4">
-      <ul className="grid gap-3">
+    <div className={styles.root}>
+      <ul className={styles.list}>
         {orders.map((order) => (
           <li key={order.id}>
-            <Link
-              href={`/account/orders/${encodeURIComponent(order.id)}`}
-              className="flex items-center justify-between gap-4 rounded-lg border p-4 transition-colors hover:bg-accent"
-            >
-              <div className="grid gap-1">
-                <span className="font-medium">{order.name}</span>
-                <span className="text-xs text-muted-foreground">
-                  {formatOrderDate(order.processedAt)}
-                </span>
+            <Link href={`/account/orders/${encodeURIComponent(order.id)}`} className={styles.order}>
+              <div className={styles.orderInfo}>
+                <span className={styles.orderName}>{order.name}</span>
+                <span className={styles.orderDate}>{formatOrderDate(order.processedAt)}</span>
               </div>
-              <div className="flex items-center gap-3">
+              <div className={styles.orderMeta}>
                 <OrderStatusBadge status={order.fulfillmentStatus} />
-                <span className="text-sm tabular-nums">{formatPrice(order.totalPrice)}</span>
+                <span className={styles.orderTotal}>{formatPrice(order.totalPrice)}</span>
               </div>
             </Link>
           </li>
@@ -65,7 +62,7 @@ async function OrdersContent({
       </ul>
 
       {pageInfo.hasNextPage || pageInfo.hasPreviousPage ? (
-        <div className="flex items-center justify-between">
+        <div className={styles.pagination}>
           {pageInfo.hasPreviousPage && pageInfo.startCursor ? (
             <Link
               className={buttonClassName({ size: "sm", variant: "outline" })}
@@ -94,9 +91,9 @@ async function OrdersContent({
 
 function OrdersSkeleton() {
   return (
-    <div className="grid gap-3">
+    <div className={styles.skeleton}>
       {Array.from({ length: 4 }).map((_, index) => (
-        <Skeleton key={index} className="h-18 w-full rounded-lg" />
+        <Skeleton key={index} className={styles.orderSkeleton} />
       ))}
     </div>
   );

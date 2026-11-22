@@ -1,7 +1,6 @@
 "use client";
 
 import { getShopPayButtonUrl } from "@shopify/hydrogen";
-import { cn } from "cn";
 import { useEffect, useId, useState } from "react";
 
 import { useCartDrawer } from "@/components/cart/context";
@@ -16,6 +15,8 @@ import { useProductForm } from "@/lib/product/client";
 import type { ProductFormVariant, SellingPlanAllocation } from "@/lib/product/types";
 
 import { BuyWithShopLogo } from "./buy-with-shop-logo";
+
+import styles from "./buy-buttons.module.css";
 
 interface BuyButtonsProps {
   availableForSale?: boolean;
@@ -95,7 +96,7 @@ export function BuyButtons({
           openOverlay();
         },
       })}
-      className="grid gap-2.5"
+      className={styles.form}
     >
       <PurchaseOptions
         disabled={pending || isSelectionUnresolved}
@@ -114,37 +115,29 @@ export function BuyButtons({
           {...register("attributeValue", { key: VISITOR_LINE_ATTRIBUTE, value: visitorId })}
         />
       ) : null}
-      <div className="flex flex-wrap gap-2.5">
+      <div className={styles.row}>
         {quantityPicker ? (
-          <div
-            aria-label="Item quantity"
-            className="grid h-12 w-32 shrink-0 grid-cols-[3rem_2rem_3rem] rounded-lg bg-background ring-1 ring-border ring-inset"
-            role="group"
-          >
+          <div aria-label="Item quantity" className={styles.quantity} role="group">
             <button
               type="button"
               aria-label="Decrease quantity"
-              className="flex size-12 cursor-pointer items-center justify-center p-0 disabled:cursor-not-allowed disabled:opacity-50"
+              className={styles.step}
               disabled={quantity === 1}
               onClick={() => setQuantity((currentQuantity) => Math.max(1, currentQuantity - 1))}
             >
-              <Icon name="minus" className="size-4 shrink-0" />
+              <Icon name="minus" size={16} className={styles.stepIcon} />
             </button>
-            <span
-              aria-live="polite"
-              className="flex h-12 w-8 items-center justify-center text-sm font-medium tabular-nums"
-              role="status"
-            >
+            <span aria-live="polite" className={styles.count} role="status">
               {quantity}
             </span>
             <button
               type="button"
               aria-label="Increase quantity"
-              className="flex size-12 cursor-pointer items-center justify-center p-0 disabled:cursor-not-allowed disabled:opacity-50"
+              className={styles.step}
               disabled={quantity === 99}
               onClick={() => setQuantity((currentQuantity) => Math.min(99, currentQuantity + 1))}
             >
-              <Icon name="plus" className="size-4 shrink-0" />
+              <Icon name="plus" size={16} className={styles.stepIcon} />
             </button>
           </div>
         ) : null}
@@ -159,7 +152,7 @@ export function BuyButtons({
             missingRequiredPlan ||
             pending
           }
-          className="h-12 min-w-40 flex-1 justify-center data-[selection-unresolved=true]:disabled:opacity-100"
+          className={styles.addToCart}
         >
           {getButtonText()}
         </Button>
@@ -169,10 +162,8 @@ export function BuyButtons({
           aria-busy={isBuyingNow || undefined}
           aria-disabled={buyNowUrl ? undefined : true}
           aria-label="Buy with Shop Pay"
-          className={cn(
-            "flex h-12 w-full cursor-pointer items-center justify-center rounded-lg bg-shop px-4 text-white transition-colors hover:bg-shop/85 aria-busy:pointer-events-none aria-disabled:cursor-not-allowed aria-disabled:opacity-50 data-[selection-unresolved=true]:aria-disabled:opacity-100",
-            !availableForSale && "invisible",
-          )}
+          className={styles.shopPay}
+          data-available={availableForSale}
           data-selection-unresolved={isSelectionUnresolved}
           href={buyNowUrl ?? undefined}
           onClick={(event) => {
@@ -185,11 +176,11 @@ export function BuyButtons({
           rel="nofollow"
         >
           {isBuyingNow ? (
-            <Icon name="loader-circle" className="size-4 animate-spin" />
+            <Icon name="loader-circle" size={16} className={styles.spinner} />
           ) : (
             <>
               <span className="sr-only">Buy with</span>
-              <BuyWithShopLogo aria-hidden="true" className="h-auto w-24.5" />
+              <BuyWithShopLogo aria-hidden="true" className={styles.shopLogo} />
             </>
           )}
         </a>
@@ -219,8 +210,8 @@ export function PurchaseOptions({
   if (plans.length === 0) return null;
 
   return (
-    <fieldset className="grid gap-2.5" disabled={disabled}>
-      <legend className="pb-2.5 text-sm font-medium">Purchase options</legend>
+    <fieldset className={styles.options} disabled={disabled}>
+      <legend className={styles.legend}>Purchase options</legend>
       {[
         ...(!requiresSellingPlan ? [{ id: "", name: "One-time purchase", price }] : []),
         ...plans.map((allocation) => ({
@@ -229,10 +220,7 @@ export function PurchaseOptions({
           price: allocation.price,
         })),
       ].map((option) => (
-        <label
-          key={option.id}
-          className="flex cursor-pointer items-center gap-2.5 rounded-lg border border-border p-4 has-checked:border-foreground has-disabled:cursor-not-allowed has-disabled:opacity-50"
-        >
+        <label key={option.id} className={styles.option}>
           <input
             type="radio"
             name={purchaseOptionId}
@@ -240,16 +228,16 @@ export function PurchaseOptions({
             checked={(selectedPlan?.sellingPlan.id ?? "") === option.id}
             onChange={onSelect ? () => onSelect(option.id) : undefined}
             readOnly={!onSelect}
-            className="size-4 cursor-pointer accent-foreground disabled:cursor-not-allowed"
+            className={styles.radio}
           />
-          <span className="flex flex-1 flex-wrap items-center justify-between gap-2.5 text-sm">
+          <span className={styles.optionText}>
             <span>{option.name}</span>
-            <span className="tabular-nums">{formatPrice(option.price)}</span>
+            <span className={styles.optionPrice}>{formatPrice(option.price)}</span>
           </span>
         </label>
       ))}
       {selectedPlan ? (
-        <p className="text-sm text-muted-foreground">
+        <p className={styles.recurring}>
           Recurring purchase.{" "}
           {selectedPlan.sellingPlan.description || "Subscription details are shown at checkout."}
         </p>

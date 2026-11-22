@@ -1,0 +1,6 @@
+@layer ui {
+  .skeleton {
+    background: var(--accent);
+    animation: var(--animate-pulse);
+  }
+}

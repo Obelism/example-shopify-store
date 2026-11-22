@@ -5,6 +5,8 @@ import { ImagePlaceholder } from "@/components/ui/image-placeholder";
 import { Link } from "@/components/ui/link";
 import type { CollectionWithThumbnail } from "@/lib/collections/types";
 
+import styles from "./collection-card.module.css";
+
 export interface CollectionCardProps {
   className?: string;
   collection: CollectionWithThumbnail;
@@ -21,35 +23,25 @@ export function CollectionCard({
   return (
     <Link
       aria-label={`${viewCollectionLabel}: ${title}`}
-      className={cn("group/card flex flex-col h-full overflow-hidden", className)}
+      className={cn(styles.card, className)}
       href={`/collections/${handle}`}
     >
-      <div
-        data-slot="collection-card-image"
-        className="relative aspect-4/3 overflow-hidden bg-muted"
-      >
+      <div className={styles.media}>
         {thumbnail ? (
           <Image
             alt={thumbnail.altText || title}
-            className="object-cover transition-opacity duration-300 group-hover/card:opacity-85"
+            className={styles.image}
             fill
             sizes="100vw"
             src={thumbnail.url}
           />
         ) : (
-          <ImagePlaceholder className="size-full" />
+          <ImagePlaceholder className={styles.placeholder} />
         )}
       </div>
-      <div className="grid gap-1 pt-3">
-        <h2
-          data-slot="collection-card-title"
-          className="font-serif text-2xl italic text-foreground"
-        >
-          {title}
-        </h2>
-        {description && (
-          <p className="text-sm leading-6 text-muted-foreground line-clamp-2">{description}</p>
-        )}
+      <div className={styles.body}>
+        <h2 className={styles.title}>{title}</h2>
+        {description && <p className={styles.description}>{description}</p>}
       </div>
     </Link>
   );

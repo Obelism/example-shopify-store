@@ -1,0 +1,31 @@
+.tabs {
+  display: flex;
+  gap: 0.25rem;
+  border-bottom-width: 1px;
+
+  @media (width >= 48rem) {
+    display: none;
+  }
+}
+
+.tab {
+  flex: 1;
+  padding: 0.625rem 0.75rem;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--leading);
+  color: var(--muted-foreground);
+  text-align: center;
+  transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  @media (hover: hover) {
+    &:hover {
+      color: var(--foreground);
+    }
+  }
+
+  &[data-active="true"] {
+    font-weight: 500;
+    color: var(--foreground);
+    border-bottom: 2px solid var(--foreground);
+  }
+}

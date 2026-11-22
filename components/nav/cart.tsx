@@ -4,6 +4,8 @@ import { withFallback } from "@/lib/shopify/errors/server";
 
 import { CartIconClient } from "./cart-client";
 
+import styles from "./cart.module.css";
+
 export async function CartIcon() {
   const cart = await withFallback(getCart(), undefined);
   return <CartIconClient cartLabel="Cart" initialCart={cart ?? null} />;
@@ -11,8 +13,8 @@ export async function CartIcon() {
 
 export function CartIconFallback() {
   return (
-    <span className="flex items-center justify-center gap-1.5 text-foreground">
-      <Icon name="handbag" className="size-5" />
+    <span className={styles.fallback}>
+      <Icon name="handbag" size={20} />
       <span className="sr-only">Cart</span>
     </span>
   );

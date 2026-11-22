@@ -29,7 +29,7 @@
 
     &:focus-visible {
       border-color: var(--ring);
-      box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 50%, transparent);
+      box-shadow: var(--focus-ring);
     }
 
     &[aria-invalid="true"] {
@@ -47,8 +47,10 @@
     color: var(--primary-foreground);
     background: var(--primary);
 
-    &:hover {
-      background: color-mix(in oklab, var(--primary) 90%, transparent);
+    @media (hover: hover) {
+      &:hover {
+        background: color-mix(in oklab, var(--primary) 90%, transparent);
+      }
     }
   }
 
@@ -56,19 +58,23 @@
     color: #fff;
     background: var(--destructive);
 
-    &:hover {
-      background: color-mix(in oklab, var(--destructive) 90%, transparent);
+    @media (hover: hover) {
+      &:hover {
+        background: color-mix(in oklab, var(--destructive) 90%, transparent);
+      }
     }
   }
 
   .outline {
     background: var(--background);
     border: 1px solid var(--border);
-    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    box-shadow: var(--shadow-xs);
 
-    &:hover {
-      color: var(--accent-foreground);
-      background: var(--accent);
+    @media (hover: hover) {
+      &:hover {
+        color: var(--accent-foreground);
+        background: var(--accent);
+      }
     }
   }
 
@@ -76,22 +82,28 @@
     color: var(--secondary-foreground);
     background: var(--secondary);
 
-    &:hover {
-      background: color-mix(in oklab, var(--secondary) 80%, transparent);
+    @media (hover: hover) {
+      &:hover {
+        background: color-mix(in oklab, var(--secondary) 80%, transparent);
+      }
     }
   }
 
-  .ghost:hover {
-    color: var(--accent-foreground);
-    background: var(--accent);
+  @media (hover: hover) {
+    .ghost:hover {
+      color: var(--accent-foreground);
+      background: var(--accent);
+    }
   }
 
   .link {
     color: var(--primary);
     text-underline-offset: 4px;
 
-    &:hover {
-      text-decoration: underline;
+    @media (hover: hover) {
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 

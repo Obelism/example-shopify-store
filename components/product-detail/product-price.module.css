@@ -1,0 +1,11 @@
+.root {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+  align-items: center;
+}
+
+.compareAt {
+  color: color-mix(in oklab, var(--foreground) 35%, transparent);
+  text-decoration-line: line-through;
+}

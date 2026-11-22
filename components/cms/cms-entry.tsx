@@ -4,6 +4,8 @@ import { type ReactNode, Suspense } from "react";
 import { readDraft } from "@/lib/cms/server";
 import type { CmsQuery } from "@/lib/cms/types";
 
+import styles from "./cms-entry.module.css";
+
 interface CmsEntryProps<TEntry> {
   children: (entry: TEntry) => ReactNode;
   published: TEntry | null;
@@ -22,7 +24,7 @@ export function CmsEntry<TEntry>({
   searchParams,
 }: CmsEntryProps<TEntry>) {
   return (
-    <div className="group/cms-entry">
+    <div className={styles.entry}>
       <Suspense fallback={null}>
         <DraftEntry
           published={published}
@@ -33,9 +35,7 @@ export function CmsEntry<TEntry>({
           {children}
         </DraftEntry>
       </Suspense>
-      {published ? (
-        <div className="group-has-data-cms-draft/cms-entry:hidden">{children(published)}</div>
-      ) : null}
+      {published ? <div className={styles.published}>{children(published)}</div> : null}
     </div>
   );
 }

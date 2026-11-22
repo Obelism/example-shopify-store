@@ -7,6 +7,8 @@ import { Select } from "@/components/ui/select";
 import { SORT_VALUES } from "@/lib/collections";
 import type { SortValue } from "@/lib/collections/types";
 
+import styles from "./sort-select.module.css";
+
 const SORT_LABELS: Record<SortValue, string> = {
   "best-selling": "Best Selling",
   "created-ascending": "Date: Old to New",
@@ -25,7 +27,7 @@ export function CollectionsSortSelect({ exclude = [] }: { exclude?: SortValue[] 
   return (
     <Select
       aria-label="Sort"
-      className="border-0 shadow-none bg-transparent px-0"
+      className={styles.select}
       disabled={status === "loading"}
       label="Sort"
       onChange={(event) => setSortByValue(event.target.value)}
