@@ -1,6 +1,6 @@
 import setupReactSvg from "@obelism/react-svg";
 
-const ICON = { height: 24, width: 24 };
+export const ICON_SIZE = { height: 24, width: 24 };
 
 export const {
   config: iconConfig,
@@ -11,28 +11,28 @@ export const {
   namespace: "icon",
   rootFolder: "/icons",
   svgMap: {
-    check: ICON,
-    "chevron-down": ICON,
-    "chevron-left": ICON,
-    "chevron-right": ICON,
-    "chevron-up": ICON,
-    "circle-alert": ICON,
-    handbag: ICON,
-    image: ICON,
-    "loader-circle": ICON,
-    menu: ICON,
-    minus: ICON,
-    pause: ICON,
-    pencil: ICON,
-    play: ICON,
-    plus: ICON,
-    search: ICON,
-    "sliders-horizontal": ICON,
-    "trash-2": ICON,
-    "triangle-alert": ICON,
-    "user-round": ICON,
-    "user-round-check": ICON,
-    x: ICON,
+    check: ICON_SIZE,
+    "chevron-down": ICON_SIZE,
+    "chevron-left": ICON_SIZE,
+    "chevron-right": ICON_SIZE,
+    "chevron-up": ICON_SIZE,
+    "circle-alert": ICON_SIZE,
+    handbag: ICON_SIZE,
+    image: ICON_SIZE,
+    "loader-circle": ICON_SIZE,
+    menu: ICON_SIZE,
+    minus: ICON_SIZE,
+    pause: ICON_SIZE,
+    pencil: ICON_SIZE,
+    play: ICON_SIZE,
+    plus: ICON_SIZE,
+    search: ICON_SIZE,
+    "sliders-horizontal": ICON_SIZE,
+    "trash-2": ICON_SIZE,
+    "triangle-alert": ICON_SIZE,
+    "user-round": ICON_SIZE,
+    "user-round-check": ICON_SIZE,
+    x: ICON_SIZE,
   },
 });
 

@@ -1,8 +1,8 @@
 import type { ComponentProps } from "react";
 
-import { type IconName, iconConfig, Svg } from "@/lib/icons";
+import { ICON_SIZE, type IconName, iconConfig, Svg } from "@/lib/icons";
 
-interface IconProps extends Omit<ComponentProps<"svg">, "onLoad" | "ref"> {
+interface IconProps extends Pick<ComponentProps<"svg">, "className" | "style"> {
   name: IconName;
   /** Renders without `SvgProvider`, for trees outside the root layout. */
   standalone?: boolean;
@@ -11,10 +11,9 @@ interface IconProps extends Omit<ComponentProps<"svg">, "onLoad" | "ref"> {
 function Icon({ name, standalone, ...props }: IconProps) {
   return (
     <Svg
-      aria-hidden="true"
-      height="24"
-      width="24"
+      {...ICON_SIZE}
       {...props}
+      aria-hidden="true"
       config={standalone ? iconConfig : undefined}
       svg={name}
       type={standalone ? "inline" : "link"}
