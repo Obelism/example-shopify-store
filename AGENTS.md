@@ -63,7 +63,7 @@ Agent folders hold only `.agents/skills/` and its `.claude/skills` symlink; edit
 
 ## Commands
 
-- npm 12 and Node 26 (`devEngines` refuses other package managers and downloads Node on mismatch). `npm run dev` refuses to start without the required Shopify and Content values in `.env.local` (see `.env.example`); `next typegen` is exempt.
+- npm 11+ and Node 26 (`devEngines` refuses other package managers and downloads Node on mismatch). `npm run dev` refuses to start without the required Shopify and Content values in `.env.local` (see `.env.example`); `next typegen` is exempt.
 - `npm run lint` (oxlint + `oxfmt --check`), `npm run format` to fix, `npm run typecheck` (`next typegen && tsc --noEmit`; plain `tsc` fails on a fresh checkout), `npm run build` for prerender errors.
 
 ## Template releases

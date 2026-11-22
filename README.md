@@ -10,7 +10,7 @@ An example print shop for a fictional photographer, built to show how Obelism wo
 
 ## Getting started
 
-Requires npm 12 and Node.js 26.
+Requires npm 11 or newer and Node.js 26.
 
 ```
 npm install
