@@ -1,5 +1,4 @@
 import { cn } from "cn";
-import { MinusIcon, PlusIcon } from "lucide-react";
 import { type ReactNode, Suspense } from "react";
 
 import { ImproveVariants } from "@/components/improve/improve-variants";
@@ -26,6 +25,7 @@ import {
 import { ProductPrice } from "@/components/product-detail/product-price";
 import { ProductSchema } from "@/components/product-detail/schema";
 import { BreadcrumbSchema } from "@/components/schema/breadcrumb-schema";
+import { Icon } from "@/components/ui/icon";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link } from "@/components/ui/link";
@@ -410,13 +410,13 @@ function QuantityPickerFallback() {
       className="grid h-12 w-32 shrink-0 grid-cols-[3rem_2rem_3rem] rounded-lg bg-background ring-1 ring-border ring-inset"
     >
       <span className="flex size-12 items-center justify-center opacity-50">
-        <MinusIcon className="size-4 shrink-0" />
+        <Icon name="minus" className="size-4 shrink-0" />
       </span>
       <span className="flex h-12 w-8 items-center justify-center text-sm font-medium tabular-nums">
         1
       </span>
       <span className="flex size-12 items-center justify-center">
-        <PlusIcon className="size-4 shrink-0" />
+        <Icon name="plus" className="size-4 shrink-0" />
       </span>
     </div>
   );

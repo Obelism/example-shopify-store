@@ -1,10 +1,10 @@
 "use client";
 
 import type { CartData } from "@shopify/hydrogen";
-import { Loader2 } from "lucide-react";
 
 import { Price } from "@/components/product/price";
 import { Button } from "@/components/ui/button";
+import { Icon } from "@/components/ui/icon";
 import { useCart, useCheckout } from "@/lib/cart/client";
 
 import { DiscountForm } from "./discount-form";
@@ -79,7 +79,7 @@ export function CartCheckout({ label = "Checkout" }: CartCheckoutProps) {
         type="button"
       >
         {isCheckingOut || isUpdatingCart ? (
-          <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+          <Icon name="loader-circle" className="size-4 animate-spin" />
         ) : null}
         {isCheckingOut ? "Redirecting..." : isUpdatingCart ? "Updating cart..." : label}
       </Button>

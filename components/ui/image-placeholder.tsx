@@ -1,6 +1,7 @@
 import { cn } from "cn";
-import { ImageIcon } from "lucide-react";
 import type { ComponentProps } from "react";
+
+import { Icon } from "@/components/ui/icon";
 
 interface ImagePlaceholderProps extends ComponentProps<"div"> {
   iconClassName?: string;
@@ -13,11 +14,7 @@ function ImagePlaceholder({ className, iconClassName, ...props }: ImagePlacehold
       className={cn("flex items-center justify-center bg-muted", className)}
       {...props}
     >
-      <ImageIcon
-        aria-hidden
-        strokeWidth={1.5}
-        className={cn("h-auto w-1/4 max-w-24 text-background", iconClassName)}
-      />
+      <Icon name="image" className={cn("h-auto w-1/4 max-w-24 text-background", iconClassName)} />
     </div>
   );
 }

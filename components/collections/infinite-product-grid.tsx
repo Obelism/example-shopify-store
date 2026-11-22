@@ -1,10 +1,10 @@
 "use client";
 
 import { useCollection } from "@shopify/hydrogen/react";
-import { LoaderCircleIcon } from "lucide-react";
 import { type ReactNode, useEffect, useEffectEvent, useRef, useState } from "react";
 
 import { ProductCard } from "@/components/product-card/product-card";
+import { Icon } from "@/components/ui/icon";
 import { JustifiedGrid, JustifiedGridItem } from "@/components/ui/justified-grid";
 import { getBrowseSearch } from "@/lib/collections";
 import { loadMoreBrowseProductsAction } from "@/lib/collections/action";
@@ -90,7 +90,9 @@ export function InfiniteProductGrid({
 
       {pageInfo.hasNextPage && (
         <div ref={sentinelRef} className="flex justify-center py-10">
-          {isLoading && <LoaderCircleIcon className="size-6 animate-spin text-muted-foreground" />}
+          {isLoading && (
+            <Icon name="loader-circle" className="size-6 animate-spin text-muted-foreground" />
+          )}
         </div>
       )}
     </div>

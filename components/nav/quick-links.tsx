@@ -1,6 +1,6 @@
 import { cn } from "cn";
-import { ChevronDown } from "lucide-react";
 
+import { Icon } from "@/components/ui/icon";
 import type { MenuItem } from "@/lib/menu/types";
 
 import { MenuLink } from "./menu-link";
@@ -36,7 +36,7 @@ function NavItem({ item }: { item: MenuItem }) {
     <li className="group flex items-center h-16">
       <MenuLink url={item.url} className={TRIGGER_CLASS}>
         {item.title}
-        <ChevronDown className="size-3" aria-hidden="true" />
+        <Icon name="chevron-down" className="size-3" />
       </MenuLink>
       <div
         className={cn(

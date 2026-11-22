@@ -1,7 +1,6 @@
 "use client";
 
 import { cn } from "cn";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import {
   type ComponentProps,
   createContext,
@@ -10,6 +9,8 @@ import {
   useRef,
   useState,
 } from "react";
+
+import { Icon } from "@/components/ui/icon";
 
 interface SliderContextValue {
   canScrollLeft: boolean;
@@ -121,7 +122,7 @@ function SliderNav({ className, ...props }: ComponentProps<"div">) {
         onClick={() => scroll("left")}
         type="button"
       >
-        <ChevronLeftIcon aria-hidden="true" className="size-5" />
+        <Icon name="chevron-left" className="size-5" />
       </button>
       <button
         aria-label="Scroll right"
@@ -130,7 +131,7 @@ function SliderNav({ className, ...props }: ComponentProps<"div">) {
         onClick={() => scroll("right")}
         type="button"
       >
-        <ChevronRightIcon aria-hidden="true" className="size-5" />
+        <Icon name="chevron-right" className="size-5" />
       </button>
     </div>
   );

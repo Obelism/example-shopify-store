@@ -1,9 +1,9 @@
 "use client";
 
 import type { CartErrorGroup } from "@shopify/hydrogen";
-import { AlertTriangle, X } from "lucide-react";
 import { useState } from "react";
 
+import { Icon } from "@/components/ui/icon";
 import { useCart } from "@/lib/cart/client";
 
 interface CartWarningsProps {
@@ -40,7 +40,7 @@ function CartWarningMessages({ group }: { group: CartErrorGroup }) {
       className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2.5 text-sm text-amber-900 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-100"
     >
       <div className="flex items-start gap-2.5">
-        <AlertTriangle className="size-4 shrink-0" aria-hidden="true" />
+        <Icon name="triangle-alert" className="size-4 shrink-0" />
         <div className="grid flex-1 gap-1">
           <p className="font-medium">
             {group.userErrors.length ? "We couldn't update your cart" : "Your cart was updated"}
@@ -57,7 +57,7 @@ function CartWarningMessages({ group }: { group: CartErrorGroup }) {
           aria-label="Dismiss"
           className="inline-flex size-6 shrink-0 cursor-pointer items-center justify-center rounded-md hover:bg-amber-100 dark:hover:bg-amber-900/40"
         >
-          <X className="size-4" aria-hidden="true" />
+          <Icon name="x" className="size-4" />
         </button>
       </div>
     </div>

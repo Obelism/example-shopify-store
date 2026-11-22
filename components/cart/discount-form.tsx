@@ -2,10 +2,10 @@
 
 import type { CartData } from "@shopify/hydrogen";
 import { cn } from "cn";
-import { Loader2, X } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { Icon } from "@/components/ui/icon";
 import { Input } from "@/components/ui/input";
 import { useCart, useCartForm } from "@/lib/cart/client";
 
@@ -73,7 +73,7 @@ export function DiscountForm({ cart }: DiscountFormProps) {
         >
           {isPending ? (
             <>
-              <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+              <Icon name="loader-circle" className="size-4 animate-spin" />
               <span className="sr-only">Apply</span>
             </>
           ) : (
@@ -126,7 +126,7 @@ export function DiscountForm({ cart }: DiscountFormProps) {
                         : "hover:bg-foreground/10",
                     )}
                   >
-                    <X className="size-3" aria-hidden="true" />
+                    <Icon name="x" className="size-3" />
                   </button>
                 </form>
               </li>

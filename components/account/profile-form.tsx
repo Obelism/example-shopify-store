@@ -1,9 +1,9 @@
 "use client";
 
-import { Loader2 } from "lucide-react";
 import { type FormEvent, useState, useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
+import { Icon } from "@/components/ui/icon";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { updateProfileAction } from "@/lib/customer/action";
@@ -89,7 +89,7 @@ export function ProfileForm({
 
       <div className="flex items-center gap-3">
         <Button type="submit" disabled={isPending}>
-          {isPending ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : labels.save}
+          {isPending ? <Icon name="loader-circle" className="size-4 animate-spin" /> : labels.save}
         </Button>
         {saved ? (
           <span className="text-sm text-muted-foreground">{labels.profileUpdated}</span>

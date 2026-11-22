@@ -2,11 +2,11 @@
 
 import { getShopPayButtonUrl } from "@shopify/hydrogen";
 import { cn } from "cn";
-import { Loader2, MinusIcon, PlusIcon } from "lucide-react";
 import { useEffect, useId, useState } from "react";
 
 import { useCartDrawer } from "@/components/cart/context";
 import { Button } from "@/components/ui/button";
+import { Icon } from "@/components/ui/icon";
 import { formatPrice } from "@/lib/money";
 import type { Money } from "@/lib/money/types";
 import { shopifyItemId, VISITOR_LINE_ATTRIBUTE } from "@/lib/numbers";
@@ -128,7 +128,7 @@ export function BuyButtons({
               disabled={quantity === 1}
               onClick={() => setQuantity((currentQuantity) => Math.max(1, currentQuantity - 1))}
             >
-              <MinusIcon className="size-4 shrink-0" />
+              <Icon name="minus" className="size-4 shrink-0" />
             </button>
             <span
               aria-live="polite"
@@ -144,7 +144,7 @@ export function BuyButtons({
               disabled={quantity === 99}
               onClick={() => setQuantity((currentQuantity) => Math.min(99, currentQuantity + 1))}
             >
-              <PlusIcon className="size-4 shrink-0" />
+              <Icon name="plus" className="size-4 shrink-0" />
             </button>
           </div>
         ) : null}
@@ -185,7 +185,7 @@ export function BuyButtons({
           rel="nofollow"
         >
           {isBuyingNow ? (
-            <Loader2 className="size-4 animate-spin" />
+            <Icon name="loader-circle" className="size-4 animate-spin" />
           ) : (
             <>
               <span className="sr-only">Buy with</span>

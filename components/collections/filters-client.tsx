@@ -8,7 +8,6 @@ import {
   serializeCollectionParams,
 } from "@shopify/hydrogen";
 import { useCollection, useCollectionActions } from "@shopify/hydrogen/react";
-import { CheckIcon, LoaderCircleIcon, XIcon } from "lucide-react";
 import {
   type KeyboardEvent,
   type MouseEventHandler,
@@ -17,6 +16,7 @@ import {
   useState,
 } from "react";
 
+import { Icon } from "@/components/ui/icon";
 import { Input } from "@/components/ui/input";
 import { Link } from "@/components/ui/link";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -153,7 +153,7 @@ export function CollectionFilterSidebar({ filters, priceRange }: CollectionFilte
               onClick={() => applyPrice(parsePriceValue(minInput), parsePriceValue(maxInput))}
               type="button"
             >
-              <CheckIcon className="size-4" />
+              <Icon name="check" className="size-4" />
             </button>
           </div>
         </FilterSection>
@@ -245,7 +245,7 @@ function FilterBadge({ href, label, onRemove }: FilterBadgeProps) {
   const content = (
     <>
       {label}
-      <XIcon className="size-3" />
+      <Icon name="x" className="size-3" />
     </>
   );
   const removeLabel = `Remove filter: ${label}`;
@@ -299,9 +299,9 @@ function FilterOption({ count, href, label, onClick, pending, selected }: Filter
       {pending || selected ? (
         <span className="flex size-3.5 shrink-0 items-center justify-center overflow-hidden">
           {pending ? (
-            <LoaderCircleIcon className="size-3.5 animate-spin text-muted-foreground" />
+            <Icon name="loader-circle" className="size-3.5 animate-spin text-muted-foreground" />
           ) : (
-            <CheckIcon className="size-3.5 text-muted-foreground" />
+            <Icon name="check" className="size-3.5 text-muted-foreground" />
           )}
         </span>
       ) : null}

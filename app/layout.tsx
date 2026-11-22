@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Newsreader } from "next/font/google";
 
 import "./globals.css";
 import { Suspense } from "react";
+import { preload } from "react-dom";
 
 import { AnalyticsComponents } from "@/components/analytics";
 import { CartUI } from "@/components/cart/cart-ui";
@@ -16,6 +17,7 @@ import { Nav } from "@/components/nav";
 import { SiteSchema } from "@/components/schema/site-schema";
 import { seedCartData } from "@/lib/cart/server";
 import { shopConfig } from "@/lib/config";
+import { getIconUrl, iconConfig, SvgProvider } from "@/lib/icons";
 
 export const ensureStatic = "prefetch";
 
@@ -42,6 +44,9 @@ const geistMono = Geist_Mono({
 export default function RootLayout({ children }: LayoutProps<"/">) {
   // Un-awaited: the promise streams to the client provider; never block the shell on it.
   const cartData = seedCartData();
+  for (const icon of ["handbag", "menu", "search"] as const) {
+    preload(getIconUrl(icon), { as: "fetch", crossOrigin: "anonymous" });
+  }
   return (
     // Improve's head script marks <html> with the visitor's variants before hydration.
     <html lang={shopConfig.localization.locale} suppressHydrationWarning>
@@ -74,17 +79,19 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             ),
           }}
         />
-        <CartProviderWrapper cartData={cartData}>
-          <Nav />
-          <main id="main-content" className="flex flex-1 flex-col min-w-0">
-            {children}
-          </main>
-          <Footer />
-          <CartUI />
-          <Suspense>
-            <AnalyticsComponents />
-          </Suspense>
-        </CartProviderWrapper>
+        <SvgProvider config={iconConfig}>
+          <CartProviderWrapper cartData={cartData}>
+            <Nav />
+            <main id="main-content" className="flex flex-1 flex-col min-w-0">
+              {children}
+            </main>
+            <Footer />
+            <CartUI />
+            <Suspense>
+              <AnalyticsComponents />
+            </Suspense>
+          </CartProviderWrapper>
+        </SvgProvider>
       </body>
     </html>
   );

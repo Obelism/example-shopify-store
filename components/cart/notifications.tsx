@@ -1,8 +1,8 @@
 "use client";
 
-import { XIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
+import { Icon } from "@/components/ui/icon";
 import { useCart } from "@/lib/cart/client";
 
 const DISMISS_AFTER_MS = 5000;
@@ -33,7 +33,7 @@ export function CartNotifications() {
         onClick={() => setDismissedAt(errorAt)}
         type="button"
       >
-        <XIcon className="size-4" />
+        <Icon name="x" className="size-4" />
       </button>
     </div>
   );
