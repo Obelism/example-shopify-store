@@ -169,7 +169,7 @@ Do not add tests, test files, runners, dependencies, or scripts unless the user 
 
 - Style a component with a `*.module.css` file beside it, imported as `styles`, and name classes by role (`.title`, `.price`), not by appearance. `app/globals.css` holds only tokens, the reset, the `sr-only` class, and keyframes; a new shared value becomes a custom property there.
 - Use the tokens for anything the theme defines: colors (`var(--muted-foreground)`), type (`var(--text-sm)` with `var(--text-sm--leading)` and, from `lg` up, `var(--text-lg--tracking)`), `var(--radius)`, `var(--shadow-xs)`, `var(--focus-ring)`. Module keyframe names are scoped, so animate through `var(--animate-spin)` and `var(--animate-pulse)`.
-- `components/ui/` modules wrap their rules in `@layer ui`, below unlayered component modules: a consumer overrides a primitive by passing its own module class as `className`, never with `!important`.
+- `components/ui/` modules wrap their rules in `@layer ui`, below unlayered component modules: a consumer overrides a primitive by passing its own module class as `className`, never with `!important`. A component outside `ui` that takes a `className` override writes its base rule as `:where(.root)`, so the caller's class wins regardless of CSS order.
 - Express state with data and ARIA attributes (`&[data-selected="true"]`, `&[aria-expanded="true"]`); use `cn()` only when a class must be conditional. A primitive's variants are classes picked by a prop, as in `Button`; `Icon` takes its `size` in pixels.
 - Breakpoints are min-width media queries nested in the rule: 40rem, 48rem, 64rem, 80rem. Wrap `:hover` in `@media (hover: hover)`.
 - Interactive elements use `cursor: pointer`; disabled ones use `cursor: not-allowed`.

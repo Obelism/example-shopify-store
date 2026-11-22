@@ -71,7 +71,7 @@ function Slider({ className, children, ...props }: ComponentProps<"section">) {
   const scroll = useCallback((direction: "left" | "right") => {
     const container = containerRef.current;
     if (!container) return;
-    const firstItem = container.querySelector<HTMLElement>("[data-slot='slider-item']");
+    const firstItem = container.querySelector<HTMLElement>(`.${styles.item}`);
     const gap = Number.parseFloat(getComputedStyle(container).columnGap) || 0;
     const itemWidth = firstItem ? firstItem.offsetWidth + gap : container.clientWidth * 0.8;
     const visibleItems = Math.max(1, Math.floor(container.clientWidth / itemWidth));
@@ -142,7 +142,7 @@ function SliderContent({ className, ...props }: ComponentProps<"div">) {
 }
 
 function SliderItem({ className, ...props }: ComponentProps<"div">) {
-  return <div data-slot="slider-item" className={cn(styles.item, className)} {...props} />;
+  return <div className={cn(styles.item, className)} {...props} />;
 }
 
 export { Slider, SliderContent, SliderHeader, SliderItem, SliderNav };
