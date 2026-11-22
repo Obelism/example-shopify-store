@@ -179,11 +179,11 @@ importers:
         specifier: 1.9.0
         version: 1.9.0(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       '@obelism/content':
-        specifier: 0.31.0
-        version: 0.31.0
+        specifier: 0.32.1
+        version: 0.32.1
       '@obelism/content-react':
-        specifier: 0.4.11
-        version: 0.4.11(react@19.3.1)
+        specifier: 0.4.12
+        version: 0.4.12(react@19.3.1)
       '@obelism/improve-sdk':
         specifier: 3.8.1
         version: 3.8.1(ua-parser-js@2.0.10)
@@ -609,13 +609,13 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@obelism/content-react@0.4.11':
-    resolution: {integrity: sha512-1WexFVMbe8TwFdp6lx3VJ+MCkHzqa4dgnqIu/dQFiJKOiyGgUlkPGLD4ciZjeMSPWy1vp69YngUUneeEbDyyrg==}
+  '@obelism/content-react@0.4.12':
+    resolution: {integrity: sha512-rY0iAhNkAPKL0l8r/w4gruJgFSy6WDqUIm76cQjinSURcZX0kwWNvrw5g1ZtFNpWxT88fEQhqFw48a4SmqVD9g==}
     peerDependencies:
       react: '>=18.0.0'
 
-  '@obelism/content@0.31.0':
-    resolution: {integrity: sha512-QJvdisJ7LNbjTAV/jz1aZce2gI0c9n9Z/vbE0nTo+/1/c7oFhdj4/1ADAvVeDZrU/UeMdPc/96m1KM1sT4D3Vw==}
+  '@obelism/content@0.32.1':
+    resolution: {integrity: sha512-2DxGhed9n5MrE70GqPdQ1GTkXni/YTk9sICmUz1WrQmO7hdvjT7ryhzyhwxtH0/18YQW9p7fSKj04ZtAPXY98g==}
     engines: {node: '>=20'}
     hasBin: true
     peerDependencies:
@@ -1974,14 +1974,14 @@ snapshots:
   '@next/swc-win32-x64-msvc@16.4.6':
     optional: true
 
-  '@obelism/content-react@0.4.11(react@19.3.1)':
+  '@obelism/content-react@0.4.12(react@19.3.1)':
     dependencies:
-      '@obelism/content': 0.31.0
+      '@obelism/content': 0.32.1
       react: 19.3.1
     transitivePeerDependencies:
       - '@vercel/oidc'
 
-  '@obelism/content@0.31.0': {}
+  '@obelism/content@0.32.1': {}
 
   '@obelism/improve-sdk@3.8.1(ua-parser-js@2.0.10)':
     dependencies:
