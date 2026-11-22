@@ -63,7 +63,10 @@ export function ProductDetailSection({
           vendor: product.vendor,
           currencyCode: product.currencyCode,
           priceRange: product.priceRange,
-          offerCount: product.variantsCount,
+          offerCount:
+            product.variantsComplete && product.variants
+              ? product.variants.length
+              : product.variantsCount,
           availableForSale: product.availableForSale,
           sku: product.defaultVariantSku,
         }}
