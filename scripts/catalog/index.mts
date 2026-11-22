@@ -16,7 +16,6 @@ export interface Print {
 type SizeKey = "large" | "medium" | "small";
 
 export interface Catalog {
-  photographer: string;
   prints: Print[];
   series: Series[];
   variants: {
@@ -24,6 +23,7 @@ export interface Catalog {
     paper: { name: string; surcharge: Record<SizeKey, number> }[];
     size: { key: SizeKey; name: string; price: number }[];
   };
+  vendor: string;
 }
 
 export const catalog: Catalog = JSON.parse(
