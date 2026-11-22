@@ -14,6 +14,7 @@ import {
 import { useCart } from "@/lib/cart/client";
 
 import { useCartDrawer } from "./context";
+import { DemoStoreNotice } from "./demo-store-notice";
 import { CartLineItems } from "./line-item";
 import { CartSummary } from "./summary";
 import { CartWarnings } from "./warnings";
@@ -96,7 +97,8 @@ function OverlayContent() {
         <CartWarnings />
         <CartLineItems lines={cart.lines.nodes} />
       </div>
-      <footer className="px-2.5 pt-5 pb-2.5">
+      <footer className="grid gap-5 px-2.5 pt-5 pb-2.5">
+        <DemoStoreNotice />
         <CartSummary cart={cart} />
       </footer>
     </div>
