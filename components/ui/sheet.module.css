@@ -3,7 +3,7 @@
     --dialog-dim: rgb(0 0 0 / 0.3);
     --dialog-duration: 500ms;
 
-    &:not([open]) {
+    &:not([data-open]) {
       --dialog-duration: 300ms;
     }
   }
@@ -59,13 +59,7 @@
       border-radius: 1.5rem 1.5rem 0 0;
     }
 
-    dialog:not([open]) & {
-      translate: var(--sheet-offset);
-    }
-  }
-
-  @starting-style {
-    dialog[open] .sheet {
+    dialog:not([data-open]) & {
       translate: var(--sheet-offset);
     }
   }

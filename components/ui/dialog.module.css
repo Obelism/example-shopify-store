@@ -19,14 +19,12 @@
     max-height: none;
     margin: 0;
     padding: 0;
-    overflow: hidden;
+    /* Not a scroll container: focusing a control in an entering panel would scroll it into view. */
+    overflow: clip;
     color: inherit;
     background: transparent;
     border: 0;
     outline: none;
-    transition:
-      display var(--dialog-duration) allow-discrete,
-      overlay var(--dialog-duration) allow-discrete;
 
     &[open] {
       display: grid;
@@ -36,25 +34,16 @@
       background-color: transparent;
       transition:
         background-color var(--dialog-duration),
-        backdrop-filter var(--dialog-duration),
-        display var(--dialog-duration) allow-discrete,
-        overlay var(--dialog-duration) allow-discrete;
+        backdrop-filter var(--dialog-duration);
     }
 
-    &[open][data-backdrop="dim"]::backdrop {
+    &[data-open][data-backdrop="dim"]::backdrop {
       background-color: var(--dialog-dim);
     }
 
-    &[open][data-backdrop="blur"]::backdrop {
+    &[data-open][data-backdrop="blur"]::backdrop {
       background-color: rgb(0 0 0 / 0.3);
       backdrop-filter: blur(8px);
-    }
-  }
-
-  @starting-style {
-    .dialog[open]::backdrop {
-      background-color: transparent;
-      backdrop-filter: blur(0);
     }
   }
 
@@ -74,20 +63,13 @@
       opacity var(--dialog-duration),
       scale var(--dialog-duration);
 
-    .dialog:not([open]) & {
+    .dialog:not([data-open]) & {
       opacity: 0;
       scale: 0.95;
     }
 
     @media (width >= 40rem) {
       max-width: 32rem;
-    }
-  }
-
-  @starting-style {
-    .dialog[open] .panel {
-      opacity: 0;
-      scale: 0.95;
     }
   }
 
