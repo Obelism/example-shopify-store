@@ -1,9 +1,9 @@
 "use client";
 
 import type { CartLine as HydrogenCartLine } from "@shopify/hydrogen";
-import { MinusIcon, PlusIcon, Trash2Icon } from "lucide-react";
 import Image from "next/image";
 
+import { Icon } from "@/components/ui/icon";
 import { ImagePlaceholder } from "@/components/ui/image-placeholder";
 import { Link } from "@/components/ui/link";
 import { useCart } from "@/lib/cart/client";
@@ -160,7 +160,7 @@ function CartLineItem({ item }: CartLineItemProps) {
                   className="flex h-6 cursor-pointer items-center justify-center p-0 disabled:cursor-not-allowed disabled:opacity-50"
                   disabled={isOptimistic || !canUpdateQuantity || quantity <= 1}
                 >
-                  <MinusIcon className="size-3 shrink-0" />
+                  <Icon name="minus" className="size-3 shrink-0" />
                 </button>
                 <input
                   key={quantity}
@@ -178,7 +178,7 @@ function CartLineItem({ item }: CartLineItemProps) {
                   className="flex h-6 cursor-pointer items-center justify-center p-0 disabled:cursor-not-allowed disabled:opacity-50"
                   disabled={isOptimistic || !canUpdateQuantity || quantity >= 99}
                 >
-                  <PlusIcon className="size-3 shrink-0" />
+                  <Icon name="plus" className="size-3 shrink-0" />
                 </button>
               </div>
               <button
@@ -188,7 +188,7 @@ function CartLineItem({ item }: CartLineItemProps) {
                 disabled={isOptimistic || !canRemove}
                 aria-label={`Remove item: ${lineName}`}
               >
-                <Trash2Icon className="size-4" />
+                <Icon name="trash-2" className="size-4" />
               </button>
             </>
           )}

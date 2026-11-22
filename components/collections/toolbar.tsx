@@ -1,7 +1,7 @@
-import { ChevronDownIcon, SlidersHorizontalIcon } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { ProductsGridSkeleton } from "@/components/product/products-grid";
+import { Icon } from "@/components/ui/icon";
 import { PRODUCTS_PER_PAGE } from "@/lib/collections";
 import type { SortValue } from "@/lib/collections/types";
 
@@ -26,7 +26,7 @@ export function BrowseToolbar({ filters, resultCount, sortExclude }: BrowseToolb
               type="button"
               className="flex cursor-pointer items-center gap-2 text-sm font-medium"
             >
-              <SlidersHorizontalIcon className="size-4" />
+              <Icon name="sliders-horizontal" className="size-4" />
               <span>Filters</span>
               <CollectionActiveFilterCountBadge />
             </button>
@@ -54,7 +54,7 @@ export function BrowseFallback({ resultCount }: BrowseFallbackProps) {
             type="button"
             className="flex cursor-pointer items-center gap-2 text-sm font-medium"
           >
-            <SlidersHorizontalIcon className="size-4" />
+            <Icon name="sliders-horizontal" className="size-4" />
             <span>Filters</span>
           </button>
         }
@@ -62,7 +62,7 @@ export function BrowseFallback({ resultCount }: BrowseFallbackProps) {
         sortSelect={
           <div className="flex h-9 w-fit items-center justify-between gap-2 rounded-md bg-transparent px-0 py-2 text-sm whitespace-nowrap">
             <span>Sort</span>
-            <ChevronDownIcon className="size-4 text-muted-foreground opacity-50" />
+            <Icon name="chevron-down" className="size-4 text-muted-foreground opacity-50" />
           </div>
         }
       />

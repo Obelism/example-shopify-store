@@ -1,6 +1,5 @@
 "use client";
 
-import { Menu } from "lucide-react";
 import { useState } from "react";
 
 import {
@@ -9,6 +8,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Icon } from "@/components/ui/icon";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import type { MenuItem } from "@/lib/menu/types";
 
@@ -22,7 +22,7 @@ export function MobileMenu({ items }: { items: MenuItem[] }) {
       <SheetTrigger
         render={
           <button type="button" className="md:hidden -ml-2 p-2" aria-label="Menu">
-            <Menu className="size-5" />
+            <Icon name="menu" className="size-5" />
           </button>
         }
       />

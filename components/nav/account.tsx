@@ -1,5 +1,4 @@
-import { UserRoundCheckIcon, UserRoundIcon } from "lucide-react";
-
+import { Icon } from "@/components/ui/icon";
 import { Link } from "@/components/ui/link";
 import { isCustomerLoggedIn } from "@/lib/auth/server";
 
@@ -12,7 +11,7 @@ export async function NavAccount() {
         href="/account/login"
         className="flex items-center justify-center text-foreground hover:text-foreground/80 transition-colors"
       >
-        <UserRoundIcon className="size-5" />
+        <Icon name="user-round" className="size-5" />
         <span className="sr-only">Sign in</span>
       </a>
     );
@@ -22,7 +21,7 @@ export async function NavAccount() {
       href="/account"
       className="flex items-center justify-center text-foreground hover:text-foreground/80 transition-colors"
     >
-      <UserRoundCheckIcon className="size-5" />
+      <Icon name="user-round-check" className="size-5" />
       <span className="sr-only">Account</span>
     </Link>
   );
@@ -31,7 +30,7 @@ export async function NavAccount() {
 export function NavAccountFallback() {
   return (
     <span className="flex items-center justify-center text-foreground">
-      <UserRoundIcon className="size-5" />
+      <Icon name="user-round" className="size-5" />
     </span>
   );
 }

@@ -3,7 +3,6 @@
 import { Dialog as DialogPrimitive } from "@base-ui/react/dialog";
 import { getSearchResultUrl } from "@shopify/hydrogen";
 import { cn } from "cn";
-import { Search, X } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
@@ -17,6 +16,7 @@ import {
 
 import { Price } from "@/components/product/price";
 import { Dialog, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Icon } from "@/components/ui/icon";
 import { useRecentlyViewedProducts } from "@/lib/product/client";
 import { SEARCH_TERM_MAX_LENGTH } from "@/lib/search";
 import { usePredictiveSearch } from "@/lib/search/client";
@@ -52,7 +52,7 @@ function SearchTrigger() {
           type="button"
           className="flex items-center justify-center text-foreground hover:text-foreground/80 transition-colors"
         >
-          <Search className="size-5" />
+          <Icon name="search" className="size-5" />
           <span className="sr-only">Search</span>
         </button>
       }
@@ -135,7 +135,7 @@ function SearchDialogContent({ onClose, open }: { onClose: () => void; open: boo
           <DialogTitle className="sr-only">Search</DialogTitle>
           <div className="bg-background rounded-xl shadow-lg overflow-hidden duration-200">
             <form onSubmit={handleSubmit} className="flex items-center gap-3 px-4 py-3">
-              <Search className="size-4 shrink-0 text-foreground/40" />
+              <Icon name="search" className="size-4 shrink-0 text-foreground/40" />
               <input
                 ref={inputRef}
                 type="text"
@@ -169,7 +169,7 @@ function SearchDialogContent({ onClose, open }: { onClose: () => void; open: boo
                 </button>
               )}
               <DialogPrimitive.Close className="shrink-0 flex items-center justify-center rounded-full text-foreground/40 hover:text-foreground transition-colors">
-                <X className="size-4" />
+                <Icon name="x" className="size-4" />
                 <span className="sr-only">Close</span>
               </DialogPrimitive.Close>
             </form>

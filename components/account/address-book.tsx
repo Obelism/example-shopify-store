@@ -1,6 +1,5 @@
 "use client";
 
-import { Loader2, Pencil, Plus, Trash2 } from "lucide-react";
 import { type FormEvent, useState, useTransition } from "react";
 
 import { Badge } from "@/components/ui/badge";
@@ -13,6 +12,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Icon } from "@/components/ui/icon";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
@@ -52,7 +52,7 @@ export function AddressBook({ addresses }: { addresses: CustomerAddress[] }) {
     <div className="grid gap-4">
       <div>
         <Button size="sm" onClick={() => setFormState({ mode: "create" })}>
-          <Plus aria-hidden="true" />
+          <Icon name="plus" />
           Add address
         </Button>
       </div>
@@ -81,11 +81,11 @@ export function AddressBook({ addresses }: { addresses: CustomerAddress[] }) {
                   variant="outline"
                   onClick={() => setFormState({ address, mode: "edit" })}
                 >
-                  <Pencil aria-hidden="true" />
+                  <Icon name="pencil" />
                   Edit
                 </Button>
                 <Button size="sm" variant="ghost" onClick={() => setDeleteTarget(address)}>
-                  <Trash2 aria-hidden="true" />
+                  <Icon name="trash-2" />
                   Delete
                 </Button>
               </div>
@@ -199,7 +199,7 @@ function AddressForm({ address, onSuccess }: { address?: CustomerAddress; onSucc
 
       <DialogFooter>
         <Button type="submit" disabled={isPending}>
-          {isPending ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : "Save"}
+          {isPending ? <Icon name="loader-circle" className="size-4 animate-spin" /> : "Save"}
         </Button>
       </DialogFooter>
     </form>
@@ -246,7 +246,7 @@ function DeleteDialog({
             Cancel
           </Button>
           <Button variant="destructive" onClick={handleDelete} disabled={isPending}>
-            {isPending ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : "Delete"}
+            {isPending ? <Icon name="loader-circle" className="size-4 animate-spin" /> : "Delete"}
           </Button>
         </DialogFooter>
       </DialogContent>

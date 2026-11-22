@@ -2,7 +2,6 @@
 
 import { Dialog as DialogPrimitive } from "@base-ui/react/dialog";
 import type { ValidProductSelectionResult } from "@shopify/hydrogen/react";
-import { PlusIcon, XIcon } from "lucide-react";
 import Image from "next/image";
 import { type ReactNode, useEffect, useRef, useState } from "react";
 
@@ -10,6 +9,7 @@ import { BuyButtons } from "@/components/product-detail/buy-buttons";
 import { ProductFormOptions, ProductFormPrice } from "@/components/product-detail/product-form";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Icon } from "@/components/ui/icon";
 import { ImagePlaceholder } from "@/components/ui/image-placeholder";
 import { Link } from "@/components/ui/link";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -156,7 +156,7 @@ export function QuickShop({ handle, href, image, label, title }: QuickShopProps)
             onClick={load}
             type="button"
           >
-            <PlusIcon className="size-4" />
+            <Icon name="plus" className="size-4" />
           </button>
         }
       />
@@ -222,7 +222,7 @@ export function QuickShop({ handle, href, image, label, title }: QuickShopProps)
           className="absolute top-6.5 right-5 z-10 flex size-5 cursor-pointer items-center justify-center text-foreground transition-colors hover:text-foreground/80 focus-visible:outline-2 focus-visible:outline-offset-2"
           ref={closeButtonRef}
         >
-          <XIcon className="size-5" />
+          <Icon name="x" className="size-5" />
         </DialogPrimitive.Close>
       </DialogContent>
     </Dialog>

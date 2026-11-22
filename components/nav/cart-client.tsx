@@ -1,8 +1,7 @@
 "use client";
 
-import { HandbagIcon } from "lucide-react";
-
 import { useCartDrawer } from "@/components/cart/context";
+import { Icon } from "@/components/ui/icon";
 import { useCart } from "@/lib/cart/client";
 
 interface CartIconClientProps {
@@ -25,7 +24,7 @@ export function CartIconClient({ cartLabel, initialCart }: CartIconClientProps) 
       type="button"
     >
       <span className="relative">
-        <HandbagIcon className="size-5" />
+        <Icon name="handbag" className="size-5" />
         {quantity > 0 && (
           <span className="absolute -top-2 -right-1 flex size-4 items-center justify-center rounded-full bg-foreground text-xxs leading-none text-background">
             {quantity}

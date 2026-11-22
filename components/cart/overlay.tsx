@@ -1,9 +1,9 @@
 "use client";
 
-import { Loader2, XIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
+import { Icon } from "@/components/ui/icon";
 import {
   Sheet,
   SheetClose,
@@ -48,7 +48,7 @@ export function CartOverlay({ description, title }: CartOverlayProps) {
             aria-label="Close cart"
             className="flex cursor-pointer items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
           >
-            <XIcon className="size-5" />
+            <Icon name="x" className="size-5" />
           </SheetClose>
         </div>
         <SheetDescription className="sr-only">{description}</SheetDescription>
@@ -66,7 +66,7 @@ function OverlayContent() {
   if (isLoading && cart.lines.nodes.length === 0) {
     return (
       <div className="flex h-full items-center justify-center gap-2.5" role="status">
-        <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+        <Icon name="loader-circle" className="size-4 animate-spin" />
         Loading cart…
       </div>
     );

@@ -1,9 +1,10 @@
 "use client";
 
 import { cn } from "cn";
-import { PauseIcon, PlayIcon } from "lucide-react";
 import Image from "next/image";
 import { type ComponentProps, useEffect, useRef, useState, useSyncExternalStore } from "react";
+
+import { Icon } from "@/components/ui/icon";
 
 interface AutoPlayVideoPreviewImage {
   src: string;
@@ -103,7 +104,11 @@ export function AutoPlayVideo({
         className="absolute right-2.5 bottom-2.5 flex size-8 cursor-pointer items-center justify-center rounded-full bg-background/80 text-foreground backdrop-blur-sm transition-colors outline-none hover:bg-background focus-visible:ring-3 focus-visible:ring-ring/50"
         onClick={() => setPlayRequested(!playing)}
       >
-        {playing ? <PauseIcon className="size-4" /> : <PlayIcon className="size-4" />}
+        {playing ? (
+          <Icon name="pause" className="size-4" />
+        ) : (
+          <Icon name="play" className="size-4" />
+        )}
       </button>
     </>
   );
