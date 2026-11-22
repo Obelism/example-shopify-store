@@ -165,7 +165,7 @@ function productInput(print: Print, series: Series, collectionId: string) {
   const { frame, paper, size } = catalog.variants;
   return {
     collections: [collectionId],
-    descriptionHtml: `<p>${escapeHtml(`${print.title}, from the series ${series.title} by ${catalog.photographer}. ${series.description}`)}</p><p>Archival pigment print, signed on the back.</p>`,
+    descriptionHtml: `<p>${escapeHtml(`${print.title}, from the series ${series.title}. ${series.description}`)}</p><p>Archival pigment print, signed on the back.</p>`,
     handle: printHandle(print),
     productOptions: [
       { name: "Size", values: size.map(({ name }) => ({ name })) },
@@ -194,7 +194,7 @@ function productInput(print: Print, series: Series, collectionId: string) {
         })),
       ),
     ),
-    vendor: catalog.photographer,
+    vendor: catalog.vendor,
   };
 }
 
