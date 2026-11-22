@@ -16,6 +16,7 @@ import { Sections } from "@/components/ui/sections";
 import { shopConfig } from "@/lib/config";
 import {
   defaultSelectedOptions,
+  findListedVariant,
   findLoadedVariant,
   hasColorImagePartitioning,
   parseSelectedOptions,
@@ -119,12 +120,15 @@ async function ProductPageContent({
       const urlOptions = parseSelectedOptions(product.options, resolvedSearchParams ?? {});
       if (Object.keys(urlOptions).length === 0) return product.defaultVariant;
       const selectedOptions = { ...defaultSelectedOptions(product), ...urlOptions };
+      // A complete variant list answers any combination the product has, as fresh as the cached product.
+      const listedVariant = findListedVariant(product, selectedOptions);
+      if (listedVariant) return listedVariant;
       // With no variant for sale and one gallery for every variant, the cached product answers the selection; a restock shows once that cache refreshes.
       if (!product.availableForSale && !hasColorImagePartitioning(product.options)) {
         const loadedVariant = findLoadedVariant(product, selectedOptions);
         if (loadedVariant) return loadedVariant;
       }
-      // Uncached: the selected variant's price and stock are read live per request, and caching per option combination multiplies entries by variant count.
+      // Uncached: past 250 variants the list is partial, and Shopify picks the variant for a combination the product lacks.
       return fetchProductVariant({
         handle,
         selectedOptions: toSelectedOptionList(selectedOptions),

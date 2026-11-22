@@ -16,12 +16,12 @@ import type {
   SelectedOption,
 } from "@/lib/product/types";
 import { assertStorefrontOk } from "@/lib/shopify/errors/server";
-import { BUNDLE_RELATIONSHIPS_FRAGMENT } from "@/lib/shopify/fragments/bundle";
 import { FILTER_FRAGMENT } from "@/lib/shopify/fragments/filters";
 import {
   FILTERABLE_PRODUCT_CARD_FRAGMENT,
   PRODUCT_CARD_FRAGMENT,
   PRODUCT_FRAGMENT,
+  PRODUCT_WITH_VARIANTS_FRAGMENT,
 } from "@/lib/shopify/fragments/product";
 import {
   PRODUCT_VARIANT_FRAGMENT,
@@ -71,6 +71,17 @@ const GET_PRODUCT_BY_HANDLE_QUERY = gql(
   query getProductByHandle($handle: String!, $country: CountryCode, $language: LanguageCode) @inContext(country: $country, language: $language) {
     product(handle: $handle) {
       ...ProductFields
+      # 250 is the Storefront API's page-size maximum; variantsComplete reports a longer list.
+      variants(first: 250) {
+        pageInfo {
+          hasNextPage
+        }
+        edges {
+          node {
+            ...ProductVariantFields
+          }
+        }
+      }
     }
   }
 `,
@@ -81,10 +92,7 @@ const GET_PRODUCT_BY_HANDLE_WITH_BUNDLES_QUERY = gql(
   `#graphql
   query getProductByHandleWithBundles($handle: String!, $country: CountryCode, $language: LanguageCode) @inContext(country: $country, language: $language) {
     product(handle: $handle) {
-      ...ProductFields
-      selectedOrFirstAvailableVariant {
-        ...BundleRelationshipFields
-      }
+      ...ProductWithVariantsFields
       # Sparse variants resolve client-side, so they need the bundle gate too.
       adjacentVariants {
         ...BundleRelationshipFields
@@ -99,7 +107,7 @@ const GET_PRODUCT_BY_HANDLE_WITH_BUNDLES_QUERY = gql(
     }
   }
 `,
-  [BUNDLE_RELATIONSHIPS_FRAGMENT, PRODUCT_FRAGMENT],
+  [PRODUCT_WITH_VARIANTS_FRAGMENT],
 );
 
 export async function fetchProduct({
@@ -119,9 +127,12 @@ export async function fetchProduct({
   const { data } = response;
 
   if (!data.product) return undefined;
+  const product = transformShopifyProductDetails(data.product);
   return {
-    ...transformShopifyProductDetails(data.product),
+    ...product,
     descriptionHtml: sanitizeShopifyHtml(data.product.descriptionHtml),
+    // Partial errors can drop variants, so that list never counts as complete.
+    variantsComplete: product.variantsComplete && !response.errors?.length,
   };
 }
 
