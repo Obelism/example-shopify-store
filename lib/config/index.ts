@@ -63,8 +63,8 @@ export const shopConfig = {
   },
   site: {
     description:
-      "Fine art prints by Noor Halde: mountains, forests, coasts and cities, printed on archival paper.",
-    name: "Noor Halde",
+      "Fine art prints from Photo Studio: mountains, forests, coasts and cities, printed on archival paper.",
+    name: "Photo Studio",
     url: defaultUrl,
   },
 } satisfies ShopConfig;
