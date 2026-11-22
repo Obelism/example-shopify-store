@@ -95,7 +95,7 @@
 .fieldError {
   font-size: var(--text-xs);
   line-height: var(--text-xs--leading);
-  color: var(--destructive);
+  color: var(--destructive-text);
 }
 
 .defaultToggle {
@@ -110,7 +110,7 @@
 .error {
   font-size: var(--text-sm);
   line-height: var(--text-sm--leading);
-  color: var(--destructive);
+  color: var(--destructive-text);
 }
 
 .spinner {

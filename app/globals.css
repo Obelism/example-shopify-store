@@ -21,6 +21,7 @@
   --accent-foreground: light-dark(#1c1b19, #ebe7df);
   --destructive: light-dark(#cc0001, #d92b2f);
   --destructive-foreground: #f4f4f4;
+  --destructive-text: light-dark(#cc0001, #ff7a7a);
   --positive: light-dark(#00ba5a, #2fbf71);
   --positive-foreground: #ffffff;
   --warning: light-dark(oklch(98.7% 0.022 95.277), oklch(25.5% 0.045 70));

@@ -10,7 +10,7 @@
   padding: 0.625rem 1rem;
   font-size: var(--text-sm);
   line-height: var(--text-sm--leading);
-  color: var(--destructive);
+  color: var(--destructive-text);
   background: var(--background);
   border: 1px solid color-mix(in oklab, var(--destructive) 20%, transparent);
   border-radius: var(--radius);
