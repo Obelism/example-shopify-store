@@ -1,20 +1,20 @@
 @layer ui {
   .prose {
-    --prose-body: oklch(37.1% 0 0);
-    --prose-headings: oklch(20.5% 0 0);
-    --prose-links: oklch(20.5% 0 0);
-    --prose-bold: oklch(20.5% 0 0);
-    --prose-counters: oklch(55.6% 0 0);
-    --prose-bullets: oklch(87% 0 0);
-    --prose-hr: oklch(92.2% 0 0);
-    --prose-quotes: oklch(20.5% 0 0);
-    --prose-quote-borders: oklch(92.2% 0 0);
-    --prose-captions: oklch(55.6% 0 0);
-    --prose-code: oklch(20.5% 0 0);
-    --prose-pre-code: oklch(92.2% 0 0);
-    --prose-pre-bg: oklch(26.9% 0 0);
-    --prose-th-borders: oklch(87% 0 0);
-    --prose-td-borders: oklch(92.2% 0 0);
+    --prose-body: light-dark(oklch(37.1% 0 0), oklch(87% 0 0));
+    --prose-headings: light-dark(oklch(20.5% 0 0), var(--foreground));
+    --prose-links: light-dark(oklch(20.5% 0 0), var(--foreground));
+    --prose-bold: light-dark(oklch(20.5% 0 0), var(--foreground));
+    --prose-counters: light-dark(oklch(55.6% 0 0), oklch(70.8% 0 0));
+    --prose-bullets: light-dark(oklch(87% 0 0), oklch(43.9% 0 0));
+    --prose-hr: light-dark(oklch(92.2% 0 0), oklch(37.1% 0 0));
+    --prose-quotes: light-dark(oklch(20.5% 0 0), var(--foreground));
+    --prose-quote-borders: light-dark(oklch(92.2% 0 0), oklch(37.1% 0 0));
+    --prose-captions: light-dark(oklch(55.6% 0 0), oklch(70.8% 0 0));
+    --prose-code: light-dark(oklch(20.5% 0 0), var(--foreground));
+    --prose-pre-code: light-dark(oklch(92.2% 0 0), oklch(87% 0 0));
+    --prose-pre-bg: light-dark(oklch(26.9% 0 0), rgb(0 0 0 / 0.5));
+    --prose-th-borders: light-dark(oklch(87% 0 0), oklch(43.9% 0 0));
+    --prose-td-borders: light-dark(oklch(92.2% 0 0), oklch(37.1% 0 0));
 
     max-width: 65ch;
     font-size: 1rem;

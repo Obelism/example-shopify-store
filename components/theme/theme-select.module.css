@@ -1,0 +1,28 @@
+.root {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--foreground);
+  border-radius: var(--radius);
+  transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:has(.select:focus-visible) {
+    box-shadow: var(--focus-ring);
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      color: color-mix(in oklab, var(--foreground) 80%, transparent);
+    }
+  }
+}
+
+.select {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  cursor: pointer;
+  opacity: 0;
+  appearance: none;
+}
