@@ -23,7 +23,7 @@ function Sheet({
   ...props
 }: SheetProps) {
   return (
-    <Dialog backdrop={overlay ? "dim" : "none"} className={styles.dialog} {...props}>
+    <Dialog backdrop={overlay ? "dim" : "none"} className={styles.sheetDialog} {...props}>
       <div className={cn(styles.sheet, className)} data-side={side}>
         {children}
         {closeButton ? (

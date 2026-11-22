@@ -2,12 +2,7 @@
 
 import { useState } from "react";
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { DialogTitle } from "@/components/ui/dialog";
 import { Icon } from "@/components/ui/icon";
 import { Sheet } from "@/components/ui/sheet";
@@ -64,7 +59,7 @@ function MobileMenuList({ items, onLinkClick }: { items: MenuItem[]; onLinkClick
   }
 
   return (
-    <Accordion className="w-full">
+    <div className="w-full">
       {items.map((item) =>
         item.items.length > 0 ? (
           <AccordionItem key={item.id}>
@@ -94,7 +89,7 @@ function MobileMenuList({ items, onLinkClick }: { items: MenuItem[]; onLinkClick
           </div>
         ),
       )}
-    </Accordion>
+    </div>
   );
 }
 

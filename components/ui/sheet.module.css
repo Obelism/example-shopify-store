@@ -1,5 +1,5 @@
 @layer ui {
-  .dialog {
+  .sheetDialog {
     --dialog-dim: rgb(0 0 0 / 0.3);
     --dialog-duration: 500ms;
 
@@ -28,11 +28,15 @@
     }
 
     &[data-side="right"] {
+      --sheet-offset: 100% 0;
+
       right: 0;
       border-left: 1px solid var(--border);
     }
 
     &[data-side="left"] {
+      --sheet-offset: -100% 0;
+
       left: 0;
       border-right: 1px solid var(--border);
     }
@@ -43,48 +47,28 @@
     }
 
     &[data-side="top"] {
+      --sheet-offset: 0 -100%;
+
       top: 0;
       border-bottom: 1px solid var(--border);
     }
 
     &[data-side="bottom"] {
+      --sheet-offset: 0 100%;
+
       bottom: 0;
       border-top: 1px solid var(--border);
       border-radius: 1.5rem 1.5rem 0 0;
     }
 
-    dialog:not([open]) &[data-side="right"] {
-      translate: 100% 0;
-    }
-
-    dialog:not([open]) &[data-side="left"] {
-      translate: -100% 0;
-    }
-
-    dialog:not([open]) &[data-side="top"] {
-      translate: 0 -100%;
-    }
-
-    dialog:not([open]) &[data-side="bottom"] {
-      translate: 0 100%;
+    dialog:not([open]) & {
+      translate: var(--sheet-offset);
     }
   }
 
   @starting-style {
-    dialog[open] .sheet[data-side="right"] {
-      translate: 100% 0;
-    }
-
-    dialog[open] .sheet[data-side="left"] {
-      translate: -100% 0;
-    }
-
-    dialog[open] .sheet[data-side="top"] {
-      translate: 0 -100%;
-    }
-
-    dialog[open] .sheet[data-side="bottom"] {
-      translate: 0 100%;
+    dialog[open] .sheet {
+      translate: var(--sheet-offset);
     }
   }
 

@@ -96,9 +96,6 @@
   [role="button"][aria-disabled="true"] {
     cursor: not-allowed;
   }
-  html:has(dialog[open]:modal) {
-    overflow: hidden;
-  }
 }
 
 @layer utilities {

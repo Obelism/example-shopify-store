@@ -13,11 +13,7 @@ interface SelectProps extends ComponentProps<"select"> {
 function Select({ children, className, label, ...props }: SelectProps) {
   return (
     <span className={cn(styles.root, className)} data-labelled={label !== undefined}>
-      {label !== undefined ? (
-        <span aria-hidden="true" className={styles.label}>
-          {label}
-        </span>
-      ) : null}
+      {label !== undefined ? <span aria-hidden="true">{label}</span> : null}
       <select className={styles.select} {...props}>
         {children}
       </select>

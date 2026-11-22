@@ -7,32 +7,23 @@
     height: 1.15rem;
     margin: 0;
     cursor: pointer;
-    background: var(--input);
+    background:
+      radial-gradient(circle closest-side, var(--background) 99%, transparent) left center / 1rem
+        1rem no-repeat,
+      var(--input);
     border: 1px solid transparent;
     border-radius: 9999px;
     outline: none;
     box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
     transition:
+      background-position 150ms,
       background-color 150ms,
       box-shadow 150ms;
     appearance: none;
 
-    &::before {
-      display: block;
-      width: 1rem;
-      height: 1rem;
-      content: "";
-      background: var(--background);
-      border-radius: 9999px;
-      transition: translate 150ms;
-    }
-
     &:checked {
-      background: var(--primary);
-
-      &::before {
-        translate: calc(100% - 2px) 0;
-      }
+      background-color: var(--primary);
+      background-position: right center;
     }
 
     &:focus-visible {

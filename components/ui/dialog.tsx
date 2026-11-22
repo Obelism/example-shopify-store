@@ -5,6 +5,7 @@ import {
   type ComponentProps,
   createContext,
   type RefObject,
+  useCallback,
   useContext,
   useEffect,
   useEffectEvent,
@@ -20,6 +21,7 @@ import styles from "./dialog.module.css";
 interface DialogContextValue {
   close: () => void;
   descriptionId: string;
+  registerDescription: () => () => void;
   titleId: string;
 }
 
@@ -34,8 +36,8 @@ function useDialog() {
 interface DialogProps extends Omit<ComponentProps<"dialog">, "open"> {
   backdrop?: "blur" | "dim" | "none";
   initialFocus?: RefObject<HTMLElement | null>;
+  onCloseComplete?: () => void;
   onOpenChange: (open: boolean) => void;
-  onOpenChangeComplete?: (open: boolean) => void;
   open: boolean;
 }
 
@@ -44,35 +46,40 @@ function Dialog({
   children,
   className,
   initialFocus,
+  onCloseComplete,
   onOpenChange,
-  onOpenChangeComplete,
   open,
   ...props
 }: DialogProps) {
   const ref = useRef<HTMLDialogElement>(null);
-  const generation = useRef(0);
+  const openCount = useRef(0);
   const pressedBackdrop = useRef(false);
   const titleId = useId();
   const descriptionId = useId();
+  const [descriptions, setDescriptions] = useState(0);
+  const registerDescription = useCallback(() => {
+    setDescriptions((count) => count + 1);
+    return () => setDescriptions((count) => count - 1);
+  }, []);
   const [mounted, setMounted] = useState(open);
   if (open && !mounted) setMounted(true);
 
   const show = useEffectEvent((dialog: HTMLDialogElement) => {
-    generation.current += 1;
+    openCount.current += 1;
     if (!dialog.open) dialog.showModal();
     initialFocus?.current?.focus();
   });
 
-  // Children stay mounted until the exit transition ends, then unmount like a closed popup.
   const hide = useEffectEvent((dialog: HTMLDialogElement) => {
-    if (!dialog.open) return;
-    const closing = generation.current;
-    dialog.close();
+    if (!mounted) return;
+    const closing = openCount.current;
+    // The browser may have closed it already, e.g. on a repeated Escape it won't let us cancel.
+    if (dialog.open) dialog.close();
     const transitions = dialog.getAnimations({ subtree: true }).map(({ finished }) => finished);
     void Promise.allSettled(transitions).then(() => {
-      if (generation.current !== closing) return;
+      if (openCount.current !== closing) return;
       setMounted(false);
-      onOpenChangeComplete?.(false);
+      onCloseComplete?.();
     });
   });
 
@@ -84,9 +91,17 @@ function Dialog({
   }, [open]);
 
   return (
-    <DialogContext value={{ close: () => onOpenChange(false), descriptionId, titleId }}>
+    <DialogContext
+      value={{
+        close: () => onOpenChange(false),
+        descriptionId,
+        registerDescription,
+        titleId,
+      }}
+    >
       <dialog
-        aria-describedby={descriptionId}
+        {...props}
+        aria-describedby={descriptions > 0 ? descriptionId : undefined}
         aria-labelledby={titleId}
         className={cn(styles.dialog, className)}
         data-backdrop={backdrop}
@@ -106,7 +121,6 @@ function Dialog({
           pressedBackdrop.current = event.target === event.currentTarget;
         }}
         ref={ref}
-        {...props}
       >
         {mounted ? children : null}
       </dialog>
@@ -161,7 +175,8 @@ function DialogTitle({ className, ...props }: ComponentProps<"h2">) {
 }
 
 function DialogDescription({ className, ...props }: ComponentProps<"p">) {
-  const { descriptionId } = useDialog();
+  const { descriptionId, registerDescription } = useDialog();
+  useEffect(registerDescription, [registerDescription]);
   return <p className={cn(styles.description, className)} id={descriptionId} {...props} />;
 }
 

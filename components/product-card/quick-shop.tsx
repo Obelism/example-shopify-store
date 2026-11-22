@@ -125,6 +125,7 @@ export function QuickShop({ handle, href, image, label, title }: QuickShopProps)
   return (
     <>
       <button
+        aria-expanded={open}
         aria-haspopup="dialog"
         aria-label={`${label}: ${title}`}
         className="absolute right-2.5 bottom-2.5 z-10 hidden size-9 cursor-pointer items-center justify-center rounded-full bg-background/90 text-foreground shadow-sm backdrop-blur-sm transition-colors hover:bg-background lg:flex"
@@ -139,18 +140,16 @@ export function QuickShop({ handle, href, image, label, title }: QuickShopProps)
       <Dialog
         initialFocus={closeButtonRef}
         onOpenChange={changeOpen}
-        onOpenChangeComplete={(nextOpen) => {
-          if (!nextOpen) {
-            selectionRequest.current = null;
-            setSelectionStatus("idle");
-            setResolvedForm(null);
-            setConfirmedVariant(product?.form.selectedOrFirstAvailableVariant ?? undefined);
-            setImageUrl(
-              product
-                ? (product.form.selectedOrFirstAvailableVariant?.image?.url ?? product.image)
-                : image,
-            );
-          }
+        onCloseComplete={() => {
+          selectionRequest.current = null;
+          setSelectionStatus("idle");
+          setResolvedForm(null);
+          setConfirmedVariant(product?.form.selectedOrFirstAvailableVariant ?? undefined);
+          setImageUrl(
+            product
+              ? (product.form.selectedOrFirstAvailableVariant?.image?.url ?? product.image)
+              : image,
+          );
         }}
         open={open}
       >

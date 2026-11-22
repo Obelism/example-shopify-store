@@ -5,10 +5,6 @@ import { Icon } from "@/components/ui/icon";
 
 import styles from "./accordion.module.css";
 
-function Accordion(props: ComponentProps<"div">) {
-  return <div {...props} />;
-}
-
 function AccordionItem({ className, ...props }: ComponentProps<"details">) {
   return <details className={cn(styles.item, className)} {...props} />;
 }
@@ -26,4 +22,4 @@ function AccordionContent({ className, ...props }: ComponentProps<"div">) {
   return <div className={cn(styles.content, className)} {...props} />;
 }
 
-export { Accordion, AccordionContent, AccordionItem, AccordionTrigger };
+export { AccordionContent, AccordionItem, AccordionTrigger };
