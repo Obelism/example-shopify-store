@@ -67,6 +67,17 @@ With the `NEXT_PUBLIC_OBELISM_*` values set, `proxy.ts` assigns each visitor's v
 - Goals are the Numbers events: `print-page-details` starts at `view_item` (`product_page`) and converts at `add_to_cart` (`product_form`).
 - Add a webhook in Improve pointing at `/api/webhooks/improve` with `IMPROVE_WEBHOOK_SECRET`: a change refreshes the pages' test setup at once instead of within minutes (it revalidates the root layout, so every page). The proxy keeps assigning from the datafile it fetched up to 30 seconds earlier.
 
+## Demos
+
+Obelism staff give a prospect their own copy of the store to edit: Photo Studio's space copied into the prospect's organization (published content only, its Media files shown without copies, its Shopify store read-only), deployed to Vercel as `photo-studio-<name>.vercel.app` with the preview URL and publish webhook set.
+
+```
+node --env-file=.env.local scripts/demo.mts create --organization <org_…> --name <prospect> [--space-name <name>] [--ref <git ref>]
+node --env-file=.env.local scripts/demo.mts remove --organization <org_…> --project photo-studio-<name>
+```
+
+Needs `OBELISM_AGENT_TOKEN` (a staff member with the admin or developer role in the prospect's organization), `VERCEL_TOKEN` and the store's `NEXT_PUBLIC_SHOPIFY_*` values. The site is deployed from the committed `--ref` (`origin/main` by default), never the working tree. `remove` deletes the space (restorable for 30 days) and the Vercel project.
+
 ## Checks
 
 ```
