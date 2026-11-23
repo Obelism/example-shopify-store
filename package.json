@@ -12,7 +12,7 @@
     "typecheck": "next typegen && tsc --noEmit"
   },
   "dependencies": {
-    "@obelism/content": "0.32.1",
+    "@obelism/content": "0.32.2",
     "@obelism/content-react": "0.4.12",
     "@obelism/improve-sdk": "3.8.1",
     "@obelism/numbers-sdk": "0.7.0",
@@ -52,5 +52,5 @@
   "engines": {
     "node": "26"
   },
-  "packageManager": "npm@12.2.2"
+  "packageManager": "npm@12.2.3"
 }
