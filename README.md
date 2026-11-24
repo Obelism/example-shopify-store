@@ -54,7 +54,7 @@ Pages (home, About, Printing), the story of each series and of some prints come 
 
 ## Numbers
 
-Set the three `NEXT_PUBLIC_OBELISM_*` values and the browser sends page views, clicks on elements with a `data-numbers-id` (every Content block has one), `view_item_list`, `view_item`, `add_to_cart` and `begin_checkout` to Obelism Numbers. It also reports LCP, INP, CLS, FCP and TTFB for Numbers' Web vitals report, with the deployment's commit as its release. The site's origin has to be in the space's Allowed origins for the environment; develop allows localhost.
+Set the three `NEXT_PUBLIC_OBELISM_*` values and the browser sends page views, clicks on elements with a `data-numbers-id` (every Content block has one), `view_item_list`, `view_item`, `add_to_cart` and `begin_checkout` to Obelism Numbers. It also reports LCP, INP, CLS, FCP and TTFB for Numbers' Web vitals report, with Vercel's deployment commit as its release. The site's origin has to be in the space's Allowed origins for the environment; develop allows localhost.
 
 `purchase` is sent by the server when Shopify reports a paid order: subscribe the store's `orders/paid` webhook to `/api/webhooks/shopify` (with `SHOPIFY_WEBHOOK_SECRET`) and set `OBELISM_API_TOKEN`. The order carries the visitor id from the cart, so the purchase counts for the visitor who placed it.
 
