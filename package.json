@@ -14,8 +14,8 @@
   "dependencies": {
     "@obelism/content": "0.32.3",
     "@obelism/content-react": "0.4.12",
-    "@obelism/improve-sdk": "3.8.1",
-    "@obelism/numbers-sdk": "0.7.0",
+    "@obelism/improve-sdk": "3.8.2",
+    "@obelism/numbers-sdk": "0.8.0",
     "@obelism/react-svg": "3.0.2",
     "@shopify/hydrogen": "2026.10.3",
     "@types/node": "26.6.6",

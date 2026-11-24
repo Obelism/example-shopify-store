@@ -8,6 +8,7 @@ import { NumbersTracker } from "./numbers-tracker";
 import { ShopifyScriptsTracker } from "./shopify-client";
 
 export function AnalyticsComponents() {
+  const release = process.env.VERCEL_GIT_COMMIT_SHA;
   const i18n: ShopifyScriptsI18n = {
     country: shopConfig.localization.country,
     language: shopConfig.localization.language,
@@ -20,7 +21,7 @@ export function AnalyticsComponents() {
 
   return (
     <>
-      {shopConfig.analytics.numbers.isEnabled && <NumbersTracker />}
+      {shopConfig.analytics.numbers.isEnabled && <NumbersTracker release={release} />}
       {shopConfig.analytics.vercel.isEnabled && <Analytics />}
       {shopConfig.analytics.speedInsights.isEnabled && <SpeedInsights />}
       {isShopifyScriptsEnabled && <ShopifyScriptsTracker i18n={i18n} shop={shop} />}

@@ -26,7 +26,7 @@ Every feature belongs to exactly one owner. If a change cannot name its owner, o
 - Blocks render client-side in `components/cms/cms-body-client.tsx` with `useLiveEntry` and `editable(block)`; Shopify data for featured blocks is resolved on the server in `components/cms/cms-body.tsx`.
 - Content assets load from Content's image API through the `next/image` loader, not Next's optimizer.
 
-**Obelism Numbers owns analytics**: page views, clicks and the shop's events.
+**Obelism Numbers owns analytics**: page views, clicks, web vitals and the shop's events.
 
 - Lives in: `lib/numbers/**` (with the space settings it shares with Improve in `lib/obelism/**`), `components/analytics/numbers-tracker.tsx`, and the calls in `components/analytics/trackers.tsx`, `components/product-detail/buy-buttons.tsx`, `lib/cart/client.ts` and the `orders/paid` branch of `app/api/webhooks/shopify`.
 - Send events with `trackEvent` from `lib/numbers/client.ts`, using GA4 names and a stable scope (`product_page`, `product_form`, `cart`, `checkout`); put what varies, like the print, in `params`. Funnels and Improve goals match on event plus scope, so a per-item scope breaks them.
